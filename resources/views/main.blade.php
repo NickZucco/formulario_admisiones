@@ -33,10 +33,6 @@
             <ul class="nav navbar-nav">
                 <li><a href="{{ env('APP_URL') }}datos" data-path="datos"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;Datos personales</a></li>
                 @if(App\Aspirante::where('correo', '=', Auth::user()->email)->first())
-                
-                <li><a href="{{ env('APP_URL') }}perfiles" data-path="perfiles"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;Perfiles</a></li>
-                
-                @if(App\Perfil::join('aspirantes_perfiles', 'perfiles_id', '=', 'id')->where('aspirantes_id', '=', Auth::user()->id)->first())
 					<li id="estudios_p"><a href="{{ env('APP_URL') }}estudios" data-path="estudios"><i class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;Estudios universitarios [{{$count['estudio']}}]</a></li>
 					<li id="distincion_p"><a href="{{ env('APP_URL') }}distinciones" data-path="distinciones"><i class="fa fa-trophy" aria-hidden="true"></i>&nbsp;Distinciones académicas [{{$count['distincion']}}]</a></li>
 					<li id="laboral_p"><a href="{{ env('APP_URL') }}experiencia_laboral" data-path="experiencia_laboral"><i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp;Experiencia laboral [{{$count['laboral']}}]</a></li>
@@ -44,15 +40,8 @@
 					<li id="investigativa_p"><a href="{{ env('APP_URL') }}experiencia_investigativa" data-path="experiencia_investigativa"><i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp;Experiencia investigativa [{{$count['investigativa']}}]</a></li>
 					<li id="produccion_p"><a href="{{ env('APP_URL') }}produccion_intelectual" data-path="produccion_intelectual"><i class="fa fa-lightbulb-o" aria-hidden="true"></i>&nbsp;Producción intelectual [{{$count['produccion']}}]</a></li>
 					<li id="idioma_p"><a href="{{ env('APP_URL') }}idiomas" data-path="idiomas"><i class="fa fa-language" aria-hidden="true"></i>&nbsp;Idiomas [{{$count['idioma']}}]</a></li>
-					<li id="ensayo_p"><a href="{{ env('APP_URL') }}perfiles/ensayos" data-path="perfiles/ensayos"><i class="fa fa-book" aria-hidden="true"></i>&nbsp;Ensayos</a></li>
                 @else
-					<li><a href="#" disabled>
-                    <i class="hidden-xs hidden-sm fa fa-arrow-left" aria-hidden="true"></i>
-                     Debe seleccionar y guardar al menos un <i class="fa fa-user" style="color:#95d072" aria-hidden="true"></i> perfil al cual aspirar antes de poder diligenciar los demas campos.</a></li>
-                @endif
-                
-                @else
-                <li><a href="#" disabled>Las demas opciones se habilitarán una vez seleccione la información del perfil y sus datos personales.</a></li>
+					<li><a href="#" disabled>Las demas opciones se habilitarán una vez ingrese sus datos personales.</a></li>
                 @endif
                 <li><a href="{{ env('APP_URL') }}auth/logout"><i class="glyphicon glyphicon-log-out"></i>&nbsp;Cerrar sesión</a></li>
             </ul>

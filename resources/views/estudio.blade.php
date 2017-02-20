@@ -25,6 +25,7 @@
                     <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Nombre del título académico obtenido" required>
                 </div>
             </div>
+			
             <div class="form-group">
                 <label for="institucion" class="col-sm-12 col-md-2 control-label">Nombre de la institución</label>
                 <div class="col-sm-12 col-md-9">
@@ -53,6 +54,23 @@
                 <label class="radio-inline">
                     <input type="radio" name="en_curso" data-id="fecha_finalizacion" value="0">No
                 </label>
+            </div>
+			
+			<div class="form-group">
+                <label for="maximo_escala" class="col-sm-12 col-md-2 control-label">Máxima nota en la escala</label>
+                <div class="col-sm-12 col-md-2">
+                    <input type="text" class="form-control" id="maximo_escala" name="maximo_escala" required>
+                </div>
+				
+				<label for="minimo_aprobatorio" class="col-sm-12 col-md-2 control-label">Mínima nota aprobatoria</label>
+                <div class="col-sm-12 col-md-2">
+                    <input type="text" class="form-control" id="minimo_aprobatorio" name="minimo_aprobatorio" required>
+                </div>
+				
+				<label for="promedio" class="col-sm-12 col-md-1 control-label">Promedio obtenido</label>
+                <div class="col-sm-12 col-md-2">
+                    <input type="text" class="form-control" id="promedio" name="promedio" required>
+                </div>
             </div>
 
             <div class="form-group">

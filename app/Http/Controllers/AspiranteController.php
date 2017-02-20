@@ -116,7 +116,7 @@ class AspiranteController extends Controller {
 			
             $record->fill($input);
             $record->save();
-            return redirect('perfiles');
+            return redirect('estudios');
         }
 		else {
 			//Efectuamos las operaciones sobre los archivos adjuntos

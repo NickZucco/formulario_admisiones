@@ -44,6 +44,12 @@
                     <input type="text" class="form-control" id="area_proyecto" name="area_proyecto" placeholder="Área del proyecto" required>
                 </div>
             </div>
+			<div class="form-group">
+                <label for="entidad_financiadora" class="col-sm-12 col-md-3 control-label">Entidad financiadora</label>
+                <div class="col-sm-12 col-md-9">
+                    <input type="text" class="form-control" id="entidad_financiadora" name="entidad_financiadora" required>
+                </div>
+            </div>
             <div class="form-group">
                 <label for="funcion_principal" class="col-sm-12 col-md-3 control-label">Funciones principales</label>
                 <div class="col-sm-12 col-md-9">

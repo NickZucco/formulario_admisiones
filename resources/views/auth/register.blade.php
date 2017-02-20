@@ -56,9 +56,9 @@
                     </div>
                 </div>
 
-                <div for="agree" class="form-group">					
+                <!--<div for="agree" class="form-group">					
                     <center><label align="center" for="name" class="control-label">{{ Form::checkbox('agree', 1, null) }}&nbsp;&nbsp;&nbsp;He leído y acepto los términos y condiciones de la <a href='http://www.legal.unal.edu.co/sisjurun/normas/Norma1.jsp?i=87894' target="blank">convocatoria</a>.</label></center>
-                </div>    
+                </div>-->  
 
                 <div class="form-group">
                     <div class="form-group"> 
