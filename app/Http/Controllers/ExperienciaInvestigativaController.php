@@ -62,15 +62,12 @@ class ExperienciaInvestigativaController extends Controller {
 		$titulo = substr($input['nombre_proyecto'], 0, 12);
 		$titulo = $titulo . $aleatorio;
 		$titulo = str_replace(' ', '_', $titulo);
-        //Guardamos el archivo de soporte adjunto si existe
-		if (isset($input['adjunto'])) {
-			$file = Input::file('adjunto');
-			//$titulo = str_replace(' ', '_', $input['nombre_proyecto']);
-			$file->move(public_path() . '/file/' . $id . '/experiencia_investigativa/' , $titulo . '.pdf');
-			
-			$input['ruta_adjunto'] = 'file/' . $id . '/experiencia_investigativa/' . $titulo . '.pdf';
-			unset($input['adjunto']);		
-		}
+		
+        //Guardamos el archivo de soporte adjunto
+		$file = Input::file('adjunto');
+		$file->move(public_path() . '/file/' . $id . '/experiencia_investigativa/' , $titulo . '.pdf');
+		$input['ruta_adjunto'] = 'file/' . $id . '/experiencia_investigativa/' . $titulo . '.pdf';
+		unset($input['adjunto']);		
 		
 		$input['aspirantes_id'] = $id;
         $experiencia_investigativa = ExperienciaInvestigativa::create($input);

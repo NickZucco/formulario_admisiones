@@ -62,15 +62,12 @@ class ExperienciaLaboralController extends Controller {
 		$titulo = substr($input['nombre_institucion'], 0, 12);
 		$titulo = $titulo . $aleatorio;
 		$titulo = str_replace(' ', '_', $titulo);
-        //Guardamos el archivo de soporte de experiencia laboral si existe
-		if (isset($input['adjunto'])){
-			$file = Input::file('adjunto');
-			//$titulo = str_replace(' ', '_', $input['nombre_institucion']) . '_' . $input['fecha_inicio'];
-			$file->move(public_path() . '/file/' . $id . '/experiencia_laboral/' , $titulo . '.pdf');
-			
-			$input['ruta_adjunto'] = 'file/' . $id . '/experiencia_laboral/' . $titulo . '.pdf';
-			unset($input['adjunto']);			
-		}
+        
+		//Guardamos el archivo de soporte de experiencia laboral
+		$file = Input::file('adjunto');
+		$file->move(public_path() . '/file/' . $id . '/experiencia_laboral/' , $titulo . '.pdf');
+		$input['ruta_adjunto'] = 'file/' . $id . '/experiencia_laboral/' . $titulo . '.pdf';
+		unset($input['adjunto']);			
         
 		$input['aspirantes_id'] = $id;
         $experiencia_laboral = ExperienciaLaboral::create($input);

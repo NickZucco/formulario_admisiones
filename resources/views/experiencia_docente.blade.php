@@ -110,7 +110,6 @@
                 </div>
                 <div class="col-sm-12 col-md-10">
                     <input id="adjunto" type="file" class="form-control" name="adjunto" required />
-					<em>No obligatorio para experiencia docente en la Universidad Nacional de Colombia - Sede Bogotá</em>
                     <br><em>Por favor, tenga en cuenta que el archivo adjunto debe estar en formato PDF y no tener un tamaño superior a 10MB.</em>
                 </div>
             </div>
@@ -283,13 +282,8 @@
                 }
                 i++;
             }
-
-            if (!unal_selected) {
-                $("#adjunto").attr("required", "required");
-            } else {
-                $("#adjunto").removeAttr("required");
-            }
         });
+		
         $('#nombre_institucion').bind('typeahead:select', function (ev, suggestion) {
             unal_selected = true;
         });

@@ -90,7 +90,7 @@
                 </div>
                 <div class="col-sm-12 col-md-9">
                     <input id="adjunto" type="file" class="form-control" name="adjunto" required/>
-                    <em>No obligatorio para estudios en la Universidad Nacional de Colombia - Sede Bogotá</em>
+                    <em>Si usted está aún cursando un pregrado debe adjuntar como soporte un certificado de estudios oficial</em>
                     <br><em>Por favor, tenga en cuenta que el archivo adjunto debe estar en formato PDF y no tener un tamaño superior a 10MB</em>
                 </div>
             </div>
@@ -216,10 +216,6 @@
 				//Revisar los valores del país y la institución seleccionadas actualmente en el formulario
 				var pais = $("#paises_id").val();
 				var institucion = $('#institucion').val();
-				//Si la institución no es la UN Sede Bogotá, entonces el campo de adjunto es requedido
-				if (institucion != 'Universidad Nacional de Colombia - Sede Bogotá') {
-					$("#adjunto").attr("required", "required");
-				}
 				//Si el país no es Colombia, entonces los adjuntos de resolución o convalidación ante MinEdu
 				//son requeridos.
 				if (pais != 57) {
@@ -285,10 +281,7 @@
                 }
                 i++;
             }
-            if (!unal_selected) {
-                $("#adjunto").attr("required", "required");
-            } else {
-                $("#adjunto").removeAttr("required");
+            if (unal_selected) {
                 $("#paises_id").val('57').change();
             }
         });

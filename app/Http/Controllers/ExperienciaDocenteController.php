@@ -72,15 +72,12 @@ class ExperienciaDocenteController extends Controller {
 		$titulo = substr($input['nombre_institucion'], 0, 12);
 		$titulo = $titulo . $aleatorio;
 		$titulo = str_replace(' ', '_', $titulo);
+		
         //Guardamos el archivo de soporte de experiencia docente si existe
-		if (isset($input['adjunto'])) {
-			$file = Input::file('adjunto');
-			//$titulo = str_replace(' ', '_', $input['nombre_institucion']) . '_' . $input['fecha_inicio'];
-			$file->move(public_path() . '/file/' . $id . '/experiencia_docente/' , $titulo . '.pdf');
-			
-			$input['ruta_adjunto'] = 'file/' . $id . '/experiencia_docente/' . $titulo . '.pdf';
-			unset($input['adjunto']);            
-        }
+		$file = Input::file('adjunto');
+		$file->move(public_path() . '/file/' . $id . '/experiencia_docente/' , $titulo . '.pdf');
+		$input['ruta_adjunto'] = 'file/' . $id . '/experiencia_docente/' . $titulo . '.pdf';
+		unset($input['adjunto']);            
 		
         //Adaptamos el campo info_asignaturas (es un array, lo volvemos JSON y lo guardamos en la BD)
         $input['info_asignaturas'] = json_encode(self::transpose($input['info_asignaturas']));

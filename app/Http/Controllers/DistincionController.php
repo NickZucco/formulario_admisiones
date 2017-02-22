@@ -60,16 +60,13 @@ class DistincionController extends Controller {
 		$nombre = substr($input['nombre'], 0, 12);
 		$nombre = $nombre . $aleatorio;
 		$nombre = str_replace(' ', '_', $nombre);
-        //Efectuamos las operaciones sobre el archivo adjunto si existe
-		if (isset($input['adjunto'])) {
-			$file = Input::file('adjunto');
-			//$nombre = str_replace(' ', '_', $input['nombre']) . '_' . $input['fecha_entrega'];
-			$file->move(public_path() . '/file/' . $id . '/distinciones_academicas/' , $nombre . '.pdf');
-			
-			$input['ruta_adjunto'] = 'file/' . $id . '/distinciones_academicas/' . $nombre . '.pdf';
-			unset($input['adjunto']);
-		}
         
+		//Efectuamos las operaciones sobre el archivo adjunto
+		$file = Input::file('adjunto');
+		$file->move(public_path() . '/file/' . $id . '/distinciones_academicas/' , $nombre . '.pdf');
+		$input['ruta_adjunto'] = 'file/' . $id . '/distinciones_academicas/' . $nombre . '.pdf';
+		unset($input['adjunto']);
+		        
 		$input['aspirantes_id'] = $id;
         $distincion = Distincion::create($input);
         if ($distincion->save()) {
