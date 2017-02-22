@@ -136,7 +136,7 @@ class AspiranteController extends Controller {
 				unset($input['adjunto_tarjetaprofesional']);
 			}
             Aspirante::create($input);
-            return redirect('perfiles');
+            return redirect('estudios');
         }
     }
 

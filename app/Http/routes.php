@@ -46,12 +46,6 @@ Route::group(['middleware' => 'auth'], function(){
 	//Formulario de datos personales
 	Route::get('datos', 'AspiranteController@show_info');
 	Route::post('datos', 'AspiranteController@insert');
-	//Formulario de selección de perfiles
-	Route::get('perfiles', 'PerfilController@show_info');
-	Route::post('perfiles', 'PerfilController@insert');
-	//Formulario de carga de ensayos
-	Route::get('perfiles/ensayos', 'PerfilController@show_essays');
-	Route::post('perfiles/ensayos', 'PerfilController@insertEssays');
 	//Formulario de información de estudios académicos
 	Route::get('estudios', 'EstudioController@show_info');
 	Route::post('estudios', 'EstudioController@insert');
