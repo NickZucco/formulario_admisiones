@@ -6,7 +6,7 @@
   |---------------------------------------------------------------
  */
 
-// Ruta base de la aplicación (root): https://www.ingenieria.bogota.unal.edu.co/formulario_concursodocente/
+// Ruta base de la aplicación (root): https://www.ingenieria.bogota.unal.edu.co/formulario_admisiones/
 // Si el usuario es guest (invitado), es decir no está loggeado, entonces lo redirige a auth/login, el formulario 
 // para hacer el login.
 // Si el usuario está loggeado y tiene el rol de admin, entonces lo redirige a admin/candidatos.
