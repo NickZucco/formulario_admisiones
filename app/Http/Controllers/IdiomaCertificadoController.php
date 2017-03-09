@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
+use Auth;
 use DB;
 use App\Idioma as Idioma;
 use App\IdiomaCertificado as IdiomaCertificado;
-use Auth;
+use App\ProgramaPosgrado as ProgramaPosgrado;
+
 
 
 class IdiomaCertificadoController extends Controller
@@ -24,13 +26,11 @@ class IdiomaCertificadoController extends Controller
 		$count['investigativa'] = DB::table('experiencias_investigativa')->where('aspirantes_id', $aspirante_id)->count();
 		$count['produccion'] = DB::table('produccion_intelectual')->where('aspirantes_id', $aspirante_id)->count();
 		$count['idioma'] = DB::table('idiomas_certificado')->where('aspirantes_id', $aspirante_id)->count();
-		$count['perfiles'] = DB::table('aspirantes_perfiles')->where('aspirantes_id', $aspirante_id)->count();
-		$count['ensayos'] = 0;
-		
-		$ensayos = DB::table('aspirantes_perfiles')->where('aspirantes_id', $aspirante_id)->get();
-		foreach($ensayos as $ensayo) {
-			if (!$ensayo->ruta_ensayo==null) $count['ensayos'] += 1;
-		}
+		$programa_seleccionado = ProgramaPosgrado::join('aspirantes', 'aspirantes.programa_posgrado_id', '=',
+			'programa_posgrado.id')
+			->select('programa_posgrado.nombre as nombre')
+			->where('aspirantes.id', '=', $aspirante_id)
+			->get();
 
         $idiomas = Idioma::all()->keyBy('id');
         $idiomas_certificados=IdiomaCertificado::where('aspirantes_id','=',$aspirante_id)->get()->keyBy('id');
@@ -39,6 +39,7 @@ class IdiomaCertificadoController extends Controller
             'aspirante_id' => $aspirante_id,
             'idiomas'=>$idiomas,
             'idiomas_certificados'=>$idiomas_certificados,
+			'programa_seleccionado' => $programa_seleccionado,
             'msg' => $msg,
 			'count' => $count
         );

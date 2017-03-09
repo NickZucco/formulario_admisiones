@@ -2,13 +2,6 @@
 
 @section('form')
 
-<div class="alert alert-warning alert-dismissible" role="alert">
-  <i class="fa fa-exclamation-circle" aria-hidden="true"></i> <strong>Nota: </strong>En relación con la experiencia y 
-	la valoración de productividad académica, se tendrán en cuenta los cinco (5) años recientes en el caso de los 
-	perfiles de dedicación exclusiva y tiempo completo. En los perfiles de dedicación cátedra, se tendrán en cuenta 
-	los diez (10) años recientes.
-</div>
-
 @if($msg)
 <div class="alert alert-success" role="alert">
     {{$msg}}
@@ -30,7 +23,7 @@
                     <select id="tipos_publicacion" name="tipos_produccion_intelectual_id" class="form-control">
                         <option value="0">--Seleccione una opción--</option>
                         @foreach($tipos_produccion_intelectual as $tipo_produccion_intelectual)
-                        <option value="{{$tipo_produccion_intelectual->id}}">{{$tipo_produccion_intelectual->nombre}}</option>
+							<option value="{{$tipo_produccion_intelectual->id}}">{{$tipo_produccion_intelectual->nombre}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -393,16 +386,6 @@
 				$("#additional_fields").hide();
 			}
 			
-        });
-		
-		$("#año").change(function(){
-			if(parseInt(this.value) < 2006 || parseInt(this.value) > 2017){
-				this.value = '';
-				alert('En relación con la experiencia y la valoración de productividad académica, ' +
-				'se tendrán en cuenta los cinco (5) años recientes en el caso de los perfiles de dedicación ' +
-				'exclusiva y tiempo completo. En los perfiles de dedicación cátedra, se tendrán en cuenta ' +
-				'los diez (10) años recientes.')
-			} 
         });
 		
 		$("input[type='file']").fileinput({

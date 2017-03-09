@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Requests;
 use Auth;
 use DB;
-
 use App\ExperienciaLaboral as ExperienciaLaboral;
 use App\TipoVinculacionLaboral as TipoVinculacionLaboral;
+use App\ProgramaPosgrado as ProgramaPosgrado;
 
 class ExperienciaLaboralController extends Controller {
     
@@ -26,13 +26,11 @@ class ExperienciaLaboralController extends Controller {
 		$count['investigativa'] = DB::table('experiencias_investigativa')->where('aspirantes_id', $aspirante_id)->count();
 		$count['produccion'] = DB::table('produccion_intelectual')->where('aspirantes_id', $aspirante_id)->count();
 		$count['idioma'] = DB::table('idiomas_certificado')->where('aspirantes_id', $aspirante_id)->count();
-		$count['perfiles'] = DB::table('aspirantes_perfiles')->where('aspirantes_id', $aspirante_id)->count();
-		$count['ensayos'] = 0;
-		
-		$ensayos = DB::table('aspirantes_perfiles')->where('aspirantes_id', $aspirante_id)->get();
-		foreach($ensayos as $ensayo) {
-			if (!$ensayo->ruta_ensayo==null) $count['ensayos'] += 1;
-		}
+		$programa_seleccionado = ProgramaPosgrado::join('aspirantes', 'aspirantes.programa_posgrado_id', '=',
+			'programa_posgrado.id')
+			->select('programa_posgrado.nombre as nombre')
+			->where('aspirantes.id', '=', $aspirante_id)
+			->get();
 		
         $user_email = Auth::user()->email;
 
@@ -43,6 +41,7 @@ class ExperienciaLaboralController extends Controller {
             'aspirante_id' => $aspirante_id,
             'experiencias_laboral' => $experiencias_laboral_info,
             'tipos_vinculacion_laboral'=>$tipos_experiencia_laboral,
+			'programa_seleccionado' => $programa_seleccionado,
             'msg' => $msg,
 			'count' => $count
         );

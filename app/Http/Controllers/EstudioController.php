@@ -8,7 +8,7 @@ use Auth;
 use DB;
 use App\Estudio as Estudio;
 use App\Pais as Pais;
-use App\Perfil as Perfil;
+use App\ProgramaPosgrado as ProgramaPosgrado;
 
 class EstudioController extends Controller {
 
@@ -24,20 +24,15 @@ class EstudioController extends Controller {
 		$count['investigativa'] = DB::table('experiencias_investigativa')->where('aspirantes_id', $aspirante_id)->count();
 		$count['produccion'] = DB::table('produccion_intelectual')->where('aspirantes_id', $aspirante_id)->count();
 		$count['idioma'] = DB::table('idiomas_certificado')->where('aspirantes_id', $aspirante_id)->count();
-		$count['perfiles'] = DB::table('aspirantes_perfiles')->where('aspirantes_id', $aspirante_id)->count();
-		$count['ensayos'] = 0;
-		
-		$ensayos = DB::table('aspirantes_perfiles')->where('aspirantes_id', $aspirante_id)->get();
-		foreach($ensayos as $ensayo) {
-			if (!$ensayo->ruta_ensayo==null) $count['ensayos'] += 1;
-		}
+		$programa_seleccionado = ProgramaPosgrado::join('aspirantes', 'aspirantes.programa_posgrado_id', '=',
+			'programa_posgrado.id')
+			->select('programa_posgrado.nombre as nombre')
+			->where('aspirantes.id', '=', $aspirante_id)
+			->get();
 		
         $user_email = Auth::user()->email;
 
         $estudios_info = Estudio::where('aspirantes_id', '=', $aspirante_id)->get();
-        $perfiles_seleccionados_info = Perfil::leftJoin('aspirantes_perfiles','perfiles.id','=','perfiles_id')
-                ->leftJoin('aspirantes','aspirantes.id','=','aspirantes_id')
-                ->where('aspirantes.id','=',$aspirante_id)->get();
         
         //Si no hay entrada de adjunto válida, se crea una entrada con el id de usuario, por lo tanto, cambiamos el enlace para no mostrar esta información
         foreach ($estudios_info as $cur_estudio_key=>$cur_estudio) {
@@ -51,7 +46,7 @@ class EstudioController extends Controller {
         $data = array(
             'aspirante_id' => $aspirante_id,
             'estudios' => $estudios_info,
-            'perfiles_seleccionados' =>$perfiles_seleccionados_info,
+			'programa_seleccionado' => $programa_seleccionado,
             'paises' => $paises,
             'msg' => $msg,
 			'count' => $count

@@ -46,6 +46,9 @@ Route::group(['middleware' => 'auth'], function(){
 	//Formulario de datos personales
 	Route::get('datos', 'AspiranteController@show_info');
 	Route::post('datos', 'AspiranteController@insert');
+	//Formulario de seleccion de programa de posgrado
+	Route::get('programas', 'AspiranteController@showPrograms');
+	Route::post('programas', 'AspiranteController@saveProgram');
 	//Formulario de información de estudios académicos
 	Route::get('estudios', 'EstudioController@show_info');
 	Route::post('estudios', 'EstudioController@insert');

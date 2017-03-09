@@ -51,7 +51,6 @@ class PerfilController extends Controller {
             'msg' => $msg,
 			'count' => $count
         );
-		//dd($data);
         return view('perfiles', $data);
     }
 

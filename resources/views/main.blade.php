@@ -11,9 +11,9 @@
 <div class="row">
     <p>Bienvenido/a {{Auth::user()->name}}
     <br>
-    <div style="display:inline-block;float:right">
+    <!--<div style="display:inline-block;float:right">
         El formulario se cerrará en&nbsp;<span id="countdown" style="float:right"> </span>
-    </div>
+    </div>-->
 </div>
 
 <nav class="navbar navbar-default" role="navigation">
@@ -33,15 +33,23 @@
             <ul class="nav navbar-nav">
                 <li><a href="{{ env('APP_URL') }}datos" data-path="datos"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;Datos personales</a></li>
                 @if(App\Aspirante::where('correo', '=', Auth::user()->email)->first())
-					<li id="estudios_p"><a href="{{ env('APP_URL') }}estudios" data-path="estudios"><i class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;Estudios universitarios [{{$count['estudio']}}]</a></li>
-					<li id="distincion_p"><a href="{{ env('APP_URL') }}distinciones" data-path="distinciones"><i class="fa fa-trophy" aria-hidden="true"></i>&nbsp;Distinciones académicas [{{$count['distincion']}}]</a></li>
-					<li id="laboral_p"><a href="{{ env('APP_URL') }}experiencia_laboral" data-path="experiencia_laboral"><i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp;Experiencia laboral [{{$count['laboral']}}]</a></li>
-					<li id="docente_p"><a href="{{ env('APP_URL') }}experiencia_docente" data-path="experiencia_docente"><i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp;Experiencia docente [{{$count['docente']}}]</a></li>
-					<li id="investigativa_p"><a href="{{ env('APP_URL') }}experiencia_investigativa" data-path="experiencia_investigativa"><i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp;Experiencia investigativa [{{$count['investigativa']}}]</a></li>
-					<li id="produccion_p"><a href="{{ env('APP_URL') }}produccion_intelectual" data-path="produccion_intelectual"><i class="fa fa-lightbulb-o" aria-hidden="true"></i>&nbsp;Producción intelectual [{{$count['produccion']}}]</a></li>
-					<li id="idioma_p"><a href="{{ env('APP_URL') }}idiomas" data-path="idiomas"><i class="fa fa-language" aria-hidden="true"></i>&nbsp;Idiomas [{{$count['idioma']}}]</a></li>
-                @else
-					<li><a href="#" disabled>Las demas opciones se habilitarán una vez ingrese sus datos personales.</a></li>
+					<li><a href="{{ env('APP_URL') }}programas" data-path="programas"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;Programas</a></li>
+					@forelse($programa_seleccionado as $programa)
+						<li id="estudios_p"><a href="{{ env('APP_URL') }}estudios" data-path="estudios"><i class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;Estudios universitarios [{{$count['estudio']}}]</a></li>
+						<li id="distincion_p"><a href="{{ env('APP_URL') }}distinciones" data-path="distinciones"><i class="fa fa-trophy" aria-hidden="true"></i>&nbsp;Distinciones académicas [{{$count['distincion']}}]</a></li>
+						<li id="laboral_p"><a href="{{ env('APP_URL') }}experiencia_laboral" data-path="experiencia_laboral"><i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp;Experiencia laboral [{{$count['laboral']}}]</a></li>
+						<li id="docente_p"><a href="{{ env('APP_URL') }}experiencia_docente" data-path="experiencia_docente"><i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp;Experiencia docente [{{$count['docente']}}]</a></li>
+						<li id="investigativa_p"><a href="{{ env('APP_URL') }}experiencia_investigativa" data-path="experiencia_investigativa"><i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp;Experiencia investigativa [{{$count['investigativa']}}]</a></li>
+						<li id="produccion_p"><a href="{{ env('APP_URL') }}produccion_intelectual" data-path="produccion_intelectual"><i class="fa fa-lightbulb-o" aria-hidden="true"></i>&nbsp;Producción intelectual [{{$count['produccion']}}]</a></li>
+						<li id="idioma_p"><a href="{{ env('APP_URL') }}idiomas" data-path="idiomas"><i class="fa fa-language" aria-hidden="true"></i>&nbsp;Idiomas [{{$count['idioma']}}]</a></li>
+						<li id="especifico_p"><a href="#" data-path="especificos"><i class="fa fa-language" aria-hidden="true"></i>&nbsp;Específicos</a></li>
+					@empty
+						<li><a href="#" disabled>
+						<i class="hidden-xs hidden-sm fa fa-arrow-left" aria-hidden="true"></i>
+						 Debe seleccionar y guardar el <i class="fa fa-user" style="color:#95d072" aria-hidden="true"></i> programa de posgrado al cual aspira antes de poder diligenciar los demas campos.</a></li>
+					@endforelse
+				@else
+					<li><a href="#" disabled>Las demas opciones se habilitarán una vez ingrese sus datos personales y seleccione el programa de posgrado al cual aspira.</a></li>
                 @endif
                 <li><a href="{{ env('APP_URL') }}auth/logout"><i class="glyphicon glyphicon-log-out"></i>&nbsp;Cerrar sesión</a></li>
             </ul>
@@ -91,15 +99,6 @@
 		  $('#idioma_p').css('background-color', '#A1F58B');
 	  }
 	  else $('#idioma_p').css('background-color', '#FFAAAA');
-	  count = {!!$count['perfiles']!!};
-	  var ensayos = {!!$count['ensayos']!!};
-	  if (ensayos == 0) {
-		  $('#ensayo_p').css('background-color', '#FFAAAA');
-	  }
-	  else if (ensayos > 0 && ensayos < count) {
-		  $('#ensayo_p').css('background-color', '#FFFD8F');
-	  }
-	  else $('#ensayo_p').css('background-color', '#A1F58B');
 	  
     });
 	

@@ -8,6 +8,7 @@ use Auth;
 use DB;
 use App\Pais as Pais;
 use App\Distincion as Distincion;
+use App\ProgramaPosgrado as ProgramaPosgrado;
 
 class DistincionController extends Controller {
 
@@ -23,13 +24,11 @@ class DistincionController extends Controller {
 		$count['investigativa'] = DB::table('experiencias_investigativa')->where('aspirantes_id', $aspirante_id)->count();
 		$count['produccion'] = DB::table('produccion_intelectual')->where('aspirantes_id', $aspirante_id)->count();
 		$count['idioma'] = DB::table('idiomas_certificado')->where('aspirantes_id', $aspirante_id)->count();
-		$count['perfiles'] = DB::table('aspirantes_perfiles')->where('aspirantes_id', $aspirante_id)->count();
-		$count['ensayos'] = 0;
-		
-		$ensayos = DB::table('aspirantes_perfiles')->where('aspirantes_id', $aspirante_id)->get();
-		foreach($ensayos as $ensayo) {
-			if (!$ensayo->ruta_ensayo==null) $count['ensayos'] += 1;
-		}
+		$programa_seleccionado = ProgramaPosgrado::join('aspirantes', 'aspirantes.programa_posgrado_id', '=',
+			'programa_posgrado.id')
+			->select('programa_posgrado.nombre as nombre')
+			->where('aspirantes.id', '=', $aspirante_id)
+			->get();
 		
         $user_email = Auth::user()->email;
 
@@ -46,6 +45,7 @@ class DistincionController extends Controller {
         $data = array(
             'aspirante_id' => $aspirante_id,
             'distinciones' => $distinciones,
+			'programa_seleccionado' => $programa_seleccionado,
             'msg' => $msg,
 			'count' => $count
         );

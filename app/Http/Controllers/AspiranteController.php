@@ -7,12 +7,10 @@ use Illuminate\Support\Facades\Storage;
 use Auth;
 use DB;
 use App\Aspirante as Aspirante;
-use App\Tiponivel as Tiponivel;
-use App\Nivel as Nivel;
-use App\Programa as Programa;
 use App\TipoDocumento as TipoDocumento;
 use App\Pais as Pais;
 use App\EstadoCivil as EstadoCivil;
+use App\ProgramaPosgrado as ProgramaPosgrado;
 
 class AspiranteController extends Controller {
 
@@ -31,24 +29,19 @@ class AspiranteController extends Controller {
 			$count['investigativa'] = DB::table('experiencias_investigativa')->where('aspirantes_id', $aspirante_id)->count();
 			$count['produccion'] = DB::table('produccion_intelectual')->where('aspirantes_id', $aspirante_id)->count();
 			$count['idioma'] = DB::table('idiomas_certificado')->where('aspirantes_id', $aspirante_id)->count();
-			$count['perfiles'] = DB::table('aspirantes_perfiles')->where('aspirantes_id', $aspirante_id)->count();
-			$count['ensayos'] = 0;
-			
-			$ensayos = DB::table('aspirantes_perfiles')->where('aspirantes_id', $aspirante_id)->get();
-			foreach($ensayos as $ensayo) {
-				if (!$ensayo->ruta_ensayo==null) $count['ensayos'] += 1;
-			}
 			
             $user_email = Auth::user()->email;
 
             $candidate_info = Aspirante::where('correo', '=', $user_email)->first();
 
-            $tiponiveles = Tiponivel::all();
-            $niveles = Nivel::all();
-            $programas = Programa::all();
             $tipos_documento = TipoDocumento::all();
             $paises = Pais::orderBy('nombre')->get();
             $estados_civiles = EstadoCivil::all();
+			$programa_seleccionado = ProgramaPosgrado::join('aspirantes', 'aspirantes.programa_posgrado_id', '=',
+				'programa_posgrado.id')
+				->select('programa_posgrado.nombre as nombre')
+				->where('aspirantes.id', '=', $aspirante_id)
+				->get();
 
             if (!$candidate_info) {
                 $candidate_info = Aspirante::where('id', '=', 0)->first();
@@ -61,12 +54,10 @@ class AspiranteController extends Controller {
                 'id' => $aspirante_id,
                 'correo' => $user_email,
                 'candidate_info' => $candidate_info,
-                'tiponiveles' => $tiponiveles,
-                'niveles' => $niveles,
-                'programas' => $programas,
                 'tipos_documento' => $tipos_documento,
                 'paises' => $paises,
                 'estados_civiles' => $estados_civiles,
+				'programa_seleccionado' => $programa_seleccionado,
                 'msg' => $msg,
 				'count' => $count
             );
@@ -116,7 +107,7 @@ class AspiranteController extends Controller {
 			
             $record->fill($input);
             $record->save();
-            return redirect('estudios');
+            return redirect('programas');
         }
 		else {
 			//Efectuamos las operaciones sobre los archivos adjuntos
@@ -136,8 +127,52 @@ class AspiranteController extends Controller {
 				unset($input['adjunto_tarjetaprofesional']);
 			}
             Aspirante::create($input);
-            return redirect('estudios');
+            return redirect('programas');
         }
     }
+	
+	public function showPrograms() {
+		$aspirante_id = Auth::user()->id;
+		//Contamos la cantidad de registros de cada tipo de formulario para visualizarlos en las pestañas
+		//de la plantilla (main.blade.php)
+		$count = array();
+		$count['estudio'] = DB::table('estudios')->where('aspirantes_id', $aspirante_id)->count();
+		$count['distincion'] = DB::table('distinciones_academica')->where('aspirantes_id', $aspirante_id)->count();
+		$count['laboral'] = DB::table('experiencias_laboral')->where('aspirantes_id', $aspirante_id)->count();
+		$count['docente'] = DB::table('experiencias_docente')->where('aspirantes_id', $aspirante_id)->count();
+		$count['investigativa'] = DB::table('experiencias_investigativa')->where('aspirantes_id', $aspirante_id)->count();
+		$count['produccion'] = DB::table('produccion_intelectual')->where('aspirantes_id', $aspirante_id)->count();
+		$count['idioma'] = DB::table('idiomas_certificado')->where('aspirantes_id', $aspirante_id)->count();
+		
+		$areas_curriculares = DB::table('area_curricular')->orderBy('id')->get();
+		$programas_posgrado = ProgramaPosgrado::orderBy('id')->get();
+		$programa_seleccionado = ProgramaPosgrado::join('aspirantes', 'aspirantes.programa_posgrado_id', '=',
+			'programa_posgrado.id')
+			->select('programa_posgrado.nombre as nombre')
+			->where('aspirantes.id', '=', $aspirante_id)
+			->get();
+		
+		$msg=null;
+		$data = array(
+            'areas_curriculares' => $areas_curriculares,
+            'programas_posgrado' => $programas_posgrado,
+			'programa_seleccionado' => $programa_seleccionado,
+            'msg' => $msg,
+			'count' => $count
+        );
+		//dd($data);
+        return view('programas', $data);	
+	}
+	
+	//Función que guarda el programa de posgrado seleccionado por el usuario
+	public function saveProgram() {
+		$input = Input::all();
+        $id = Auth::user()->id;
+		$programa_seleccionado = $input['programa'];
+		$aspirante = Aspirante::find($id);
+		$aspirante->programa_posgrado_id = $programa_seleccionado;
+		$aspirante->save();
+		return redirect('estudios');
+	}
 
 }
