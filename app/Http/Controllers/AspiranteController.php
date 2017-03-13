@@ -131,6 +131,7 @@ class AspiranteController extends Controller {
         }
     }
 	
+	//Función que reune los datos necesarios para la vista 'programas' y se los pasa a ésta
 	public function showPrograms() {
 		$aspirante_id = Auth::user()->id;
 		//Contamos la cantidad de registros de cada tipo de formulario para visualizarlos en las pestañas
@@ -160,19 +161,112 @@ class AspiranteController extends Controller {
             'msg' => $msg,
 			'count' => $count
         );
-		//dd($data);
         return view('programas', $data);	
 	}
 	
 	//Función que guarda el programa de posgrado seleccionado por el usuario
 	public function saveProgram() {
 		$input = Input::all();
+		//Encontramos el registro del aspirante en la DB
         $id = Auth::user()->id;
-		$programa_seleccionado = $input['programa'];
 		$aspirante = Aspirante::find($id);
+		//Programa seleccionado en el formulario por el usuario
+		$programa_seleccionado = $input['programa'];
+		//Si el usuario ha seleccionado un programa diferente al que tenía, entonces debemos borrar los documentos
+		//requeridos que se hayan subido previamente y borrar los campos correspondientes del registro del aspirante
+		//en la tabla aspirantes.
+		if($aspirante->programa_posgrado_id != $programa_seleccionado) {
+			if ($aspirante->ruta_carta_motivacion) {			
+				Storage::delete($aspirante->ruta_carta_motivacion);
+				$aspirante->ruta_carta_motivacion = null;
+			}
+			if ($aspirante->ruta_propuesta) {
+				Storage::delete($aspirante->ruta_propuesta);
+				$aspirante->ruta_propuesta = null;
+			}
+			if ($aspirante->ruta_propuesta_avanzada) {
+				Storage::delete($aspirante->ruta_propuesta_avanzada);
+				$aspirante->ruta_propuesta_avanzada = null;
+			}
+			if ($aspirante->ruta_carta_profesor) {
+				Storage::delete($aspirante->ruta_carta_profesor);
+				$aspirante->ruta_carta_profesor = null;
+			}
+		}
+		//Guardamos el id del programa seleccionado en el registro del aspirante
 		$aspirante->programa_posgrado_id = $programa_seleccionado;
 		$aspirante->save();
-		return redirect('estudios');
+		return redirect('especificos');
+	}
+	
+	public function showDocuments() {
+		$aspirante_id = Auth::user()->id;
+		//Contamos la cantidad de registros de cada tipo de formulario para visualizarlos en las pestañas
+		//de la plantilla (main.blade.php)
+		$count = array();
+		$count['estudio'] = DB::table('estudios')->where('aspirantes_id', $aspirante_id)->count();
+		$count['distincion'] = DB::table('distinciones_academica')->where('aspirantes_id', $aspirante_id)->count();
+		$count['laboral'] = DB::table('experiencias_laboral')->where('aspirantes_id', $aspirante_id)->count();
+		$count['docente'] = DB::table('experiencias_docente')->where('aspirantes_id', $aspirante_id)->count();
+		$count['investigativa'] = DB::table('experiencias_investigativa')->where('aspirantes_id', $aspirante_id)->count();
+		$count['produccion'] = DB::table('produccion_intelectual')->where('aspirantes_id', $aspirante_id)->count();
+		$count['idioma'] = DB::table('idiomas_certificado')->where('aspirantes_id', $aspirante_id)->count();
+		$aspirante = Aspirante::find($aspirante_id);
+		$programas_posgrado = ProgramaPosgrado::orderBy('id')->get();
+		$programa_seleccionado = ProgramaPosgrado::join('aspirantes', 'aspirantes.programa_posgrado_id', '=',
+			'programa_posgrado.id')
+			->select('programa_posgrado.id as id')
+			->where('aspirantes.id', '=', $aspirante_id)
+			->get();
+		
+		$msg=null;
+		$data = array(
+			'aspirante' => $aspirante,
+            'programas_posgrado' => $programas_posgrado,
+			'programa_seleccionado' => $programa_seleccionado,
+            'msg' => $msg,
+			'count' => $count
+        );
+        return view('especificos', $data);	
+	}
+	
+	public function insertDocument() {
+		$input = Input::all();
+		$id = Auth::user()->id;
+		$aspirante = Aspirante::find($id);
+		if (isset($input['carta_motivacion'])) {
+			$file = Input::file('carta_motivacion');
+			$titulo = 'Carta_motivacion_' . $aspirante->nombre . '_' . $aspirante->apellido;
+			$file->move(public_path() . '/file/' . $id . '/especificos/' , $titulo . '.pdf');
+			$ruta_carta_motivacion = 'file/' . $id . '/especificos/' . $titulo . '.pdf';
+			$aspirante->ruta_carta_motivacion = $ruta_carta_motivacion;
+			$aspirante->save();
+		}
+		if (isset($input['propuesta'])) {
+			$file = Input::file('propuesta');
+			$titulo = 'Propuesta_' . $aspirante->nombre . '_' . $aspirante->apellido;
+			$file->move(public_path() . '/file/' . $id . '/especificos/' , $titulo . '.pdf');
+			$ruta_propuesta = 'file/' . $id . '/especificos/' . $titulo . '.pdf';
+			$aspirante->ruta_propuesta = $ruta_propuesta;
+			$aspirante->save();
+		}
+		if (isset($input['propuesta_avanzada'])) {
+			$file = Input::file('propuesta_avanzada');
+			$titulo = 'Propuesta_avanzada_' . $aspirante->nombre . '_' . $aspirante->apellido;
+			$file->move(public_path() . '/file/' . $id . '/especificos/' , $titulo . '.pdf');
+			$ruta_propuesta_avanzada = 'file/' . $id . '/especificos/' . $titulo . '.pdf';
+			$aspirante->ruta_propuesta_avanzada = $ruta_propuesta_avanzada;
+			$aspirante->save();
+		}
+		if (isset($input['carta_profesor'])) {
+			$file = Input::file('carta_profesor');
+			$titulo = 'Carta_profesor_' . $aspirante->nombre . '_' . $aspirante->apellido;
+			$file->move(public_path() . '/file/' . $id . '/especificos/' , $titulo . '.pdf');
+			$ruta_carta_profesor = 'file/' . $id . '/especificos/' . $titulo . '.pdf';
+			$aspirante->ruta_carta_profesor = $ruta_carta_profesor;
+			$aspirante->save();
+		}
+		return $this->showDocuments("Se adjuntaron correctamente los documentos cargados");
 	}
 
 }

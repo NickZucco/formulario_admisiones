@@ -35,7 +35,7 @@
                 @if(App\Aspirante::where('correo', '=', Auth::user()->email)->first())
 					<li><a href="{{ env('APP_URL') }}programas" data-path="programas"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;Programas</a></li>
 					@forelse($programa_seleccionado as $programa)
-						<li id="especifico_p"><a href="#" data-path="especificos"><i class="fa fa-language" aria-hidden="true"></i>&nbsp;Específicos</a></li>
+						<li id="especifico_p"><a href="{{ env('APP_URL') }}especificos" data-path="especificos"><i class="fa fa-language" aria-hidden="true"></i>&nbsp;Específicos</a></li>
 						<li id="estudios_p"><a href="{{ env('APP_URL') }}estudios" data-path="estudios"><i class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;Estudios universitarios [{{$count['estudio']}}]</a></li>
 						<li id="distincion_p"><a href="{{ env('APP_URL') }}distinciones" data-path="distinciones"><i class="fa fa-trophy" aria-hidden="true"></i>&nbsp;Distinciones académicas [{{$count['distincion']}}]</a></li>
 						<li id="laboral_p"><a href="{{ env('APP_URL') }}experiencia_laboral" data-path="experiencia_laboral"><i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp;Experiencia laboral [{{$count['laboral']}}]</a></li>

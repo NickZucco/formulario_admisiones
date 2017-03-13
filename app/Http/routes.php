@@ -49,6 +49,9 @@ Route::group(['middleware' => 'auth'], function(){
 	//Formulario de seleccion de programa de posgrado
 	Route::get('programas', 'AspiranteController@showPrograms');
 	Route::post('programas', 'AspiranteController@saveProgram');
+	//Formulario de documentos específicos según programa de posgrado
+	Route::get('especificos', 'AspiranteController@showDocuments');
+	Route::post('especificos', 'AspiranteController@insertDocument');
 	//Formulario de información de estudios académicos
 	Route::get('estudios', 'EstudioController@show_info');
 	Route::post('estudios', 'EstudioController@insert');
