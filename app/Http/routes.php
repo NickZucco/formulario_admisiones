@@ -82,6 +82,8 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::post('idiomas/delete', 'IdiomaCertificadoController@delete');
 	//Formulario de referencias personales
     Route::get('referencias_personales', 'ReferenciasPersonalesController@show_info');
+    //Formulario de referencias academicas
+    Route::get('referencias_academicas', 'ReferenciasAcademicasController@show_info');
 });
 
 // Grupo de rutas para administrador

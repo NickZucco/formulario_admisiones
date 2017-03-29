@@ -43,7 +43,8 @@
 						<li id="investigativa_p"><a href="{{ env('APP_URL') }}experiencia_investigativa" data-path="experiencia_investigativa"><i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp;Experiencia investigativa [{{$count['investigativa']}}]</a></li>
 						<li id="produccion_p"><a href="{{ env('APP_URL') }}produccion_intelectual" data-path="produccion_intelectual"><i class="fa fa-lightbulb-o" aria-hidden="true"></i>&nbsp;Producción intelectual [{{$count['produccion']}}]</a></li>
 						<li id="idioma_p"><a href="{{ env('APP_URL') }}idiomas" data-path="idiomas"><i class="fa fa-language" aria-hidden="true"></i>&nbsp;Idiomas [{{$count['idioma']}}]</a></li>
-						<li id="referencias_personales"><a href="{{ env('APP_URL') }}referencias_personales" data-path="referencias_personales"><i class="fa fa-language" aria-hidden="true"></i>&nbsp;Referencias Personales</a></li>
+						<li id="referencias_personales"><a href="{{ env('APP_URL') }}referencias_personales" data-path="referencias_personales"><i class="fa fa-users" aria-hidden="true"></i>&nbsp;Referencias Personales</a></li>
+						<li id="referencias_academicas"><a href="{{ env('APP_URL') }}referencias_academicas" data-path="referencias_academicas"><i class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;Referencias Académicas</a></li>
 					@empty
 						<li><a href="#" disabled>
 						<i class="hidden-xs hidden-sm fa fa-arrow-left" aria-hidden="true"></i>

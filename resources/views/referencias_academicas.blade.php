@@ -89,32 +89,46 @@
                     <label class="control-label col-md-2">¿Recomendaría al aspirante para ser admitido al programa para
                         el cual
                         solicita admisión?</label>
-                    <div class="col-md-4">
-                        <div class="col-md-12">
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="recomienda" id="recomienda1" value="recomienda1"> No
-                                    recomienda
-                                </label>
-                            </div>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="recomienda" id="recomienda2" value="recomienda2">
-                                    Recomienda débilmente
-                                </label>
-                            </div>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="recomienda" id="recomienda3" value="recomienda3">
-                                    Recomienda
-                                </label>
-                            </div>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="recomienda" id="recomienda4" value="recomienda4">
-                                    Recomienda fuertemente
-                                </label>
-                            </div>
+                    <div class="col-md-2">
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="recomienda" id="recomienda1" value="recomienda1"> No
+                                recomienda
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="recomienda" id="recomienda2" value="recomienda2">
+                                Recomienda débilmente
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="recomienda" id="recomienda3" value="recomienda3">
+                                Recomienda
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="recomienda" id="recomienda4" value="recomienda4">
+                                Recomienda fuertemente
+                            </label>
+                        </div>
+                    </div>
+                    <label class="control-label col-md-1">¿Las calificaciones reflejan de manera justa las habilidades
+                        académicas del aspirante?</label>
+                    <div class="col-md-1">
+                        <div class="radio">
+                            <label for="calificaciones1">
+                                <input type="radio" name="calificaciones" id="calificaciones1" value="calificaciones1">
+                                Sí
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label for="calificaciones2">
+                                <input type="radio" name="calificaciones" id="calificaciones2" value="calificaciones2">
+                                No
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -132,7 +146,7 @@
                                 <th class="text-center">Observaciones</th>
                             </tr>
                             <tr>
-                                <td>Aptitudes profesionales</td>
+                                <td>Aptitudes académicas</td>
                                 <td class="text-center">
                                     <input type="radio" name="atributosAptitudes" id="atributosAptitudes1" required>
                                 </td>
@@ -231,7 +245,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>Potencial de Trabajo en Equipo</td>
+                                <td>Potencial en investigación</td>
                                 <td class="text-center">
                                     <input type="radio" name="atributosEquipo" id="atributosEquipo1" required>
                                 </td>
@@ -310,8 +324,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-md-12">En comparación con un grupo de profesionales que haya
-                        conocido al nivel del aspirante, por favor indique dónde ubicaría al aspirante.</label>
+                    <label class="control-label col-md-12">En comparación con un grupo de estudiantes que haya conocido
+                        al nivel del aspirante, por favor indique dónde ubicaría al aspirante.</label>
                     <div class="col-md-12">
                         <table class="table table-striped">
                             <tr>
@@ -353,7 +367,8 @@
                     <label class="control-label col-md-2">El grupo con el que compara al aspirante es:</label>
                     <div class="col-md-4">
                         <input type="text" class="form-control" name="grupoCompara" id="grupoCompara"
-                               placeholder="Ej. División de soporte y mantenimiento" required>
+                               placeholder="Ej, estudiantes de Pregrado en la U. Nacional de Colombia, sede Bogotá"
+                               required>
                     </div>
                     <label class="control-label col-md-2">Número aproximado de profesionales en ese grupo que usted ha
                         evaluado</label>
@@ -364,10 +379,9 @@
                 </div>
                 <div class="form-group">
                     <label for="inconvenientes" class="control-label col-md-12">Por favor adicione comentarios que
-                        indiquen si
-                        existen factores que puedan evitar que el aspirante se grad'ue en el programa de Posgrado a que
-                        aspira, o que refuercen la capacidad y promesa del aspirante para graduarse en el programa de
-                        Posgrado</label>
+                        indiquen si existen factores que puedan evitar que el aspirante se gradúe en el programa de
+                        Posgrado a que aspira, o que refuercen la capacidad y promesa del aspirante para graduarse en el
+                        programa de Posgrado.</label>
                     <div class="col-md-12">
                         <textarea name="inconvenientes" id="inconvenientes" cols="50" rows="5"
                                   class="form-control"></textarea>
