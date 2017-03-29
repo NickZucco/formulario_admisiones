@@ -19,17 +19,7 @@ class AspiranteController extends Controller {
 
         try {
 			$aspirante_id = Auth::user()->id;
-			//Contamos la cantidad de registros de cada tipo de formulario para visualizarlos en las pestañas
-			//de la plantilla (main.blade.php)
-			$count = array();
-			$count['estudio'] = DB::table('estudios')->where('aspirantes_id', $aspirante_id)->count();
-			$count['distincion'] = DB::table('distinciones_academica')->where('aspirantes_id', $aspirante_id)->count();
-			$count['laboral'] = DB::table('experiencias_laboral')->where('aspirantes_id', $aspirante_id)->count();
-			$count['docente'] = DB::table('experiencias_docente')->where('aspirantes_id', $aspirante_id)->count();
-			$count['investigativa'] = DB::table('experiencias_investigativa')->where('aspirantes_id', $aspirante_id)->count();
-			$count['produccion'] = DB::table('produccion_intelectual')->where('aspirantes_id', $aspirante_id)->count();
-			$count['idioma'] = DB::table('idiomas_certificado')->where('aspirantes_id', $aspirante_id)->count();
-			
+			$count = $this->contar_registros($aspirante_id);
             $user_email = Auth::user()->email;
 
             $candidate_info = Aspirante::where('correo', '=', $user_email)->first();
@@ -84,16 +74,18 @@ class AspiranteController extends Controller {
 
         if ($record) {
 			//Efectuamos las operaciones sobre los archivos adjuntos
-			//Borramos y guardamos nuevamente el soporte del documento de identidad
-			Storage::delete($record->ruta_adjunto_documento);
+			//Borramos y guardamos nuevamente el soporte del documento de identidad si existe
+			if (isset($input['adjunto_documento'])) {
+				Storage::delete($record->ruta_adjunto_documento);
 			
-			$file = Input::file('adjunto_documento');
-			$file->move(public_path() . '/file/' . $id . '/datos_personales/' , 'documento_identidad.pdf');
+				$file = Input::file('adjunto_documento');
+				$file->move(public_path() . '/file/' . $id . '/datos_personales/' , 'documento_identidad.pdf');
+				
+				$input['ruta_adjunto_documento'] = 'file/' . $id . '/datos_personales/' . 'documento_identidad.pdf';
+				unset($input['adjunto_documento']);
+			}
 			
-			$input['ruta_adjunto_documento'] = 'file/' . $id . '/datos_personales/' . 'documento_identidad.pdf';
-			unset($input['adjunto_documento']);
-			
-			//Borramos y guardamos nuevamente el soporte de la tarjeta profesional
+			//Borramos y guardamos nuevamente el soporte de la tarjeta profesional si existe
 			if (isset($input['adjunto_tarjetaprofesional'])) {
 				if ($record->ruta_adjunto_tarjetaprofesional){					
 					Storage::delete($record->ruta_adjunto_tarjetaprofesional);
@@ -134,16 +126,7 @@ class AspiranteController extends Controller {
 	//Función que reune los datos necesarios para la vista 'programas' y se los pasa a ésta
 	public function showPrograms() {
 		$aspirante_id = Auth::user()->id;
-		//Contamos la cantidad de registros de cada tipo de formulario para visualizarlos en las pestañas
-		//de la plantilla (main.blade.php)
-		$count = array();
-		$count['estudio'] = DB::table('estudios')->where('aspirantes_id', $aspirante_id)->count();
-		$count['distincion'] = DB::table('distinciones_academica')->where('aspirantes_id', $aspirante_id)->count();
-		$count['laboral'] = DB::table('experiencias_laboral')->where('aspirantes_id', $aspirante_id)->count();
-		$count['docente'] = DB::table('experiencias_docente')->where('aspirantes_id', $aspirante_id)->count();
-		$count['investigativa'] = DB::table('experiencias_investigativa')->where('aspirantes_id', $aspirante_id)->count();
-		$count['produccion'] = DB::table('produccion_intelectual')->where('aspirantes_id', $aspirante_id)->count();
-		$count['idioma'] = DB::table('idiomas_certificado')->where('aspirantes_id', $aspirante_id)->count();
+		$count = $this->contar_registros($aspirante_id);
 		
 		$areas_curriculares = DB::table('area_curricular')->orderBy('id')->get();
 		$programas_posgrado = ProgramaPosgrado::orderBy('id')->get();
@@ -201,16 +184,7 @@ class AspiranteController extends Controller {
 	
 	public function showDocuments() {
 		$aspirante_id = Auth::user()->id;
-		//Contamos la cantidad de registros de cada tipo de formulario para visualizarlos en las pestañas
-		//de la plantilla (main.blade.php)
-		$count = array();
-		$count['estudio'] = DB::table('estudios')->where('aspirantes_id', $aspirante_id)->count();
-		$count['distincion'] = DB::table('distinciones_academica')->where('aspirantes_id', $aspirante_id)->count();
-		$count['laboral'] = DB::table('experiencias_laboral')->where('aspirantes_id', $aspirante_id)->count();
-		$count['docente'] = DB::table('experiencias_docente')->where('aspirantes_id', $aspirante_id)->count();
-		$count['investigativa'] = DB::table('experiencias_investigativa')->where('aspirantes_id', $aspirante_id)->count();
-		$count['produccion'] = DB::table('produccion_intelectual')->where('aspirantes_id', $aspirante_id)->count();
-		$count['idioma'] = DB::table('idiomas_certificado')->where('aspirantes_id', $aspirante_id)->count();
+		$count = $this->contar_registros($aspirante_id);
 		$aspirante = Aspirante::find($aspirante_id);
 		$programas_posgrado = ProgramaPosgrado::orderBy('id')->get();
 		$programa_seleccionado = ProgramaPosgrado::join('aspirantes', 'aspirantes.programa_posgrado_id', '=',

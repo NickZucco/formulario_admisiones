@@ -9,45 +9,40 @@ use DB;
 use App\Estudio as Estudio;
 use App\Pais as Pais;
 use App\ProgramaPosgrado as ProgramaPosgrado;
+use App\NivelEstudio as NivelEstudio;
 
 class EstudioController extends Controller {
 
     public function show_info($msg = null) {
 		$aspirante_id = Auth::user()->id;
-		//Contamos la cantidad de registros de cada tipo de formulario para visualizarlos en las pestañas
-		//de la plantilla (main.blade.php)
-		$count = array();
-		$count['estudio'] = DB::table('estudios')->where('aspirantes_id', $aspirante_id)->count();
-		$count['distincion'] = DB::table('distinciones_academica')->where('aspirantes_id', $aspirante_id)->count();
-		$count['laboral'] = DB::table('experiencias_laboral')->where('aspirantes_id', $aspirante_id)->count();
-		$count['docente'] = DB::table('experiencias_docente')->where('aspirantes_id', $aspirante_id)->count();
-		$count['investigativa'] = DB::table('experiencias_investigativa')->where('aspirantes_id', $aspirante_id)->count();
-		$count['produccion'] = DB::table('produccion_intelectual')->where('aspirantes_id', $aspirante_id)->count();
-		$count['idioma'] = DB::table('idiomas_certificado')->where('aspirantes_id', $aspirante_id)->count();
+		$count = $this->contar_registros($aspirante_id);
 		$programa_seleccionado = ProgramaPosgrado::join('aspirantes', 'aspirantes.programa_posgrado_id', '=',
 			'programa_posgrado.id')
 			->select('programa_posgrado.nombre as nombre')
 			->where('aspirantes.id', '=', $aspirante_id)
 			->get();
-		
         $user_email = Auth::user()->email;
 
-        $estudios_info = Estudio::where('aspirantes_id', '=', $aspirante_id)->get();
-        
-        //Si no hay entrada de adjunto válida, se crea una entrada con el id de usuario, por lo tanto, cambiamos el enlace para no mostrar esta información
-        foreach ($estudios_info as $cur_estudio_key=>$cur_estudio) {
-            if (preg_match("/^[0-9]+$/", $cur_estudio["ruta_adjunto"])) {            //La expresión regular para los ids autonuméricos
-                $estudios_info[$cur_estudio_key]["ruta_adjunto"]=null;
-            }
-        }
+        $estudios = Estudio::join('nivel_estudio', 'estudios.nivel_estudio_id', '=', 'nivel_estudio.id')
+			->select(
+				'estudios.institucion as institucion',
+				'estudios.titulo as titulo',
+				'nivel_estudio.nombre as nivel',
+				'estudios.fecha_inicio as fecha_inicio',
+				'estudios.fecha_finalizacion as fecha_finalizacion',
+				'estudios.ruta_adjunto as ruta_adjunto',
+				'estudios.ruta_entramite_minedu as ruta_entramite_minedu',
+				'estudios.ruta_res_convalidacion as ruta_res_convalidacion'
+			)->where('estudios.aspirantes_id', '=', $aspirante_id)->get();
         
         $paises = Pais::orderBy('nombre')->get();
-
+		$niveles = NivelEstudio::all();
         $data = array(
             'aspirante_id' => $aspirante_id,
-            'estudios' => $estudios_info,
+            'estudios' => $estudios,
 			'programa_seleccionado' => $programa_seleccionado,
             'paises' => $paises,
+			'niveles' => $niveles,
             'msg' => $msg,
 			'count' => $count
         );

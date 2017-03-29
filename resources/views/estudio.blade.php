@@ -21,39 +21,49 @@
         <div class="panel-body">
             <div class="form-group">
                 <label for="titulo" id="titulo" class="col-sm-12 col-md-2 control-label">Título académico obtenido</label>
-                <div class="col-sm-12 col-md-9">
+                <div class="col-sm-12 col-md-5">
                     <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Nombre del título académico obtenido" required>
+                </div>
+				
+				<label for="nivel" id="nivel" class="col-sm-12 col-md-2 control-label">Nivel del estudio</label>
+                <div class="col-sm-12 col-md-3">
+                    <select id="nivel" name="nivel_estudio_id" class="form-control" required>
+                        @foreach($niveles as $nivel)
+                        <option value="{{$nivel->id}}">{{$nivel->nombre}}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
 			
             <div class="form-group">
                 <label for="institucion" class="col-sm-12 col-md-2 control-label">Nombre de la institución</label>
-                <div class="col-sm-12 col-md-9">
+                <div class="col-sm-12 col-md-10">
                     <input type="text" class="form-control typeahead" id="institucion" name="institucion" placeholder="Nombre de la institución" data-provide="typeahead"  autocomplete="off" value="" required>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="fecha_inicio" class="col-sm-12 col-md-2 control-label">Fecha de inicio de vinculación</label>
-                <div class="col-sm-12 col-md-2">
-                    <input type="text" class="datepicker2 start maxToday form-control" id="fecha_inicio" name="fecha_inicio" placeholder="####-##-##" required>
-                </div>
-                <div class="col-md-4">
-                    <div id="fecha_finalizacion">
-                        <label for="fecha_finalizacion" class="col-sm-12 col-md-6 control-label">Fecha de finalización de vinculación</label>
-                        <div class="col-sm-12 col-md-6">
-                            <input type="text"  class="datepicker2 end maxToday form-control" name="fecha_finalizacion" placeholder="####-##-##">
-                        </div>
-                    </div>
+				<label class="col-sm-12 col-md-2 control-label" for="en_curso" >¿El estudio se encuentra en curso?</label>
+				<label class="col-sm-12 col-md-1 control-label">
+					<input type="radio" name="en_curso" data-id="fecha_finalizacion" value="1" required>Si
+				</label>
+				<label class="col-sm-12 col-md-1 control-label">
+					<input type="radio" name="en_curso" data-id="fecha_finalizacion" value="0">No
+				</label>
+				
+                <div id="fecha_inicio_container">
+                    <label for="fecha_inicio" class="col-sm-12 col-md-2 control-label">Fecha de inicio</label>
+                    <div class="col-sm-12 col-md-2">
+                        <input type="text"  class="datepicker2 end maxToday form-control" id="fecha_inicio" name="fecha_inicio" placeholder="####-##-##" required>
+                     </div>
                 </div>
 
-                <label for="en_curso" class="col-sm-12 col-md-2 control-label">¿En curso?</label>
-                <label class="radio-inline">
-                    <input type="radio" name="en_curso" data-id="fecha_finalizacion" value="1" required>Si
-                </label>
-                <label class="radio-inline">
-                    <input type="radio" name="en_curso" data-id="fecha_finalizacion" value="0">No
-                </label>
+                <div id="fecha_finalizacion_container">
+                    <label for="fecha_finalizacion" class="col-sm-12 col-md-2 control-label">Fecha de finalización</label>
+                    <div class="col-sm-12 col-md-2">
+                        <input type="text" class="datepicker2 end maxToday form-control" id="fecha_finalizacion" name="fecha_finalizacion" placeholder="####-##-##" required>
+                    </div>
+                </div>
             </div>
 			
 			<div class="form-group">
@@ -67,16 +77,16 @@
                     <input type="text" class="form-control" id="minimo_aprobatorio" name="minimo_aprobatorio" required>
                 </div>
 				
-				<label for="promedio" class="col-sm-12 col-md-1 control-label">Promedio obtenido</label>
+				<label for="promedio" class="col-sm-12 col-md-2 control-label">Promedio obtenido</label>
                 <div class="col-sm-12 col-md-2">
                     <input type="text" class="form-control" id="promedio" name="promedio" required>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="paises_id" class="col-sm-12 col-md-3 control-label">País donde realizó los estudios </label>
-                <div class="col-sm-12 col-md-3">
-                    <select id="paises_id" name="paises_id" class="form-control">
+                <label for="paises_id" class="col-sm-12 col-md-2 control-label">País donde realizó los estudios </label>
+                <div class="col-sm-12 col-md-4">
+                    <select id="paises_id" name="paises_id" class="form-control" required>
                         @foreach($paises as $pais)
                         <option value="{{$pais->id}}">{{$pais->nombre}}</option>
                         @endforeach
@@ -90,7 +100,7 @@
                 </div>
                 <div class="col-sm-12 col-md-9">
                     <input id="adjunto" type="file" class="form-control" name="adjunto" required/>
-                    <em>Si usted está aún cursando un pregrado debe adjuntar como soporte un certificado de estudios oficial</em>
+                    <em>Si usted aún se encuentra cursando un programa de pregrado, debe adjuntar como soporte un certificado de estudios oficial.</em>
                     <br><em>Por favor, tenga en cuenta que el archivo adjunto debe estar en formato PDF y no tener un tamaño superior a 10MB</em>
                 </div>
             </div>
@@ -137,6 +147,7 @@
                 <tr>
                     <th>Nombre de la institución</th>
                     <th>Título</th>
+					<th>Nivel del estudio</th>
                     <th>Fecha de inicio de vinculación</th>
                     <th>Fecha de fin de vinculación</th>
                     <th>Documento de soporte</th>
@@ -150,6 +161,9 @@
                 </td>
                 <td>
                     {{$estudio->titulo}}
+                </td>
+				<td>
+                    {{$estudio->nivel}}
                 </td>
                 <td>
                     {{$estudio->fecha_inicio}}
@@ -172,9 +186,6 @@
                     @endif
                     @if($estudio->ruta_res_convalidacion)
 						<a href="{{env('APP_URL').$estudio->ruta_res_convalidacion}}" target="_blank">Resolución de convalidación</a><br>
-                    @endif
-                    @if($estudio->ruta_resumen_ejecutivo)
-						<a href="{{env('APP_URL').$estudio->ruta_resumen_ejecutivo}}">Resumen ejecutivo</a><br>
                     @endif
                 </td>
                 <td>
@@ -199,20 +210,21 @@
 <script>
 	$( document ).ready(function() {
  		$("input[name='additional_attatchments']").attr("required", "required");
+		//Al cargar la página se ocultan los campos fecha de inicio y fecha de finalización
+		$('#fecha_inicio_container').hide();
+		$('#fecha_finalizacion_container').hide();
  	});
 
     (function ($) {
 		//Función que se ejecuta cada vez que cambia el valor del radio button En curso?
         $("input[name='en_curso']").on("change", function () {
+			$('#fecha_inicio_container').show();
             var $this = $(this);
 			//Si el valor es No
             if ($this.val() == 0) {
 				//Mostrar la fecha de finalización y los campos para carga de adjuntos de convalidación
-                $("#" + $(this).data("id")).show();
+                $('#fecha_finalizacion_container').show();
 				$(".additional_attatchments").show();
-				//La fecha de finalización se habilita, y ahora es un campo requerido
-                $("#" + $(this).data("id") + " input").removeAttr("disabled");
-				$("#" + $(this).data("id") + " input").attr("required", "required");
 				//Revisar los valores del país y la institución seleccionadas actualmente en el formulario
 				var pais = $("#paises_id").val();
 				var institucion = $('#institucion').val();
@@ -227,11 +239,8 @@
 			//Si el valor es Sí
 			else {
 				//Ocultar la fecha de finalización y los campos para carga de adjuntos
-                $("#" + $(this).data("id")).hide();
+                $('#fecha_finalizacion_container').hide();
 				$(".additional_attatchments").hide();
-				//Deshabilitar y quitar atributo requerido a fecha de finalización
-                $("#" + $(this).data("id") + " input").attr("disabled");
-				$("#" + $(this).data("id") + " input").removeAttr("required");
 				//Deshabilitar y quitar atributo requerido a los adjuntos de resolución o convalidación ante MinEdu
 				$("input[name='additional_attatchments']").removeAttr("required");
 				$("#adjunto_entramite_minedu").attr("disabled");

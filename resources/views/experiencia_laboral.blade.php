@@ -24,12 +24,12 @@
         <div class="panel-body">
             <div class="form-group">
                 <label for="nombre_institucion" class="col-sm-12 col-md-2 control-label">Nombre de la institución/empresa</label>
-                <div class="col-sm-12 col-md-5">
+                <div class="col-sm-12 col-md-6">
                     <input type="text" class="form-control typeahead" id="nombre_institucion" name="nombre_institucion" placeholder="Nombre de la institución/empresa" data-provide="typeahead" autocomplete="off" required>
                 </div>
 
                 <label for="tipos_vinculacion_laboral_id" class="col-sm-12 col-md-2 control-label">Tipo de vinculación laboral</label>
-                <div class="col-sm-12 col-md-3">
+                <div class="col-sm-12 col-md-2">
                     <select id="tipos_vinculacion_laboral_id" name="tipos_vinculacion_laboral_id" class="form-control" required>
                         @foreach($tipos_vinculacion_laboral as $tvl)
 							<option value="{{$tvl->id}}">{{$tvl->nombre}}</option>
@@ -38,27 +38,27 @@
                 </div>
             </div>
 			
-            <div class="form-group">
-                <label for="fecha_inicio" class="col-sm-12 col-md-2 control-label">Fecha de inicio de vinculación</label>
-                <div class="col-sm-12 col-md-2">
-                    <input type="text" class="start datepicker form-control" id="fecha_inicio" name="fecha_inicio" placeholder="####-##-##" required>
+			<div class="form-group">
+				<label class="col-sm-12 col-md-2 control-label" for="en_curso" >¿Vinculación en curso?</label>
+				<label class="col-sm-12 col-md-1 control-label">
+					<input type="radio" name="en_curso" data-id="fecha_finalizacion" value="1" required>Si
+				</label>
+				<label class="col-sm-12 col-md-1 control-label">
+					<input type="radio" name="en_curso" data-id="fecha_finalizacion" value="0">No
+				</label>
+				
+                <div id="fecha_inicio_container">
+                    <label for="fecha_inicio" class="col-sm-12 col-md-2 control-label">Fecha de inicio de vinculación</label>
+                    <div class="col-sm-12 col-md-2">
+                        <input type="text"  class="datepicker2 end maxToday form-control" id="fecha_inicio" name="fecha_inicio" placeholder="####-##-##" required>
+                     </div>
                 </div>
-				<div class="col-md-4">
-                    <div id="fecha_finalizacion">
-                        <label for="fecha_finalizacion" class="col-sm-12 col-md-6 control-label">Fecha de finalización de vinculación</label>
-                        <div class="col-sm-12 col-md-6">
-                            <input type="text"  class="datepicker end maxToday form-control" name="fecha_finalizacion" placeholder="####-##-##">
-                        </div>
+
+                <div id="fecha_finalizacion_container">
+                    <label for="fecha_finalizacion" class="col-sm-12 col-md-2 control-label">Fecha de finalización de vinculación</label>
+                    <div class="col-sm-12 col-md-2">
+                        <input type="text" class="datepicker2 end maxToday form-control" id="fecha_finalizacion" name="fecha_finalizacion" placeholder="####-##-##" required>
                     </div>
-                </div>              
-                <label for="en_curso" class="col-sm-12 col-md-1 control-label">¿Vinculación vigente?</label>
-                <div class="col-md-2">
-                    <label class="radio-inline">
-                        <input type="radio" name="en_curso" data-id="fecha_finalizacion" value="1" required>Si
-                    </label>
-                    <label class="radio-inline">
-                        <input type="radio" name="en_curso" data-id="fecha_finalizacion" value="0">No
-                    </label>
                 </div>
             </div>
 			
@@ -155,7 +155,33 @@
 
 </div>
 <script>
+	$( document ).ready(function() {
+		//Al cargar la página se ocultan los campos fecha de inicio y fecha de finalización
+		$('#fecha_inicio_container').hide();
+		$('#fecha_finalizacion_container').hide();
+ 	});
+
     (function ($) {
+        //Función que se ejecuta cada vez que cambia el valor del radio button En curso?
+		$("input[name='en_curso']").on("change", function () {
+			$('#fecha_inicio_container').show();
+			var $this = $(this);
+            //Si el valor es No
+            if ($this.val() == 0) {
+				//Mostrar la fecha de finalización
+                $('#fecha_finalizacion_container').show();
+				$('#fecha_finalizacion').attr("required", "required");
+				$('#fecha_finalizacion').removeAttr("disabled");
+            }
+			//Si el valor es Sí
+			else {
+				//Ocultar la fecha de finalización
+                $('#fecha_finalizacion_container').hide();
+				$('#fecha_finalizacion').attr("disabled");
+				$('#fecha_finalizacion').removeAttr("required");
+            }
+        });
+		
 		var unal_places = [
             'Universidad Nacional de Colombia - Sede Bogotá',
         ];
@@ -191,19 +217,6 @@
 		
         $('#nombre_institucion').bind('typeahead:select', function (ev, suggestion) {
             unal_selected = true;
-        });
-		
-		$("input[name='en_curso']").on("change", function () {
-            var $this = $(this);			
-            if ($this.val() == 0) {				
-                $("#" + $(this).data("id")).show();
-                $("#" + $(this).data("id") + " input").removeAttr("disabled");
-				$("#" + $(this).data("id") + " input").attr("required", "required");
-            } else {				
-                $("#" + $(this).data("id")).hide();
-                $("#" + $(this).data("id") + " input").attr("disabled");				
-				$("#" + $(this).data("id") + " input").removeAttr("required");
-            }
         });
 		
 		$("input[type='file']").fileinput({

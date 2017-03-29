@@ -94,7 +94,7 @@
                     <select id="estado_civil" class="form-control" name="estado_civil_id" required>
                         @foreach($estados_civiles as $estado_civil)
                         <option value="{{$estado_civil->id}}"
-                                @if($candidate_info->estado_civil == $estado_civil->nombre)
+                                @if($candidate_info->estado_civil_id == $estado_civil->id)
                                 selected
                                 @endif
                                 >{{$estado_civil->nombre}}</option>
@@ -168,7 +168,14 @@
 </div>
 
 <script>
-    
+    //Cuando se carga la página verificamos si ya se ha subido con anterioridad el
+	//documento de identidad. Si así ha sido, ya no es obligatorio volverlo a subir
+	//para modificar otros campos del formulario.
+	$( document ).ready(function() {
+		var aspirante = {!!$candidate_info!!};
+		if(aspirante['ruta_adjunto_documento'])	$('#adjunto').removeAttr('required');
+	});
+	
     (function ($) {
 
 		$("input[type='file']").fileinput({
@@ -186,4 +193,3 @@
 </script>
 
 @endsection
-

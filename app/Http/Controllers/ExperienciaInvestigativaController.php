@@ -16,16 +16,7 @@ class ExperienciaInvestigativaController extends Controller {
     
     public function show_info($msg = null) {
 		$aspirante_id = Auth::user()->id;
-		//Contamos la cantidad de registros de cada tipo de formulario para visualizarlos en las pestañas
-		//de la plantilla (main.blade.php)
-		$count = array();
-		$count['estudio'] = DB::table('estudios')->where('aspirantes_id', $aspirante_id)->count();
-		$count['distincion'] = DB::table('distinciones_academica')->where('aspirantes_id', $aspirante_id)->count();
-		$count['laboral'] = DB::table('experiencias_laboral')->where('aspirantes_id', $aspirante_id)->count();
-		$count['docente'] = DB::table('experiencias_docente')->where('aspirantes_id', $aspirante_id)->count();
-		$count['investigativa'] = DB::table('experiencias_investigativa')->where('aspirantes_id', $aspirante_id)->count();
-		$count['produccion'] = DB::table('produccion_intelectual')->where('aspirantes_id', $aspirante_id)->count();
-		$count['idioma'] = DB::table('idiomas_certificado')->where('aspirantes_id', $aspirante_id)->count();
+		$count = $this->contar_registros($aspirante_id);
 		$programa_seleccionado = ProgramaPosgrado::join('aspirantes', 'aspirantes.programa_posgrado_id', '=',
 			'programa_posgrado.id')
 			->select('programa_posgrado.nombre as nombre')
@@ -56,6 +47,17 @@ class ExperienciaInvestigativaController extends Controller {
 		if ($input['en_curso']==1) {
 			unset($input['fecha_finalizacion']);
 		}
+		
+		//Si el campo de funciones principales está vacío lo ignoramos
+		if ($input['funcion_principal']=='') {
+			unset($input['funcion_principal']);
+		}
+		
+		//Verificamos si el programa tiene financiación para tener en cuenta la entidad financiadora
+		if ($input['financiacion']==0) {
+			unset($input['entidad_financiadora']);
+		}
+		unset($input['financiacion']);
         
 		$aleatorio = rand(111111, 999999);
 		$titulo = substr($input['nombre_proyecto'], 0, 12);

@@ -21,63 +21,76 @@
 
         <div class="panel-body">
             <div class="form-group">
-                <label for="nombre_proyecto" class="col-sm-12 col-md-3 control-label">Nombre del proyecto</label>
-                <div class="col-sm-12 col-md-9">
+                <label for="nombre_proyecto" class="col-sm-12 col-md-2 control-label">Nombre de la investigación</label>
+                <div class="col-sm-12 col-md-10">
                     <input type="text" class="form-control" id="nombre_proyecto" name="nombre_proyecto" placeholder="Nombre del proyecto" required>
                 </div>
             </div>
+			
 			<div class="form-group">
-                <label for="institucion" class="col-sm-12 col-md-3 control-label">Nombre de la institución</label>
-                <div class="col-sm-12 col-md-9">					
+                <label for="institucion" class="col-sm-12 col-md-2 control-label">Institución donde se desarrolló la investigación</label>
+                <div class="col-sm-12 col-md-10">					
                     <input type="text" class="form-control typeahead" id="institucion" name="institucion" placeholder="Nombre de la institución" data-provide="typeahead"  autocomplete="off" value="" required>
                 </div>
             </div>
+			
             <div class="form-group">
-                <label for="area_proyecto" class="col-sm-12 col-md-3 control-label">Área del proyecto</label>
-                <div class="col-sm-12 col-md-9">
+                <label for="area_proyecto" class="col-sm-12 col-md-2 control-label">Área del proyecto</label>
+                <div class="col-sm-12 col-md-10">
                     <input type="text" class="form-control" id="area_proyecto" name="area_proyecto" placeholder="Área del proyecto" required>
                 </div>
             </div>
+			
 			<div class="form-group">
-                <label for="entidad_financiadora" class="col-sm-12 col-md-3 control-label">Entidad financiadora</label>
-                <div class="col-sm-12 col-md-9">
-                    <input type="text" class="form-control" id="entidad_financiadora" name="entidad_financiadora" required>
-                </div>
+				<label class="col-sm-12 col-md-2 control-label" for="en_curso" >¿Proyecto tiene financiación?</label>
+				<label class="col-sm-12 col-md-1 control-label">
+					<input type="radio" name="financiacion" data-id="entidad_financiadora" value="1" required>Si
+				</label>
+				<label class="col-sm-12 col-md-1 control-label">
+					<input type="radio" name="financiacion" data-id="entidad_financiadora" value="0">No
+				</label>
+				<div id="entidad_financiadota_container">
+					<label for="entidad_financiadora" class="col-sm-12 col-md-2 control-label">Entidad financiadora</label>
+					<div class="col-sm-12 col-md-6">
+						<input type="text" class="form-control" id="entidad_financiadora" name="entidad_financiadora">
+					</div>
+				</div>
             </div>
+			
             <div class="form-group">
-                <label for="funcion_principal" class="col-sm-12 col-md-3 control-label">Funciones principales</label>
-                <div class="col-sm-12 col-md-9">
-                    <textarea name="funcion_principal" id="funcion_principal" class="form-control" placehoder="Funciones principales"></textarea>
+                <label for="funcion_principal" class="col-sm-12 col-md-2 control-label">Funciones principales</label>
+                <div class="col-sm-12 col-md-10">
+                    <textarea name="funcion_principal" id="funcion_principal" class="form-control" maxlength="200" placehoder="Funciones principales"></textarea>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="fecha_inicio" class="col-sm-12 col-md-3 control-label">Fecha de inicio de vinculación</label>
-                <div class="col-sm-12 col-md-2">
-                    <input type="text" class="start datepicker form-control" id="fecha_inicio" name="fecha_inicio" placeholder="####-##-##" required>
+				<label class="col-sm-12 col-md-2 control-label" for="en_curso" >¿Vinculación en curso?</label>
+				<label class="col-sm-12 col-md-1 control-label">
+					<input type="radio" name="en_curso" data-id="fecha_finalizacion" value="1" required>Si
+				</label>
+				<label class="col-sm-12 col-md-1 control-label">
+					<input type="radio" name="en_curso" data-id="fecha_finalizacion" value="0">No
+				</label>
+				
+                <div id="fecha_inicio_container">
+                    <label for="fecha_inicio" class="col-sm-12 col-md-2 control-label">Fecha de inicio de vinculación</label>
+                    <div class="col-sm-12 col-md-2">
+                        <input type="text"  class="datepicker2 end maxToday form-control" id="fecha_inicio" name="fecha_inicio" placeholder="####-##-##" required>
+                     </div>
                 </div>
-				<div class="col-md-4">
-                    <div id="fecha_finalizacion">
-                        <label for="fecha_finalizacion" class="col-sm-12 col-md-6 control-label">Fecha de finalización de vinculación</label>
-                        <div class="col-sm-12 col-md-6">
-                            <input type="text"  class="datepicker end maxToday form-control" name="fecha_finalizacion" placeholder="####-##-##">
-                        </div>
+
+                <div id="fecha_finalizacion_container">
+                    <label for="fecha_finalizacion" class="col-sm-12 col-md-2 control-label">Fecha de finalización de vinculación</label>
+                    <div class="col-sm-12 col-md-2">
+                        <input type="text" class="datepicker2 end maxToday form-control" id="fecha_finalizacion" name="fecha_finalizacion" placeholder="####-##-##" required>
                     </div>
-                </div>              
-                <label for="en_curso" class="col-sm-12 col-md-1 control-label">¿Vinculación vigente?</label>
-                <div class="col-md-2">
-                    <label class="radio-inline">
-                        <input type="radio" name="en_curso" data-id="fecha_finalizacion" value="1" required>Si
-                    </label>
-                    <label class="radio-inline">
-                        <input type="radio" name="en_curso" data-id="fecha_finalizacion" value="0">No
-                    </label>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="paises_id" class="col-sm-12 col-md-3 control-label">País</label>
-                <div class="col-sm-3">
+                <label for="paises_id" class="col-sm-12 col-md-2 control-label">País</label>
+                <div class="col-sm-4">
                     <select id="paises_id" name="paises_id" class="form-control">
                         @foreach($paises as $pais)
                         <option value="{{$pais->id}}">{{$pais->nombre}}</option>
@@ -85,9 +98,10 @@
                     </select>
                 </div>
             </div>
+			
             <div class="form-group">
-                <label for="adjunto" class="col-sm-12 col-md-3 control-label">Documento de soporte: </label>
-                <div class="col-sm-12 col-md-9">
+                <label for="adjunto" class="col-sm-12 col-md-2 control-label">Documento de soporte: </label>
+                <div class="col-sm-12 col-md-10">
                     <input id="adjunto" type="file" class="form-control" name="adjunto" required />
                     <br><em>Por favor, tenga en cuenta que el archivo adjunto debe estar en formato PDF y no tener un tamaño superior a 10MB</em>
                 </div>
@@ -166,6 +180,13 @@
 
 </div>
 <script>
+	$( document ).ready(function() {
+		//Al cargar la página se ocultan los campos fecha de inicio y fecha de finalización
+		$('#fecha_inicio_container').hide();
+		$('#fecha_finalizacion_container').hide();
+		$('#entidad_financiadota_container').hide();
+ 	});
+	
     (function ($) {
         var unal_places = [
             'Universidad Nacional de Colombia - Sede Bogotá',
@@ -203,16 +224,43 @@
 			}
         });      
         
-        $("input[name='en_curso']").on("change", function () {
-            var $this = $(this);			
-            if ($this.val() == 0) {				
-                $("#" + $(this).data("id")).show();
-                $("#" + $(this).data("id") + " input").removeAttr("disabled");
-				$("#" + $(this).data("id") + " input").attr("required", "required");
-            } else {				
-                $("#" + $(this).data("id")).hide();
-                $("#" + $(this).data("id") + " input").attr("disabled");				
-				$("#" + $(this).data("id") + " input").removeAttr("required");
+        //Función que se ejecuta cada vez que cambia el valor del radio button En curso?
+		$("input[name='en_curso']").on("change", function () {
+			$('#fecha_inicio_container').show();
+			var $this = $(this);
+            //Si el valor es No
+            if ($this.val() == 0) {
+				//Mostrar la fecha de finalización
+                $('#fecha_finalizacion_container').show();
+				$('#fecha_finalizacion').attr("required", "required");
+				$('#fecha_finalizacion').removeAttr("disabled");
+            }
+			//Si el valor es Sí
+			else {
+				//Ocultar la fecha de finalización
+                $('#fecha_finalizacion_container').hide();
+				$('#fecha_finalizacion').attr("disabled");
+				$('#fecha_finalizacion').removeAttr("required");
+            }
+        });
+		
+		//Función que se ejecuta cada vez que cambia el valor del radio button 
+		//Proyecto tiene financiación?
+		$("input[name='financiacion']").on("change", function () {
+			var $this = $(this);
+            //Si el valor es No
+            if ($this.val() == 0) {
+				//Ocultar el campo de entidad financiadora y quitar atributo requerido
+                $('#entidad_financiadota_container').hide();
+				$('#entidad_financiadora').attr("disabled");
+				$('#entidad_financiadora').removeAttr("required");
+            }
+			//Si el valor es Sí
+			else {
+				//Mostrar el campo de entidad financiadota y hacer que sea requerido
+                $('#entidad_financiadota_container').show();
+				$('#entidad_financiadora').attr("required", "required");
+				$('#entidad_financiadora').removeAttr("disabled");
             }
         });
 		

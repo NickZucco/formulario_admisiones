@@ -189,9 +189,9 @@
                         //console.log($target.attr("required"));
                         if(mutation.attributeName=='required'){
                             if($target.attr("required")=='required'){
-                                $(mutation.target).parent().css("border-left","4px solid red");
+                                $(mutation.target).css("border-left","4px solid red");
                             }else{
-                                $(mutation.target).parent().css("border-left","");
+                                $(mutation.target).css("border-left","");
                             }   
                         }
                     });
