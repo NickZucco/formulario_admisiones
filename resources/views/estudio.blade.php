@@ -25,13 +25,20 @@
                     <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Nombre del título académico obtenido" required>
                 </div>
 				
-				<label for="nivel" id="nivel" class="col-sm-12 col-md-2 control-label">Nivel del estudio</label>
+				<label for="nivel_estudio_id" id="nivel" class="col-sm-12 col-md-2 control-label">Nivel del estudio</label>
                 <div class="col-sm-12 col-md-3">
-                    <select id="nivel" name="nivel_estudio_id" class="form-control" required>
+                    <select id="nivel_estudio_id" name="nivel_estudio_id" class="form-control" required>
                         @foreach($niveles as $nivel)
                         <option value="{{$nivel->id}}">{{$nivel->nombre}}</option>
                         @endforeach
                     </select>
+                </div>
+            </div>
+			
+			<div id="otro_nivel_estudio_container" class="form-group">
+                <label for="otro_nivel_estudio" class="col-sm-12 col-md-2 control-label">Tipo de estudio realizado</label>
+                <div class="col-sm-12 col-md-10">
+                    <input type="text" class="form-control typeahead" id="otro_nivel_estudio" name="otro_nivel_estudio" placeholder="Nombre del tipo de estudio realizado" data-provide="typeahead"  autocomplete="off" value="">
                 </div>
             </div>
 			
@@ -163,7 +170,11 @@
                     {{$estudio->titulo}}
                 </td>
 				<td>
-                    {{$estudio->nivel}}
+					@if ($estudio->nivel=='Otro')
+						{{$estudio->otro_nivel}}
+					@else
+						{{$estudio->nivel}}
+					@endif
                 </td>
                 <td>
                     {{$estudio->fecha_inicio}}
@@ -213,6 +224,7 @@
 		//Al cargar la página se ocultan los campos fecha de inicio y fecha de finalización
 		$('#fecha_inicio_container').hide();
 		$('#fecha_finalizacion_container').hide();
+		$('#otro_nivel_estudio_container').hide();
  	});
 
     (function ($) {
@@ -246,6 +258,25 @@
 				$("#adjunto_entramite_minedu").attr("disabled");
 				$("#adjunto_res_convalidacion").attr("disabled");
             }
+        });
+		
+		//Función que se ejecuta cuando cambia el valor del select box nivel_estudio_id
+		$('#nivel_estudio_id').on("change", function () {
+            var selected = $(this).find("option:selected");
+			//Si se selecciona la opción Otro, entonces se activa un campo de texto para ingresar el nombre del
+			//tipo de estudio
+            if ($.trim(selected.text().toLowerCase()) == 'otro') {
+				$('#otro_nivel_estudio_container').show();
+				$('#otro_nivel_estudio').attr('disabled', false);
+                $('#otro_nivel_estudio').attr("required", "required");
+            } 
+			//Si se selecciona cualquier otro valor de la lista se oculta el campo de texto
+			else {
+                $('#otro_nivel_estudio_container').hide();
+				$('#otro_nivel_estudio').attr('disabled', true);
+                $('#otro_nivel_estudio').removeAttr("required");
+            }
+
         });
 		
         $("input[name='additional_attatchments']").on("change", function () {

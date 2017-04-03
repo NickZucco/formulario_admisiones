@@ -22,7 +22,7 @@
         <div class="form-group">
             <label for="idiomas_id" class="col-sm-12 col-md-2 control-label">Idioma </label>
             <div class="col-sm-12 col-md-5">
-                <select id="idiomas_id" name="idiomas_id" class="form-control">
+                <select id="idiomas_id" name="idiomas_id" class="form-control" required>
                     @foreach($idiomas as $idioma)
                     <option value="{{$idioma->id}}">{{$idioma->nombre}}</option>
                     @endforeach
@@ -42,18 +42,28 @@
 			<div id="nombre_certificado">
 				<label for="nombre_certificado" class="col-sm-12 col-md-2 control-label">Nombre del certificado</label>
 				<div class="col-sm-12 col-md-9">
-					<input type="text" id="nombre_certificado_input" class="form-control" name="nombre_certificado" placeholder="">
+					<input type="text" id="nombre_certificado_input" class="form-control" name="nombre_certificado" placeholder="" required>
 				</div>
 			</div>            
         </div>
 		
-        <div class="form-group">
-			<div id="puntaje">
-				<label for="" class="col-sm-12 col-md-2 control-label">Puntaje</label>
-				<div class="col-sm-12 col-md-9">
-					<input type="text" id="puntaje_input" class="form-control" name="puntaje" placeholder="">
+        <div id="puntaje" class="form-group">
+			<label for="" class="col-sm-12 col-md-2 control-label">Puntaje</label>
+			<div class="col-sm-12 col-md-5">
+				<input type="text" id="puntaje_input" class="form-control" name="puntaje" placeholder="">
+			</div>
+			
+			@if ($nivel_programa->nivel_id == 4)
+				<label for="" class="col-sm-12 col-md-2 control-label">Nivel según el marco de referencia europeo</label>
+				<div class="col-sm-12 col-md-3">
+					<select id="marco_referencia" name="marco_referencia" class="form-control" required>
+						<option value="B1">B1</option>
+						<option value="B1">B2</option>
+						<option value="B1">C1</option>
+						<option value="B1">C2</option>
+					</select>
 				</div>
-			</div>            
+			@endif
         </div>
 		
         <div class="form-group">
@@ -142,7 +152,7 @@
         $("input[name='nativo']").on("change", function () {			
             if ($(this).val() == 0) {				
                 $("#nombre_certificado, #puntaje, #adjunto").show();
-				$("#nombre_certificado_input, #adjunto_input").attr("required", "required");
+				$("#nombre_certificado_input, #adjunto_input, #marco_referencia").attr("required", "required");
             } else {  
                 $("#nombre_certificado, #puntaje, #adjunto").hide();
 				$("#nombre_certificado_input, #adjunto_input").removeAttr("required");

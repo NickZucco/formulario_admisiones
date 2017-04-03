@@ -28,6 +28,7 @@ class EstudioController extends Controller {
 				'estudios.institucion as institucion',
 				'estudios.titulo as titulo',
 				'nivel_estudio.nombre as nivel',
+				'estudios.otro_nivel_estudio as otro_nivel',
 				'estudios.fecha_inicio as fecha_inicio',
 				'estudios.fecha_finalizacion as fecha_finalizacion',
 				'estudios.ruta_adjunto as ruta_adjunto',
@@ -53,6 +54,11 @@ class EstudioController extends Controller {
         $input = Input::all();
         $msg = null;
 		$id = Auth::user()->id;
+		
+		//Verificamos si el nivel de estudio no sea Otro
+		if ($input['nivel_estudio_id']!=6) {
+			unset($input['otro_nivel_estudio']);
+		}
 		
 		//Verificamos si el programa está en curso para no tener en cuenta la fecha de finalización
 		//También se remueven posibles adjuntos que hayan quedado cargados en el formulario

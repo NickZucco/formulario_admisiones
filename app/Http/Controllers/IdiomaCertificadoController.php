@@ -22,7 +22,13 @@ class IdiomaCertificadoController extends Controller
 			->select('programa_posgrado.nombre as nombre')
 			->where('aspirantes.id', '=', $aspirante_id)
 			->get();
-
+		
+		$nivel_programa = ProgramaPosgrado::join('aspirantes', 'aspirantes.programa_posgrado_id', '=',
+			'programa_posgrado.id')
+			->select('programa_posgrado.nivel_estudio_id as nivel_id')
+			->where('aspirantes.id', '=', $aspirante_id)->get();
+		$nivel_programa = $nivel_programa[0];
+		
         $idiomas = Idioma::all()->keyBy('id');
         $idiomas_certificados=IdiomaCertificado::where('aspirantes_id','=',$aspirante_id)->get()->keyBy('id');
        
@@ -31,6 +37,7 @@ class IdiomaCertificadoController extends Controller
             'idiomas'=>$idiomas,
             'idiomas_certificados'=>$idiomas_certificados,
 			'programa_seleccionado' => $programa_seleccionado,
+			'nivel_programa' => $nivel_programa,
             'msg' => $msg,
 			'count' => $count
         );
@@ -47,6 +54,7 @@ class IdiomaCertificadoController extends Controller
 		if ($input['nativo']==1) {
 			unset($input['nombre_certificado']);
 			unset($input['puntaje']);
+			unset($input['marco_referencia']);
 		}
         
 		$aleatorio = rand(111111, 999999);
