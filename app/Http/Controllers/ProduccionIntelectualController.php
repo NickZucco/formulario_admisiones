@@ -30,6 +30,7 @@ class ProduccionIntelectualController extends Controller {
         $producciones_intelectual = ProduccionIntelectual::join('paises', 'produccion_intelectual.paises_id',
 				'=', 'paises.id')
 			->select(
+				'produccion_intelectual.id as id',
 				'produccion_intelectual.nombre as nombre',
 				'produccion_intelectual.año as año',
 				'produccion_intelectual.mes as mes',
@@ -126,9 +127,6 @@ class ProduccionIntelectualController extends Controller {
 				if ($input['pagina_final']=='') {
 					unset($input['pagina_final']);
 				}
-				if ($input['serie']=='') {
-					unset($input['serie']);
-				}
 				$titulo = 'Capitulo_' . $titulo;			
 				break;
 			case 4:
@@ -159,15 +157,6 @@ class ProduccionIntelectualController extends Controller {
 				if ($input['fecha_solicitud']=='') {
 					unset($input['fecha_solicitud']);
 				}
-				if ($input['contrato_fabricacion']=='') {
-					unset($input['contrato_fabricacion']);
-				}
-				if ($input['contrato_explotacion']=='') {
-					unset($input['contrato_explotacion']);
-				}
-				if ($input['contrato_comercializacion']=='') {
-					unset($input['contrato_comercializacion']);
-				}
 				$titulo = 'Software_' . $titulo;
 				break;
 			case 6:
@@ -185,15 +174,6 @@ class ProduccionIntelectualController extends Controller {
 				}
 				if ($input['fecha_solicitud']=='') {
 					unset($input['fecha_solicitud']);
-				}
-				if ($input['contrato_fabricacion']=='') {
-					unset($input['contrato_fabricacion']);
-				}
-				if ($input['contrato_explotacion']=='') {
-					unset($input['contrato_explotacion']);
-				}
-				if ($input['contrato_comercializacion']=='') {
-					unset($input['contrato_comercializacion']);
 				}
 				$titulo = 'Diseño_Ind_' . $titulo;
 				break;

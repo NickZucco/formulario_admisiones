@@ -455,21 +455,21 @@
 					<div class="form-group">
 						<label class="col-sm-12 col-md-2 control-label" for="contrato_fabricacion" >¿El software tiene contrato de fabricación?</label>
 						<label class="col-sm-12 col-md-1 control-label">
-							<input type="radio" name="contrato_fabricacion" value="1">Si
+							<input type="radio" name="contrato_fabricacion" value="1" required>Si
 						</label>
 						<label class="col-sm-12 col-md-1 control-label">
 							<input type="radio" name="contrato_fabricacion" value="0">No
 						</label>
-						<label class="col-sm-12 col-md-2 control-label" for="contrato_explotacion" >¿El software tiene contrato de explotación?</label>
+						<label class="col-sm-12 col-md-2 control-label" for="contrato_explotacion">¿El software tiene contrato de explotación?</label>
 						<label class="col-sm-12 col-md-1 control-label">
-							<input type="radio" name="contrato_explotacion" value="1">Si
+							<input type="radio" name="contrato_explotacion" value="1" required>Si
 						</label>
 						<label class="col-sm-12 col-md-1 control-label">
 							<input type="radio" name="contrato_explotacion" value="0">No
 						</label>
 						<label class="col-sm-12 col-md-2 control-label" for="contrato_comercializacion" >¿El software tiene contrato de comercialización?</label>
 						<label class="col-sm-12 col-md-1 control-label">
-							<input type="radio" name="contrato_comercializacion" value="1">Si
+							<input type="radio" name="contrato_comercializacion" value="1" required>Si
 						</label>
 						<label class="col-sm-12 col-md-1 control-label">
 							<input type="radio" name="contrato_comercializacion" value="0">No
@@ -604,23 +604,23 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-12 col-md-2 control-label" for="contrato_fabricacion" >¿El software tiene contrato de fabricación?</label>
+						<label class="col-sm-12 col-md-2 control-label" for="contrato_fabricacion" >¿El diseño tiene contrato de fabricación?</label>
 						<label class="col-sm-12 col-md-1 control-label">
-							<input type="radio" name="contrato_fabricacion" value="1">Si
+							<input type="radio" name="contrato_fabricacion" value="1" required>Si
 						</label>
 						<label class="col-sm-12 col-md-1 control-label">
 							<input type="radio" name="contrato_fabricacion" value="0">No
 						</label>
-						<label class="col-sm-12 col-md-2 control-label" for="contrato_explotacion" >¿El software tiene contrato de explotación?</label>
+						<label class="col-sm-12 col-md-2 control-label" for="contrato_explotacion" >¿El diseño tiene contrato de explotación?</label>
 						<label class="col-sm-12 col-md-1 control-label">
-							<input type="radio" name="contrato_explotacion" value="1">Si
+							<input type="radio" name="contrato_explotacion" value="1" required>Si
 						</label>
 						<label class="col-sm-12 col-md-1 control-label">
 							<input type="radio" name="contrato_explotacion" value="0">No
 						</label>
-						<label class="col-sm-12 col-md-2 control-label" for="contrato_comercializacion" >¿El software tiene contrato de comercialización?</label>
+						<label class="col-sm-12 col-md-2 control-label" for="contrato_comercializacion" >¿El diseño tiene contrato de comercialización?</label>
 						<label class="col-sm-12 col-md-1 control-label">
-							<input type="radio" name="contrato_comercializacion" value="1">Si
+							<input type="radio" name="contrato_comercializacion" value="1" required>Si
 						</label>
 						<label class="col-sm-12 col-md-1 control-label">
 							<input type="radio" name="contrato_comercializacion" value="0">No
@@ -628,7 +628,7 @@
 					</div>
 				</div>
 				
-				<!--Revistas indexadas-->
+				<!--Otras producciones-->
 				<div id="8" class="publication_form">
 					<div class="form-group">
 						<label for="nombre" class="col-sm-12 col-md-2 control-label">Nombre de la producción</label>
