@@ -27,8 +27,19 @@ class ProduccionIntelectualController extends Controller {
 		
         $user_email = Auth::user()->email;
 
-        $producciones_intelectual = ProduccionIntelectual::where('aspirantes_id', '=', $aspirante_id)->get();
-        
+        $producciones_intelectual = ProduccionIntelectual::join('paises', 'produccion_intelectual.paises_id',
+				'=', 'paises.id')
+			->select(
+				'produccion_intelectual.nombre as nombre',
+				'produccion_intelectual.año as año',
+				'produccion_intelectual.mes as mes',
+				'produccion_intelectual.autor as autor',
+				'produccion_intelectual.titulo_libro as titulo_libro',
+				'produccion_intelectual.tipos_produccion_intelectual_id as tipos_produccion_intelectual_id',
+				'paises.nombre as pais',
+				'produccion_intelectual.ruta_adjunto as ruta_adjunto'
+			)
+			->where('aspirantes_id', '=', $aspirante_id)->get();
         $paises = Pais::orderBy('nombre')->get();
         $idiomas = Idioma::all()->keyBy('id');
         $tipos_produccion_intelectual = TipoProduccionIntelectual::all()->keyBy('id');
@@ -58,28 +69,136 @@ class ProduccionIntelectualController extends Controller {
 		$file = Input::file('adjunto');
 		switch($input['tipos_produccion_intelectual_id']){
 			case 1:
-				if ($input['volumen']=='') {
-					unset($input['volumen']);
+				if ($input['volumen_revista']=='') {
+					unset($input['volumen_revista']);
 				}
 				if ($input['clasificacion_revista']=='') {
 					unset($input['clasificacion_revista']);
 				}
-				$titulo = 'Revista_' . $titulo;
+				if ($input['issn_revista']=='') {
+					unset($input['issn_revista']);
+				}
+				if ($input['fasciculo_revista']=='') {
+					unset($input['fasciculo_revista']);
+				}
+				if ($input['pagina_inicial']=='') {
+					unset($input['pagina_inicial']);
+				}
+				if ($input['pagina_final']=='') {
+					unset($input['pagina_final']);
+				}
+				if ($input['serie']=='') {
+					unset($input['serie']);
+				}
+				$titulo = 'Articulo' . $titulo;
 				break;
 			case 2:
+				if ($input['editorial']=='') {
+					unset($input['editorial']);
+				}
+				if ($input['edicion']=='') {
+					unset($input['edicion']);
+				}
+				if ($input['numero_paginas_libro']=='') {
+					unset($input['numero_paginas_libro']);
+				}
 				if ($input['isbn']=='') {
 					unset($input['isbn']);
 				}
 				$titulo = 'Libro_' . $titulo;
 				break;
 			case 3:
+				if ($input['editorial']=='') {
+					unset($input['editorial']);
+				}
+				if ($input['edicion']=='') {
+					unset($input['edicion']);
+				}
+				if ($input['serie']=='') {
+					unset($input['serie']);
+				}
 				if ($input['isbn']=='') {
 					unset($input['isbn']);
+				}
+				if ($input['pagina_inicial']=='') {
+					unset($input['pagina_inicial']);
+				}
+				if ($input['pagina_final']=='') {
+					unset($input['pagina_final']);
+				}
+				if ($input['serie']=='') {
+					unset($input['serie']);
 				}
 				$titulo = 'Capitulo_' . $titulo;			
 				break;
 			case 4:
+				if ($input['descripcion_patente']=='') {
+					unset($input['descripcion_patente']);
+				}
+				if ($input['numero_patente']=='') {
+					unset($input['numero_patente']);
+				}
+				if ($input['entidad_patente']=='') {
+					unset($input['entidad_patente']);
+				}
 				$titulo = 'Patente_' . $titulo;
+				break;
+			case 5:
+				if ($input['nombre_comercial_software']=='') {
+					unset($input['nombre_comercial_software']);
+				}
+				if ($input['titulo_registro']=='') {
+					unset($input['titulo_registro']);
+				}
+				if ($input['numero_registro']=='') {
+					unset($input['numero_registro']);
+				}
+				if ($input['nombre_titular']=='') {
+					unset($input['nombre_titular']);
+				}
+				if ($input['fecha_solicitud']=='') {
+					unset($input['fecha_solicitud']);
+				}
+				if ($input['contrato_fabricacion']=='') {
+					unset($input['contrato_fabricacion']);
+				}
+				if ($input['contrato_explotacion']=='') {
+					unset($input['contrato_explotacion']);
+				}
+				if ($input['contrato_comercializacion']=='') {
+					unset($input['contrato_comercializacion']);
+				}
+				$titulo = 'Software_' . $titulo;
+				break;
+			case 6:
+				$titulo = 'Planta_' . $titulo;
+				break;
+			case 7:
+				if ($input['titulo_registro']=='') {
+					unset($input['titulo_registro']);
+				}
+				if ($input['numero_registro']=='') {
+					unset($input['numero_registro']);
+				}
+				if ($input['nombre_titular']=='') {
+					unset($input['nombre_titular']);
+				}
+				if ($input['fecha_solicitud']=='') {
+					unset($input['fecha_solicitud']);
+				}
+				if ($input['contrato_fabricacion']=='') {
+					unset($input['contrato_fabricacion']);
+				}
+				if ($input['contrato_explotacion']=='') {
+					unset($input['contrato_explotacion']);
+				}
+				if ($input['contrato_comercializacion']=='') {
+					unset($input['contrato_comercializacion']);
+				}
+				$titulo = 'Diseño_Ind_' . $titulo;
+				break;
+			case 8:
+				$titulo = 'Otra_' . $titulo;
 				break;
 		}
 		//dd($input);

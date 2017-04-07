@@ -80,6 +80,10 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('idiomas', 'IdiomaCertificadoController@show_info');
 	Route::post('idiomas', 'IdiomaCertificadoController@insert');
 	Route::post('idiomas/delete', 'IdiomaCertificadoController@delete');
+	//Vista de resumen donde el aspirante puede descargar su hoja de vida y sus adjuntos
+	Route::get('resumen', 'AspiranteController@summary');
+	Route::get('resumen/hv', 'Admin\AdminController@getReport');
+	Route::get('resumen/adjuntos', 'Admin\AdminController@getAttachments');
 });
 
 // Grupo de rutas para administrador

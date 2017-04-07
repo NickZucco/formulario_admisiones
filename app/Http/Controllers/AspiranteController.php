@@ -242,5 +242,24 @@ class AspiranteController extends Controller {
 		}
 		return $this->showDocuments("Se adjuntaron correctamente los documentos cargados");
 	}
+	
+	public function summary(){
+		$aspirante_id = Auth::user()->id;
+		$count = $this->contar_registros($aspirante_id);
+		$programa_seleccionado = ProgramaPosgrado::join('aspirantes', 'aspirantes.programa_posgrado_id', '=',
+			'programa_posgrado.id')
+			->select('programa_posgrado.id as id')
+			->where('aspirantes.id', '=', $aspirante_id)
+			->get();
+		
+		$msg=null;
+		$data = array(
+			'id' => $aspirante_id,
+			'programa_seleccionado' => $programa_seleccionado,
+            'msg' => $msg,
+			'count' => $count
+        );
+        return view('resumen', $data);	
+	}
 
 }

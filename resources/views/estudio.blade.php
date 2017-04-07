@@ -62,7 +62,7 @@
                     <label for="fecha_inicio" class="col-sm-12 col-md-2 control-label">Fecha de inicio</label>
                     <div class="col-sm-12 col-md-2">
                         <input type="text"  class="datepicker2 end maxToday form-control" id="fecha_inicio" name="fecha_inicio" placeholder="####-##-##" required>
-                     </div>
+                    </div>
                 </div>
 
                 <div id="fecha_finalizacion_container">

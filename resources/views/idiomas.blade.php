@@ -21,7 +21,7 @@
 
         <div class="form-group">
             <label for="idiomas_id" class="col-sm-12 col-md-2 control-label">Idioma </label>
-            <div class="col-sm-12 col-md-5">
+            <div class="col-sm-12 col-md-6">
                 <select id="idiomas_id" name="idiomas_id" class="form-control" required>
                     @foreach($idiomas as $idioma)
                     <option value="{{$idioma->id}}">{{$idioma->nombre}}</option>
@@ -30,10 +30,10 @@
             </div>
 			
 			<label for="nativo" class="col-sm-12 col-md-2 control-label">¿Es su idioma nativo?</label>
-                <label class="radio-inline">
+                <label class="col-sm-12 col-md-1 control-label">
                     <input type="radio" name="nativo" value="1" required>Si
                 </label>
-                <label class="radio-inline">
+                <label class="col-sm-12 col-md-1 control-label">
                     <input type="radio" name="nativo" value="0">No
                 </label>
         </div>		
@@ -41,7 +41,7 @@
         <div class="form-group">
 			<div id="nombre_certificado">
 				<label for="nombre_certificado" class="col-sm-12 col-md-2 control-label">Nombre del certificado</label>
-				<div class="col-sm-12 col-md-9">
+				<div class="col-sm-12 col-md-10">
 					<input type="text" id="nombre_certificado_input" class="form-control" name="nombre_certificado" placeholder="" required>
 				</div>
 			</div>            
@@ -49,13 +49,13 @@
 		
         <div id="puntaje" class="form-group">
 			<label for="" class="col-sm-12 col-md-2 control-label">Puntaje</label>
-			<div class="col-sm-12 col-md-5">
+			<div class="col-sm-12 col-md-6">
 				<input type="text" id="puntaje_input" class="form-control" name="puntaje" placeholder="">
 			</div>
 			
 			@if ($nivel_programa->nivel_id == 4)
 				<label for="" class="col-sm-12 col-md-2 control-label">Nivel según el marco de referencia europeo</label>
-				<div class="col-sm-12 col-md-3">
+				<div class="col-sm-12 col-md-2">
 					<select id="marco_referencia" name="marco_referencia" class="form-control" required>
 						<option value="B1">B1</option>
 						<option value="B1">B2</option>

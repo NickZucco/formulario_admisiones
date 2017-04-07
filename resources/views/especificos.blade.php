@@ -64,9 +64,7 @@
 			<div id="propuesta_avanzada_form" class="well">
                 <div class="form-group">
                     <label for="propuesta_avanzada" class="col-sm-12 col-md-3 control-label">Documento adjunto de 
-					propuesta incluyendo antecedentes, justificación, objetivos, definición del problema, metodología, 
-					cronograma, presupuesto y bibliografía, avalada por un docente de la Universidad Nacional que 
-					será su tutor.</label>
+					prepropuesta avalada por un docente de la Universidad Nacional.</label>
                     <div class="col-sm-12 col-md-5">
                         <input id="propuesta_avanzada" type="file" class="form-control" name="propuesta_avanzada"/>
                         <br><em>Por favor, tenga en cuenta que el archivo adjunto debe estar en formato PDF 
@@ -134,11 +132,11 @@
 			//Definimos estáticamente los arrays de requerimientos. En caso de que en un futuro se deseen definir
 			//dinámicamente, es necesario crear una tabla de documentos requeridos en la DB, y también crear una
 			//tabla que relacione los documentos requeridos con los programas.
-			var req_carta_motivacion = new Array(1, 3, 4, 5, 18, 19, 26, 27, 32);
-			var req_propuesta = new Array(5, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 29, 
-											33, 34, 35, 36, 37, 38, 39, 40, 41, 42);
-			var req_propuesta_avanzada = new Array(2, 3, 4, 6, 7, 41, 42);
-			var req_carta_profesor = new Array(1, 5, 4, 26, 27, 41, 42);
+			var req_carta_motivacion = new Array(1, 3, 4, 5, 8, 16, 17, 18, 19, 20, 21, 32, 33, 34, 41, 42);
+			var req_propuesta = new Array(10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 29, 
+											33, 34, 35, 36, 37, 38, 39, 40);
+			var req_propuesta_avanzada = new Array(2, 3, 4, 5, 6, 7, 41, 42);
+			var req_carta_profesor = new Array(1, 3, 4, 5);
 			//Verificamos en cuales arrays está incluido programa_id para habilitar la subida del archivo adjunto.
 			if ($.inArray(programa_id, req_carta_motivacion) != -1) {
 				$('#carta_motivacion_form').show();

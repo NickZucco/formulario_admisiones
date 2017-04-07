@@ -12,8 +12,6 @@ use App\Http\Requests;
 
 use App\User as User;
 use App\Aspirante as Aspirante;
-use App\Perfil as Perfil;
-use App\AspirantePerfil as AspirantePerfil;
 use App\TipoDocumento as TipoDocumento;
 use App\Estudio as Estudio;
 use App\Distincion as Distincion;
@@ -61,7 +59,7 @@ class AdminController extends Controller {
 		else{
 			$files = public_path() . '/file/' . $id;		
 			Zipper::make($pathtofile)->add($files)->close();
-			return response()->download($pathtofile);
+			return response()->download($pathtofile)->deleteFileAfterSend(true);
 		}
 	}
 	
@@ -94,23 +92,23 @@ class AdminController extends Controller {
 			)->where('aspirantes.id', '=', $id)->get();
 		$aspirante = $aspirante[0];
 		
-		$perfiles = Perfil::join('aspirantes_perfiles', 'perfiles_id', '=', 'id')
+		/*$perfiles = Perfil::join('aspirantes_perfiles', 'perfiles_id', '=', 'id')
 			->select(
 				'perfiles.identificador as identificador',
 				'perfiles.area_desempeno as area'
-			)->where('aspirantes_id', '=', $id)->get();
+			)->where('aspirantes_id', '=', $id)->get();*/
 			
 		$nombre_aspirante = $aspirante->nombre . ' ' . $aspirante->apellido;
 		//Generar un string con los perfiles seleccionados separados con una coma
-		$perfiles_string = '';
+		/*$perfiles_string = '';
 		foreach ($perfiles as $perfil) {
 			$perfiles_string = $perfiles_string . $perfil->identificador . ', ';
-		}
+		}*/
 			
 		//Remover la última coma y espacio del string
-		if (strlen($perfiles_string) > 0) {
+		/*if (strlen($perfiles_string) > 0) {
 			$perfiles_string = substr($perfiles_string, 0, strlen($perfiles_string) - 2);
-		}
+		}*/
 		
 		$pathtofile = public_path() . '/file/' . $id . '/' . $nombre_aspirante . '_HV.pdf';
 		/*if (File::exists($pathtofile)){
@@ -169,7 +167,7 @@ class AdminController extends Controller {
 				)->where('aspirantes_id', '=', $id)
 				->orderBy('experiencias_investigativa.fecha_inicio', 'asc')->get();
 				
-			$produccion_intelectual = ProduccionIntelectual::join('paises', 
+			/*$produccion_intelectual = ProduccionIntelectual::join('paises', 
 				'produccion_intelectual.paises_id', '=', 'paises.id', 'left outer')
 				->join('idiomas', 'produccion_intelectual.idiomas_id', '=', 'idiomas.id')
 				->join('tipos_produccion_intelectual', 'produccion_intelectual.tipos_produccion_intelectual_id',
@@ -195,7 +193,7 @@ class AdminController extends Controller {
 					'idiomas.nombre as idioma',
 					'tipos_produccion_intelectual.nombre as tipo_produccion'
 				)->where('aspirantes_id', '=', $id)
-				->orderBy('produccion_intelectual.año', 'asc')->get();
+				->orderBy('produccion_intelectual.año', 'asc')->get();*/
 				
 			$idiomas_certificados=IdiomaCertificado::join('idiomas', 'idiomas_certificado.idiomas_id',
 				'=', 'idiomas.id')
@@ -209,13 +207,11 @@ class AdminController extends Controller {
 			
 			$data = array(
 				'aspirante' => $aspirante,
-				'perfiles' => $perfiles,
 				'estudios' => $estudios,
 				'distinciones' => $distinciones,
 				'experiencia_laboral' => $experiencia_laboral,
 				'experiencia_docente' => $experiencia_docente,
 				'experiencia_investigativa' => $experiencia_investigativa,
-				'produccion_intelectual' => $produccion_intelectual,
 				'idiomas_certificados' => $idiomas_certificados
 			);
 			
@@ -224,10 +220,9 @@ class AdminController extends Controller {
 			$pdf->output();
 			$dom_pdf = $pdf->getDomPDF();
 			$canvas = $dom_pdf ->get_canvas();
-			$canvas->page_text(15, 15, 'Página {PAGE_NUM} de {PAGE_COUNT} - ' . $nombre_aspirante . ' - ' 
-								. $perfiles_string, null, 8, array(0, 0, 0));
+			$canvas->page_text(15, 15, 'Página {PAGE_NUM} de {PAGE_COUNT} - ' . $nombre_aspirante, null, 8, array(0, 0, 0));
 			$pdf->save($pathtofile);
-			return response()->download($pathtofile);
+			return response()->download($pathtofile)->deleteFileAfterSend(true);
 		/*
 		}
 		*/
