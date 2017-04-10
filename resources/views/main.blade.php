@@ -42,9 +42,9 @@
 						<li id="investigativa_p"><a href="{{ env('APP_URL') }}experiencia_investigativa" data-path="experiencia_investigativa" style="border:1px solid black"><i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp;Experiencia investigativa [{{$count['investigativa']}}]</a></li>
 						<li id="produccion_p"><a href="{{ env('APP_URL') }}produccion_intelectual" data-path="produccion_intelectual" style="border:1px solid black"><i class="fa fa-lightbulb-o" aria-hidden="true"></i>&nbsp;Producción intelectual [{{$count['produccion']}}]</a></li>
 						<li id="idioma_p"><a href="{{ env('APP_URL') }}idiomas" data-path="idiomas" style="border:1px solid black"><i class="fa fa-language" aria-hidden="true"></i>&nbsp;Idiomas [{{$count['idioma']}}]</a></li>
-						<li id="resumen_p"><a href="{{ env('APP_URL') }}resumen" data-path="resumen" style="border:1px solid black"><i class="fa fa-language" aria-hidden="true"></i>&nbsp;Resumen</a></li>
 						<li id="referencias_p"><a href="#" data-path="referencias" style="border:1px solid black"><i class="fa fa-language" aria-hidden="true"></i>&nbsp;Referencias</a></li>
 						<li id="especifico_p"><a href="{{ env('APP_URL') }}especificos" data-path="especificos" style="border:1px solid black"><i class="fa fa-language" aria-hidden="true"></i>&nbsp;Adicionales</a></li>
+						<li id="resumen_p"><a href="{{ env('APP_URL') }}resumen" data-path="resumen" style="border:1px solid black"><i class="fa fa-language" aria-hidden="true"></i>&nbsp;Resumen</a></li>
 					@empty
 						<li><a href="#" disabled>
 						<i class="hidden-xs hidden-sm fa fa-arrow-left" aria-hidden="true"></i>
