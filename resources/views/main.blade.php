@@ -45,8 +45,7 @@
 						<li id="referencias_p" style="border:1px solid black"><a href="#" data-path="referencias"><i class="fa fa-puzzle-piece" aria-hidden="true"></i>&nbsp;Referencias</a></li>
 						<li id="especifico_p" style="border:1px solid black"><a href="{{ env('APP_URL') }}especificos" data-path="especificos"><i class="fa fa-pie-chart" aria-hidden="true"></i>&nbsp;Adicionales</a></li>
 						<li id="resumen_p" style="border:1px solid black"><a href="{{ env('APP_URL') }}resumen" data-path="resumen"><i class="fa fa-map" aria-hidden="true"></i>&nbsp;Resumen</a></li>
-						<li id="referencias_personales" style="border:1px solid black"><a href="{{ env('APP_URL') }}referencias_personales" data-path="referencias_personales"><i class="fa fa-users" aria-hidden="true"></i>&nbsp;Referencias Personales</a></li>
-						<li id="referencias_academicas" style="border:1px solid black"><a href="{{ env('APP_URL') }}referencias_academicas" data-path="referencias_academicas"><i class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;Referencias Académicas</a></li>
+						<li id="formulario_referencias" style="border:1px solid black"><a href="{{ env('APP_URL') }}formulario_referencias" data-path="formulario_referencias"><i class="fa fa-check-square-o" aria-hidden="true"></i>&nbsp;Formulario Referencias</a></li>
 					@empty
 						<li style="border:1px solid black"><a href="#" disabled>
 						<i class="hidden-xs hidden-sm fa fa-arrow-left" aria-hidden="true"></i>
@@ -70,7 +69,7 @@
 </div>
 
 <script>
-    
+
 	$(document).ready(function(){
       var count = {!!$count['estudio']!!};
 	  if (count > 0) {
@@ -107,16 +106,16 @@
 		  $('#idioma_p').css('background-color', '#A1F58B');
 	  }
 	  else $('#idioma_p').css('background-color', '#FFAAAA');
-	  
+
     });
-	
+
     (function ($) {
         /**/
         var today=new Date();
         var limit_date = new Date('{{App\Configuracion::where('llave', '=', 'limit_date')->first()["valor"]}}');
         var time_remaining = (limit_date.getTime()-today.getTime())/1000;              //En segundos
         var $display = $('#countdown');
-        
+
         function startTimer(display) {
             var days,minutes, seconds;
             setInterval(function () {
@@ -128,7 +127,7 @@
                 display.text(" "+days+" dias ,"+hours+" horas, "+minutes + " minutos y " + seconds+" segundos");
 
                 time_remaining-=1;
-                
+
             }, 1000);
         }
         startTimer($display);
@@ -146,7 +145,7 @@
         var default_end = now;
         default_end.setHours(23);
         default_end.setMinutes(59);
-		
+
 		$('.datepicker2').datetimepicker({
             defaultDate: now,
             format: 'YYYY-MM-DD',
@@ -184,13 +183,13 @@
         $(".end").on("dp.change", function (e) {
             $('.start').data("DateTimePicker").maxDate(e.date);
         });
-        
+
         /**/
         $("input[required],select[required],textaarea[required]").css("border-left","4px solid red");
         var list = document.querySelectorAll('input,select,textarea');
                var config = { attributes: true, childList: true, characterData: true }
                //console.log(list);
-                
+
                 var observer = new MutationObserver(function(mutations) {
                     mutations.forEach(function(mutation) {
                         $target=$(mutation.target);
@@ -200,11 +199,11 @@
                                 $(mutation.target).css("border-left","4px solid red");
                             }else{
                                 $(mutation.target).css("border-left","");
-                            }   
+                            }
                         }
                     });
                 });
-                
+
                 for(var cur_key in list){
                     if(list[cur_key] instanceof Node){
                         observer.observe(list[cur_key], config);
@@ -213,7 +212,7 @@
                     }
                 }
         /**/
-       
+
     })(jQuery);
 
 </script>
