@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Collection;
 use Auth;
 use DB;
 use App\Aspirante as Aspirante;
@@ -17,42 +18,34 @@ class AspiranteController extends Controller {
     public function show_info($msg = null) {
         $data = array();
 
-        try {
-			$aspirante_id = Auth::user()->id;
-			$count = $this->contar_registros($aspirante_id);
-            $user_email = Auth::user()->email;
-
-            $candidate_info = Aspirante::where('correo', '=', $user_email)->first();
-
-            $tipos_documento = TipoDocumento::all();
-            $paises = Pais::orderBy('nombre')->get();
-            $estados_civiles = EstadoCivil::all();
-			$programa_seleccionado = ProgramaPosgrado::join('aspirantes', 'aspirantes.programa_posgrado_id', '=',
-				'programa_posgrado.id')
-				->select('programa_posgrado.nombre as nombre')
-				->where('aspirantes.id', '=', $aspirante_id)
-				->get();
-
-            if (!$candidate_info) {
-                $candidate_info = Aspirante::where('id', '=', 0)->first();
-            }
-        } catch (ErrorException $e) {
-            $msg = "Ocurrió un error recopilando su información personal. Se recomienda cerrar sesión y abrirla nuevamente.";
-        } finally {
-
-            $data = array(
-                'id' => $aspirante_id,
-                'correo' => $user_email,
-                'candidate_info' => $candidate_info,
-                'tipos_documento' => $tipos_documento,
-                'paises' => $paises,
-                'estados_civiles' => $estados_civiles,
-				'programa_seleccionado' => $programa_seleccionado,
-                'msg' => $msg,
-				'count' => $count
-            );
-            return view('aspirante', $data);
-        }
+		$aspirante_id = Auth::user()->id;
+		$main_data = $this->getData($aspirante_id);
+		$count = $main_data[0];
+		$programa_seleccionado = $main_data[1];
+		$correo_area = $main_data[2];
+		
+		$user_email = Auth::user()->email;
+		$candidate_info = Aspirante::where('correo', '=', $user_email)->first();
+		$tipos_documento = TipoDocumento::all();
+		$paises = Pais::orderBy('nombre')->get();
+		$estados_civiles = EstadoCivil::all();
+		if (!$candidate_info) {
+			$candidate_info = Aspirante::where('id', '=', 0)->first();
+		}
+		
+		$data = array(
+			'id' => $aspirante_id,
+			'correo' => $user_email,
+			'candidate_info' => $candidate_info,
+			'tipos_documento' => $tipos_documento,
+			'paises' => $paises,
+			'estados_civiles' => $estados_civiles,
+			'programa_seleccionado' => $programa_seleccionado,
+			'correo_area' => $correo_area,
+			'msg' => $msg,
+			'count' => $count
+		);
+		return view('aspirante', $data);
     }
 
     public function insert() {
@@ -126,21 +119,20 @@ class AspiranteController extends Controller {
 	//Función que reune los datos necesarios para la vista 'programas' y se los pasa a ésta
 	public function showPrograms() {
 		$aspirante_id = Auth::user()->id;
-		$count = $this->contar_registros($aspirante_id);
+		$main_data = $this->getData($aspirante_id);
+		$count = $main_data[0];
+		$programa_seleccionado = $main_data[1];
+		$correo_area = $main_data[2];
 		
 		$areas_curriculares = DB::table('area_curricular')->orderBy('id')->get();
 		$programas_posgrado = ProgramaPosgrado::orderBy('id')->get();
-		$programa_seleccionado = ProgramaPosgrado::join('aspirantes', 'aspirantes.programa_posgrado_id', '=',
-			'programa_posgrado.id')
-			->select('programa_posgrado.nombre as nombre')
-			->where('aspirantes.id', '=', $aspirante_id)
-			->get();
 		
 		$msg=null;
 		$data = array(
             'areas_curriculares' => $areas_curriculares,
             'programas_posgrado' => $programas_posgrado,
 			'programa_seleccionado' => $programa_seleccionado,
+			'correo_area' => $correo_area,
             'msg' => $msg,
 			'count' => $count
         );
@@ -184,20 +176,19 @@ class AspiranteController extends Controller {
 	
 	public function showDocuments() {
 		$aspirante_id = Auth::user()->id;
-		$count = $this->contar_registros($aspirante_id);
+		$main_data = $this->getData($aspirante_id);
+		$count = $main_data[0];
+		$programa_seleccionado = $main_data[1];
+		$correo_area = $main_data[2];
 		$aspirante = Aspirante::find($aspirante_id);
 		$programas_posgrado = ProgramaPosgrado::orderBy('id')->get();
-		$programa_seleccionado = ProgramaPosgrado::join('aspirantes', 'aspirantes.programa_posgrado_id', '=',
-			'programa_posgrado.id')
-			->select('programa_posgrado.id as id')
-			->where('aspirantes.id', '=', $aspirante_id)
-			->get();
-		
+
 		$msg=null;
 		$data = array(
 			'aspirante' => $aspirante,
             'programas_posgrado' => $programas_posgrado,
 			'programa_seleccionado' => $programa_seleccionado,
+			'correo_area' => $correo_area,
             'msg' => $msg,
 			'count' => $count
         );
@@ -245,17 +236,16 @@ class AspiranteController extends Controller {
 	
 	public function summary(){
 		$aspirante_id = Auth::user()->id;
-		$count = $this->contar_registros($aspirante_id);
-		$programa_seleccionado = ProgramaPosgrado::join('aspirantes', 'aspirantes.programa_posgrado_id', '=',
-			'programa_posgrado.id')
-			->select('programa_posgrado.id as id')
-			->where('aspirantes.id', '=', $aspirante_id)
-			->get();
+		$main_data = $this->getData($aspirante_id);
+		$count = $main_data[0];
+		$programa_seleccionado = $main_data[1];
+		$correo_area = $main_data[2];
 		
 		$msg=null;
 		$data = array(
 			'id' => $aspirante_id,
 			'programa_seleccionado' => $programa_seleccionado,
+			'correo_area' => $correo_area,
             'msg' => $msg,
 			'count' => $count
         );

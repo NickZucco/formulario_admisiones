@@ -3,7 +3,7 @@
 @section('form')
 
 @if($msg)
-	<div class="alert alert-success" role="alert">
+	<div class="alert alert-success" role="alert" style="font-size:18px">
 		{{$msg}}
 	</div>
 @endif
@@ -13,7 +13,7 @@
 	
 	<div class="panel panel-default">
 	
-		<div class="panel-heading">
+		<div class="panel-heading" style="font-size:20px">
 			<strong>Producción intelectual</strong>
 		</div>
 		<div class="panel-body">
@@ -710,7 +710,7 @@
 </form>
 
 <div class="panel panel-default">
-	<div class="panel-heading">
+	<div class="panel-heading" style="font-size:18px">
 		<strong>Resumen de productos intelectuales</strong>
 	</div>
 	<div class="panel-body">

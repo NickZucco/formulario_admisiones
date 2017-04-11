@@ -15,12 +15,10 @@ class EstudioController extends Controller {
 
     public function show_info($msg = null) {
 		$aspirante_id = Auth::user()->id;
-		$count = $this->contar_registros($aspirante_id);
-		$programa_seleccionado = ProgramaPosgrado::join('aspirantes', 'aspirantes.programa_posgrado_id', '=',
-			'programa_posgrado.id')
-			->select('programa_posgrado.nombre as nombre')
-			->where('aspirantes.id', '=', $aspirante_id)
-			->get();
+		$main_data = $this->getData($aspirante_id);
+		$count = $main_data[0];
+		$programa_seleccionado = $main_data[1];
+		$correo_area = $main_data[2];
         $user_email = Auth::user()->email;
 
         $estudios = Estudio::join('nivel_estudio', 'estudios.nivel_estudio_id', '=', 'nivel_estudio.id')
@@ -42,6 +40,7 @@ class EstudioController extends Controller {
             'aspirante_id' => $aspirante_id,
             'estudios' => $estudios,
 			'programa_seleccionado' => $programa_seleccionado,
+			'correo_area' => $correo_area,
             'paises' => $paises,
 			'niveles' => $niveles,
             'msg' => $msg,

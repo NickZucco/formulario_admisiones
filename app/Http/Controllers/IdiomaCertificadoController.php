@@ -16,12 +16,10 @@ class IdiomaCertificadoController extends Controller
 {
     public function show_info($msg = null) {
 		$aspirante_id = Auth::user()->id;
-		$count = $this->contar_registros($aspirante_id);
-		$programa_seleccionado = ProgramaPosgrado::join('aspirantes', 'aspirantes.programa_posgrado_id', '=',
-			'programa_posgrado.id')
-			->select('programa_posgrado.nombre as nombre')
-			->where('aspirantes.id', '=', $aspirante_id)
-			->get();
+		$main_data = $this->getData($aspirante_id);
+		$count = $main_data[0];
+		$programa_seleccionado = $main_data[1];
+		$correo_area = $main_data[2];
 		
 		$nivel_programa = ProgramaPosgrado::join('aspirantes', 'aspirantes.programa_posgrado_id', '=',
 			'programa_posgrado.id')
@@ -37,6 +35,7 @@ class IdiomaCertificadoController extends Controller
             'idiomas'=>$idiomas,
             'idiomas_certificados'=>$idiomas_certificados,
 			'programa_seleccionado' => $programa_seleccionado,
+			'correo_area' => $correo_area,
 			'nivel_programa' => $nivel_programa,
             'msg' => $msg,
 			'count' => $count

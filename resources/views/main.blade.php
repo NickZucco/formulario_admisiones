@@ -9,7 +9,7 @@
 @endif
 
 <div class="row">
-    <p>Bienvenido/a {{Auth::user()->name}}
+    <p style="font-size:22px">Bienvenido/a {{Auth::user()->name}}
     <br>
     <!--<div style="display:inline-block;float:right">
         El formulario se cerrará en&nbsp;<span id="countdown" style="float:right"> </span>
@@ -35,32 +35,36 @@
                 @if(App\Aspirante::where('correo', '=', Auth::user()->email)->first())
 					<li style="border:1px solid black"><a href="{{ env('APP_URL') }}programas" data-path="programas"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;Programas</a></li>
 					@forelse($programa_seleccionado as $programa)
-						<li id="estudios_p"><a href="{{ env('APP_URL') }}estudios" data-path="estudios" style="border:1px solid black"><i class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;Estudios universitarios [{{$count['estudio']}}]</a></li>
-						<li id="distincion_p"><a href="{{ env('APP_URL') }}distinciones" data-path="distinciones" style="border:1px solid black"><i class="fa fa-trophy" aria-hidden="true"></i>&nbsp;Distinciones académicas [{{$count['distincion']}}]</a></li>
-						<li id="laboral_p"><a href="{{ env('APP_URL') }}experiencia_laboral" data-path="experiencia_laboral" style="border:1px solid black"><i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp;Experiencia laboral [{{$count['laboral']}}]</a></li>
-						<li id="docente_p"><a href="{{ env('APP_URL') }}experiencia_docente" data-path="experiencia_docente" style="border:1px solid black"><i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp;Experiencia docente [{{$count['docente']}}]</a></li>
-						<li id="investigativa_p"><a href="{{ env('APP_URL') }}experiencia_investigativa" data-path="experiencia_investigativa" style="border:1px solid black"><i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp;Experiencia investigativa [{{$count['investigativa']}}]</a></li>
-						<li id="produccion_p"><a href="{{ env('APP_URL') }}produccion_intelectual" data-path="produccion_intelectual" style="border:1px solid black"><i class="fa fa-lightbulb-o" aria-hidden="true"></i>&nbsp;Producción intelectual [{{$count['produccion']}}]</a></li>
-						<li id="idioma_p"><a href="{{ env('APP_URL') }}idiomas" data-path="idiomas" style="border:1px solid black"><i class="fa fa-language" aria-hidden="true"></i>&nbsp;Idiomas [{{$count['idioma']}}]</a></li>
-						<li id="referencias_p"><a href="#" data-path="referencias" style="border:1px solid black"><i class="fa fa-language" aria-hidden="true"></i>&nbsp;Referencias</a></li>
-						<li id="especifico_p"><a href="{{ env('APP_URL') }}especificos" data-path="especificos" style="border:1px solid black"><i class="fa fa-language" aria-hidden="true"></i>&nbsp;Adicionales</a></li>
-						<li id="resumen_p"><a href="{{ env('APP_URL') }}resumen" data-path="resumen" style="border:1px solid black"><i class="fa fa-language" aria-hidden="true"></i>&nbsp;Resumen</a></li>
+						<li id="estudios_p" style="border:1px solid black"><a href="{{ env('APP_URL') }}estudios" data-path="estudios"><i class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;Estudios universitarios [{{$count['estudio']}}]</a></li>
+						<li id="distincion_p" style="border:1px solid black"><a href="{{ env('APP_URL') }}distinciones" data-path="distinciones"><i class="fa fa-trophy" aria-hidden="true"></i>&nbsp;Distinciones académicas [{{$count['distincion']}}]</a></li>
+						<li id="laboral_p" style="border:1px solid black"><a href="{{ env('APP_URL') }}experiencia_laboral" data-path="experiencia_laboral"><i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp;Experiencia laboral [{{$count['laboral']}}]</a></li>
+						<li id="docente_p" style="border:1px solid black"><a href="{{ env('APP_URL') }}experiencia_docente" data-path="experiencia_docente"><i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp;Experiencia docente [{{$count['docente']}}]</a></li>
+						<li id="investigativa_p" style="border:1px solid black"><a href="{{ env('APP_URL') }}experiencia_investigativa" data-path="experiencia_investigativa"><i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp;Experiencia investigativa [{{$count['investigativa']}}]</a></li>
+						<li id="produccion_p" style="border:1px solid black"><a href="{{ env('APP_URL') }}produccion_intelectual" data-path="produccion_intelectual"><i class="fa fa-lightbulb-o" aria-hidden="true"></i>&nbsp;Producción intelectual [{{$count['produccion']}}]</a></li>
+						<li id="idioma_p" style="border:1px solid black"><a href="{{ env('APP_URL') }}idiomas" data-path="idiomas"><i class="fa fa-language" aria-hidden="true"></i>&nbsp;Idiomas [{{$count['idioma']}}]</a></li>
+						<li id="referencias_p" style="border:1px solid black"><a href="#" data-path="referencias"><i class="fa fa-puzzle-piece" aria-hidden="true"></i>&nbsp;Referencias</a></li>
+						<li id="especifico_p" style="border:1px solid black"><a href="{{ env('APP_URL') }}especificos" data-path="especificos"><i class="fa fa-pie-chart" aria-hidden="true"></i>&nbsp;Adicionales</a></li>
+						<li id="resumen_p" style="border:1px solid black"><a href="{{ env('APP_URL') }}resumen" data-path="resumen"><i class="fa fa-map" aria-hidden="true"></i>&nbsp;Resumen</a></li>
 					@empty
-						<li><a href="#" disabled>
+						<li style="border:1px solid black"><a href="#" disabled>
 						<i class="hidden-xs hidden-sm fa fa-arrow-left" aria-hidden="true"></i>
 						 Debe seleccionar y guardar el <i class="fa fa-user" style="color:#95d072" aria-hidden="true"></i> programa de posgrado al cual aspira antes de poder diligenciar los demas campos.</a></li>
 					@endforelse
 				@else
-					<li><a href="#" disabled>Las demas opciones se habilitarán una vez ingrese sus datos personales y seleccione el programa de posgrado al cual aspira.</a></li>
+					<li style="border:1px solid black"><a href="#" disabled>Las demas opciones se habilitarán una vez ingrese sus datos personales y seleccione el programa de posgrado al cual aspira.</a></li>
                 @endif
                 <li style="border:1px solid black"><a href="{{ env('APP_URL') }}auth/logout"><i class="glyphicon glyphicon-log-out"></i>&nbsp;Cerrar sesión</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
-
-<div class="col-sm-12 col-md-12" style="border-radius: 5px 5px 5px 5px; box-shadow: 3px 3px 10px #888888; padding: 3px; background-color:#E4F5FA">   
-    @yield('form')
+@if($correo_area != '')
+	<div class="alert alert-warning alert-dismissible" role="alert" style="font-size:18px">
+	  <i class="fa fa-exclamation-circle" aria-hidden="true"></i> <strong>En caso de tener dudas o encontrar problemas con la aplicación puede escribir al correo {{$correo_area}}</strong>
+	</div>
+@endif
+<div class="col-sm-12 col-md-12" style="border-radius: 5px 5px 5px 5px; box-shadow: 3px 3px 10px #888888; padding: 3px; background-color:#E4F5FA">
+	@yield('form')
 </div>
 
 <script>

@@ -2,17 +2,17 @@
 
 @section('form')
 
-<div class="alert alert-warning alert-dismissible" role="alert">
+<div class="alert alert-warning alert-dismissible" role="alert" style="font-size:18px">
   <i class="fa fa-exclamation-circle" aria-hidden="true"></i> <strong>Nota: </strong>Por favor, tenga en cuenta que toda la información que digite en el formulario, debe registrarse únicamente en español
 </div>
 
 <div class="panel panel-default">
     @if($msg)
-    <div class="alert alert-success" role="alert">
+    <div class="alert alert-success" role="alert" style="font-size:18px">
         {{$msg}}
     </div>
     @endif
-    <div class="panel-heading">
+    <div class="panel-heading" style="font-size:20px">
         <strong>Experiencia en investigación</strong>
     </div>
 
@@ -120,8 +120,8 @@
 
     </form>
 
-    <div class="panel-heading">
-        <strong>Resumen de experiencia</strong>
+    <div class="panel-heading" style="font-size:20px">
+        <strong>Resumen de experiencia investigativa</strong>
     </div>
     <div class="panel-body">
         <table class="table table-striped">

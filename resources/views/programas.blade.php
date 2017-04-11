@@ -2,18 +2,18 @@
 
 @section('form')
 
-<div class="alert alert-warning alert-dismissible" role="alert">
+<div class="alert alert-warning alert-dismissible" role="alert" style="font-size:18px">
 	<i class="fa fa-exclamation-circle" aria-hidden="true"></i> <strong>Nota: </strong>Por favor, tenga en cuenta que toda la información que digite en el formulario, debe registrarse únicamente en español
 </div>
 
 @if($msg)
-<div class="alert alert-success" role="alert">
+<div class="alert alert-success" role="alert" style="font-size:18px">
     {{$msg}}
 </div>
 @endif
 
 <div class="panel panel-default">
-    <div class="panel-heading">
+    <div class="panel-heading" style="font-size:20px">
         Selección del programa de posgrado al cual se postuló el aspirante   
     </div>
     <div class="panel-body">
@@ -31,7 +31,7 @@
         </div>
 
     </div>
-    <div class="panel-heading">
+    <div class="panel-heading" style="font-size:20px">
         Información de programas de posgrado ofrecidos por cada área curricular
     </div>
     <form method="post" action="{{ env('APP_URL') }}programas" class="form-horizontal" style="margin:20px 0">
@@ -69,7 +69,7 @@
             <div class='row'>
                 <div class="col-sm-12 col-md-12">
                     <div>
-                        <div class="panel-heading">
+                        <div class="panel-heading" style="font-size:20px">
                             <h4>Programa de posgrado seleccionado previamente</h4>
                         </div>
                         <div class="panel-body">

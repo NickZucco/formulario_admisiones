@@ -4,11 +4,11 @@
 
 <div class="panel panel-default">
     @if($msg)
-    <div class="alert alert-success" role="alert">
+    <div class="alert alert-success" role="alert" style="font-size:18px">
         {{$msg}}
     </div>
     @endif
-    <div class="panel-heading">
+    <div class="panel-heading" style="font-size:20px">
         <strong>Requerimientos específicos según el programa de posgrado escogido</strong>
     </div>
 
@@ -28,17 +28,17 @@
                 <div class="form-group">
                     <label for="carta_motivacion" class="col-sm-12 col-md-3 control-label">Documento adjunto con 
 					carta de motivación del aspirante, máximo una página.</label>
-                    <div class="col-sm-12 col-md-5">
+                    <div class="col-sm-12 col-md-4">
                         <input id="carta_motivacion" type="file" class="form-control" name="carta_motivacion"/>
                         <br><em>Por favor, tenga en cuenta que el archivo adjunto debe estar en formato PDF 
 						(.pdf) y no tener un tamaño superior a 10MB</em>
                     </div>
-                    <div class="col-sm-12 col-md-4">
-						@if($aspirante->ruta_carta_motivacion)
-						<strong>Archivo cargado previamente: <a href="{{env('APP_URL').$aspirante->ruta_carta_motivacion}}" target="_blank">Carta de motivación</a>
-						<br><em>Por favor, tenga en cuenta que al cargar un nuevo archivo, se actualizará el archivo previamente cargado</em></strong>
-						@endif
-                    </div>
+					@if($aspirante->ruta_carta_motivacion)
+						<div class="col-sm-12 col-md-5" style="background-color:#FFB560; font-size:15px">
+							<strong>Archivo cargado previamente: <a href="{{env('APP_URL').$aspirante->ruta_carta_motivacion}}" target="_blank">Carta de motivación</a>
+							<br><em>Por favor, tenga en cuenta que al cargar un nuevo archivo, se actualizará el archivo previamente cargado</em></strong>
+						</div>
+					@endif
                 </div>
             </div>
 			
@@ -47,17 +47,17 @@
                     <label for="propuesta" class="col-sm-12 col-md-3 control-label">Documento adjunto con escrito 
 					del tema o idea a plantear o a desarrollar durante el programa, máximo 2500 caracteres con 
 					espacios.</label>
-                    <div class="col-sm-12 col-md-5">
+                    <div class="col-sm-12 col-md-4">
                         <input id="propuesta" type="file" class="form-control" name="propuesta"/>
                         <br><em>Por favor, tenga en cuenta que el archivo adjunto debe estar en formato PDF 
 						(.pdf) y no tener un tamaño superior a 10MB</em>
                     </div>
-                    <div class="col-sm-12 col-md-4">
-						@if($aspirante->ruta_propuesta)
-						<strong>Archivo cargado previamente: <a href="{{env('APP_URL').$aspirante->ruta_propuesta}}" target="_blank">Propuesta de trabajo de grado</a>
-						<br><em>Por favor, tenga en cuenta que al cargar un nuevo archivo, se actualizará el archivo previamente cargado</em></strong>
-						@endif
-                    </div>
+					@if($aspirante->ruta_propuesta)
+						<div class="col-sm-12 col-md-5" style="background-color:#FFB560; font-size:15px">
+							<strong>Archivo cargado previamente: <a href="{{env('APP_URL').$aspirante->ruta_propuesta}}" target="_blank">Propuesta de trabajo de grado</a>
+							<br><em>Por favor, tenga en cuenta que al cargar un nuevo archivo, se actualizará el archivo previamente cargado</em></strong>
+						</div>
+					@endif
                 </div>
             </div>
 			
@@ -65,17 +65,17 @@
                 <div class="form-group">
                     <label for="propuesta_avanzada" class="col-sm-12 col-md-3 control-label">Documento adjunto de 
 					prepropuesta avalada por un docente de la Universidad Nacional.</label>
-                    <div class="col-sm-12 col-md-5">
+                    <div class="col-sm-12 col-md-4">
                         <input id="propuesta_avanzada" type="file" class="form-control" name="propuesta_avanzada"/>
                         <br><em>Por favor, tenga en cuenta que el archivo adjunto debe estar en formato PDF 
 						(.pdf) y no tener un tamaño superior a 10MB</em>
                     </div>
-                    <div class="col-sm-12 col-md-4">
-						@if($aspirante->ruta_propuesta_avanzada)
-						<strong>Archivo cargado previamente: <a href="{{env('APP_URL').$aspirante->ruta_propuesta_avanzada}}" target="_blank">Propuesta avanzada de trabajo de grado</a>
-						<br><em>Por favor, tenga en cuenta que al cargar un nuevo archivo, se actualizará el archivo previamente cargado</em></strong>
-						@endif
-                    </div>
+					@if($aspirante->ruta_propuesta_avanzada)
+						<div class="col-sm-12 col-md-5" style="background-color:#FFB560; font-size:15px">
+							<strong>Archivo cargado previamente: <a href="{{env('APP_URL').$aspirante->ruta_propuesta_avanzada}}" target="_blank">Propuesta avanzada de trabajo de grado</a>
+							<br><em>Por favor, tenga en cuenta que al cargar un nuevo archivo, se actualizará el archivo previamente cargado</em></strong>
+						</div>
+					@endif
                 </div>
             </div>
 			
@@ -83,17 +83,17 @@
                 <div class="form-group">
                     <label for="carta_profesor" class="col-sm-12 col-md-3 control-label">Carta de un profesor avalando 
 					su aplicación al programa y comprometiéndose a ser tutor del estudiante.</label>
-                    <div class="col-sm-12 col-md-5">
+                    <div class="col-sm-12 col-md-4">
                         <input id="carta_profesor" type="file" class="form-control" name="carta_profesor"/>
                         <br><em>Por favor, tenga en cuenta que el archivo adjunto debe estar en formato PDF 
 						(.pdf) y no tener un tamaño superior a 10MB</em>
                     </div>
-                    <div class="col-sm-12 col-md-4">
-                        @if($aspirante->ruta_carta_profesor)
-						<strong>Archivo cargado previamente: <a href="{{env('APP_URL').$aspirante->ruta_carta_profesor}}" target="_blank">Carta de recomendación de un profesor</a>
-						<br><em>Por favor, tenga en cuenta que al cargar un nuevo archivo, se actualizará el archivo previamente cargado</em></strong>
-						@endif
-                    </div>
+					@if($aspirante->ruta_carta_profesor)
+						<div class="col-sm-12 col-md-5" style="background-color:#FFB560; font-size:15px">
+							<strong>Archivo cargado previamente: <a href="{{env('APP_URL').$aspirante->ruta_carta_profesor}}" target="_blank">Carta de recomendación de un profesor</a>
+							<br><em>Por favor, tenga en cuenta que al cargar un nuevo archivo, se actualizará el archivo previamente cargado</em></strong>
+						</div>
+					@endif
                 </div>
             </div>
             

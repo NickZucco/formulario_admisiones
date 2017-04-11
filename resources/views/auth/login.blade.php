@@ -51,7 +51,7 @@
                     <center><a href="{{ env('APP_URL') }}password/email">¿Olvidó su contraseña?</a></center>
                 </div>
                 <div class="form-group">
-                    <center><a href="register"><b>No se ha registrado. Registrese aquí</b></a></center>
+                    <center><a href="register"><b>Si no se ha registrado, por favor hágalo aquí</b></a></center>
                 </div>
 
                 <div class="form-group"> 

@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Input;
 use Request;
 use Auth;
 use DB;
+use App\Aspirante as Aspirante;
+use App\ProgramaPosgrado as ProgramaPosgrado;
+use App\AreaCurricular as AreaCurricular;
 
 class Controller extends BaseController {
 
@@ -19,9 +22,11 @@ class Controller extends BaseController {
         DispatchesJobs,
         ValidatesRequests;
 		
-	protected function contar_registros($aspirante_id){
+	protected function getData($aspirante_id){
+		//Arreglo para devolver la información recolectada.
+		$main_data = array();
 		//Contamos la cantidad de registros de cada tipo de formulario para visualizarlos en las pestañas
-		//de la plantilla (main.blade.php)
+		//de la plantilla (main.blade.php).
 		$count = array();
 		$count['estudio'] = DB::table('estudios')->where('aspirantes_id', $aspirante_id)->count();
 		$count['distincion'] = DB::table('distinciones_academica')->where('aspirantes_id', $aspirante_id)->count();
@@ -30,7 +35,27 @@ class Controller extends BaseController {
 		$count['investigativa'] = DB::table('experiencias_investigativa')->where('aspirantes_id', $aspirante_id)->count();
 		$count['produccion'] = DB::table('produccion_intelectual')->where('aspirantes_id', $aspirante_id)->count();
 		$count['idioma'] = DB::table('idiomas_certificado')->where('aspirantes_id', $aspirante_id)->count();
-		return $count;
+		array_push($main_data, $count);
+		//Encontramos el programa seleccionado por el aspirante.
+		$programa_seleccionado = ProgramaPosgrado::join('aspirantes', 'aspirantes.programa_posgrado_id', '=',
+				'programa_posgrado.id')
+			->select('programa_posgrado.nombre as nombre')
+			->where('aspirantes.id', '=', $aspirante_id)
+			->get();
+		array_push($main_data, $programa_seleccionado);
+		//Correo del área curricular a cargo del programa del aspirante.
+		$correo_area = AreaCurricular::join('programa_posgrado', 'programa_posgrado.area_curricular_id',
+				'=', 'area_curricular.id')
+			->join('aspirantes', 'aspirantes.programa_posgrado_id', '=', 'programa_posgrado.id')
+			->select('area_curricular.correo as correo')->get();
+		if($correo_area->isEmpty()) {
+			array_push($main_data, '');
+		}
+		else {
+			$correo = $correo_area[0]->correo;
+			array_push($main_data, $correo);
+		}
+		return $main_data;
 	}
 
 }

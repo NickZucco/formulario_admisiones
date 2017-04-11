@@ -2,18 +2,18 @@
 
 @section('form')
 
-<div class="alert alert-warning alert-dismissible" role="alert">
+<div class="alert alert-warning alert-dismissible" role="alert" style="font-size:18px">
   <i class="fa fa-exclamation-circle" aria-hidden="true"></i> <strong>Nota: </strong>Por favor, tenga en cuenta que toda la información que digite en el formulario, debe registrarse únicamente en español
 </div>
 
 <div class="panel panel-default">
 	@if(session()->has('message'))
-		<div class="alert alert-danger" role="alert">
+		<div class="alert alert-danger" role="alert" style="font-size:18px">
 			{{ session()->get('message') }}
 		</div>
 	@endif
     
-    <div class="panel-heading">
+    <div class="panel-heading" style="font-size:20px">
         <strong>Datos personales</strong>
     </div>
     <form method="post" action="{{ env('APP_URL') }}datos" class="form-horizontal" style="margin:20px 0"  enctype="multipart/form-data">
@@ -132,12 +132,12 @@
                     <input id="adjunto" type="file" class="form-control" name="adjunto_documento" required>
                     <br><em>Por favor, tenga en cuenta que el archivo adjunto debe estar en formato PDF y no tener un tamaño superior a 10MB</em>
                 </div>
-                <div class="col-md-6">
-                    @if($candidate_info->ruta_adjunto_documento)
-                    Archivo cargado previamente: <a href="{{env('APP_URL').$candidate_info->ruta_adjunto_documento}}" target="_blank">Documento</a>
-                    <br><em>Por favor, tenga en cuenta que al cargar un nuevo archivo, se actualizará el archivo previamente cargado</em>
-                    @endif
-                </div>
+				@if($candidate_info->ruta_adjunto_documento)
+					<div class="col-md-5" style="background-color:#FFB560; font-size:15px">
+						<strong>Archivo cargado previamente: </strong><a href="{{env('APP_URL').$candidate_info->ruta_adjunto_documento}}" target="_blank"><strong>Documento de identidad</strong></a>
+						<br><em><strong>Por favor, tenga en cuenta que al cargar un nuevo archivo, se actualizará el archivo previamente cargado</strong></em>
+					</div>
+				@endif
             </div>
             <div class="form-group">
                 <label for="adjunto" class="col-sm-12 col-md-2 control-label">Tarjeta profesional (opcional): </label>
@@ -145,12 +145,12 @@
                     <input id="adjunto" type="file" class="form-control" name="adjunto_tarjetaprofesional" />
                     <br><em>Por favor, tenga en cuenta que el archivo adjunto debe estar en formato PDF y no tener un tamaño superior a 10MB</em>
                 </div>
-                <div class="col-md-6">
-                    @if($candidate_info->ruta_adjunto_tarjetaprofesional)
-                    Archivo cargado previamente: <a href="{{env('APP_URL').$candidate_info->ruta_adjunto_tarjetaprofesional}}" target="_blank">Tarjeta profesional</a>
-                    <br><em>Por favor, tenga en cuenta que al cargar un nuevo archivo, se actualizará el archivo previamente cargado</em>
-                    @endif
-                </div>
+				@if($candidate_info->ruta_adjunto_tarjetaprofesional)
+					<div class="col-md-5" style="background-color:#FFB560; font-size:15px">
+						<strong>Archivo cargado previamente: </strong><a href="{{env('APP_URL').$candidate_info->ruta_adjunto_tarjetaprofesional}}" target="_blank"><strong>Tarjeta profesional</strong></a>
+						<br><em><strong>Por favor, tenga en cuenta que al cargar un nuevo archivo, se actualizará el archivo previamente cargado</strong></em>
+					</div>
+				@endif
             </div>
             <div class="form-group">
                 <div class="col-md-4 col-md-offset-4">

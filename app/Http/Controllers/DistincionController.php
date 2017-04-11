@@ -14,7 +14,10 @@ class DistincionController extends Controller {
 
     public function show_info($msg = null) {
 		$aspirante_id = Auth::user()->id;
-		$count = $this->contar_registros($aspirante_id);
+		$main_data = $this->getData($aspirante_id);
+		$count = $main_data[0];
+		$programa_seleccionado = $main_data[1];
+		$correo_area = $main_data[2];
 		$programa_seleccionado = ProgramaPosgrado::join('aspirantes', 'aspirantes.programa_posgrado_id', '=',
 			'programa_posgrado.id')
 			->select('programa_posgrado.nombre as nombre')
