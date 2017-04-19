@@ -16,11 +16,5 @@ class Referencia extends Model
     protected $table = 'referencias';
     protected $filltable = array('*');
     protected $guarded = array('_token');
-
-    public function aspirantes() {
-        return $this->hasManyThrough(
-            'App\Aspirante', 'App\AspiranteReferencia',
-            'referencias_id', 'aspirantes_id', 'id'
-        );
-    }
+	public $timestamps = false;
 }

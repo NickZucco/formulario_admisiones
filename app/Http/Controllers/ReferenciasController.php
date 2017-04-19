@@ -56,8 +56,9 @@ class ReferenciasController extends Controller
         $referencia2->nombre_de_referencia = $input['nombreApellido2'];
         $referencia2->correo_de_referencia = $input['correo2'];
 
-        $aspirante->referencias()->save($referencia1);
-        var_dump($referencia1);
+        $referencia1->save();
+		$referencia2->save();
+        //var_dump($referencia1);
 
 
 //        $data = array(
