@@ -60,9 +60,16 @@
 </nav>
 @if($correo_area != '')
 	<div class="alert alert-warning alert-dismissible" role="alert" style="font-size:18px">
-	  <i class="fa fa-exclamation-circle" aria-hidden="true"></i> <strong>En caso de tener dudas o encontrar problemas con la aplicación puede escribir al correo {{$correo_area}}</strong>
+		<i class="fa fa-exclamation-circle" aria-hidden="true"></i> <strong>En caso de tener dudas puede escribir al correo {{$correo_area}}</strong>
 	</div>
 @endif
+<div class="alert alert-warning alert-dismissible" role="alert" style="font-size:18px">
+	<i class="fa fa-exclamation-circle" aria-hidden="true"></i> <strong>La Facultad de Ingeniería de la Universidad 
+	Nacional de Colombia, no se hace responsable en caso de que el aspirante no pueda ingresar sus datos y documentos
+	satisfactoriamente por medio del aplicativo para recepción de hojas de vida para el proceso de admisiones de 
+	posgrados 2017-II, debido a demanda de usuarios simultáneos que superen la capacidad del sistema. Se recomienda 
+	adelantar el proceso con anterioridad a la fecha de cierre. </strong>
+</div>
 <div class="col-sm-12 col-md-12" style="border-radius: 5px 5px 5px 5px; box-shadow: 3px 3px 10px #888888; padding: 3px; background-color:#E4F5FA">
 	@yield('form')
 </div>

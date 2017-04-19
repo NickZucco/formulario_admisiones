@@ -55,6 +55,33 @@
                         {!! Recaptcha::render() !!}
                     </div>
                 </div> 
+				
+				<div for="agree" class="form-group">
+					<h3>ESTIMADO ASPIRANTE</h3>
+					<br>
+					<p>Se solicita su autorización para que de manera libre, previa y expresa, permita a la 
+					Universidad Nacional de Colombia, el recaudo, almacenamiento y disposición de los datos 
+					personales incorporados en el sistema de información y envío de documentos para proceso de 
+					admisión de posgrados 2017-II. </p>
+					<br>
+					<p>Los datos personales que usted suministrará al sistema, serán administrados por la 
+					Universidad Nacional de Colombia, su confidencialidad y seguridad estarán garantizadas de 
+					conformidad con las disposiciones legales (Ley 1581 de 2012 y Decreto Reglamentario 1377 de 
+					2013) que regulan la protección de datos personales y con la política de privacidad para el 
+					tratamiento de dichos datos, la cual podrá ser consultada en
+					<a href="http://www.unal.edu.co/contenido/habeas/" target="blank">http://www.unal.edu.co/contenido/habeas/.</a></p>
+					<br>
+					<p>Finalmente se recuerda al aspirante que el usuario y contraseña es personal, y por tanto 
+					su uso será de su exclusiva responsabilidad; en consecuencia, se presume que el contenido de 
+					la información y archivos ingresados son verídicos en el marco del principio de la buena fe 
+					establecido en el artículo 83 de la Constitución Política de Colombia. Cualquier falsedad o 
+					inconsistencia que se identifique por parte de la Universidad Nacional de Colombia en el proceso
+					de verificación de los mismos, será plena y exclusivamente responsabilidad del aspirante que 
+					asumirá de forma directa las consecuencias civiles, penales y administrativas que su actuación 
+					genere ante las autoridades públicas.</p>
+					<br>
+                    <center><label align="center" for="name" class="control-label">{{ Form::checkbox('agree', 1, null) }}&nbsp;&nbsp;&nbsp;He leído y acepto los términos y condiciones de la convocatoria.</label></center>
+                </div>
 
                 <div class="form-group">
                     <div class="form-group"> 

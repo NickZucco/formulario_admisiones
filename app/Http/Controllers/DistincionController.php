@@ -40,6 +40,7 @@ class DistincionController extends Controller {
             'aspirante_id' => $aspirante_id,
             'distinciones' => $distinciones,
 			'programa_seleccionado' => $programa_seleccionado,
+			'correo_area' => $correo_area,
             'msg' => $msg,
 			'count' => $count
         );
