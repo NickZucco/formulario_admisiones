@@ -45,8 +45,6 @@
 						<li id="referencias_p" style="border:1px solid black"><a href="#" data-path="referencias"><i class="fa fa-puzzle-piece" aria-hidden="true"></i>&nbsp;Referencias</a></li>
 						<li id="especifico_p" style="border:1px solid black"><a href="{{ env('APP_URL') }}especificos" data-path="especificos"><i class="fa fa-pie-chart" aria-hidden="true"></i>&nbsp;Adicionales</a></li>
 						<li id="resumen_p" style="border:1px solid black"><a href="{{ env('APP_URL') }}resumen" data-path="resumen"><i class="fa fa-map" aria-hidden="true"></i>&nbsp;Resumen</a></li>
-						<li id="referencias_personales" style="border:1px solid black"><a href="{{ env('APP_URL') }}referencias_personales" data-path="referencias_personales"><i class="fa fa-users" aria-hidden="true"></i>&nbsp;Referencias Personales</a></li>
-						<li id="referencias_academicas" style="border:1px solid black"><a href="{{ env('APP_URL') }}referencias_academicas" data-path="referencias_academicas"><i class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;Referencias Académicas</a></li>
 					@empty
 						<li style="border:1px solid black"><a href="#" disabled>
 						<i class="hidden-xs hidden-sm fa fa-arrow-left" aria-hidden="true"></i>

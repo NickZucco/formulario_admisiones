@@ -127,8 +127,6 @@
 			//Ya que solo importa el número como tal, sacamos el valor del atributo id de la primera y única
 			//posición del array.
 			var programa_id = programa_seleccionado[0].id;
-			console.log(programa_seleccionado);
-			console.log(programa_id);
 			//Definimos estáticamente los arrays de requerimientos. En caso de que en un futuro se deseen definir
 			//dinámicamente, es necesario crear una tabla de documentos requeridos en la DB, y también crear una
 			//tabla que relacione los documentos requeridos con los programas.

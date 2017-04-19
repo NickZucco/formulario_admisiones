@@ -39,7 +39,7 @@ class Controller extends BaseController {
 		//Encontramos el programa seleccionado por el aspirante.
 		$programa_seleccionado = ProgramaPosgrado::join('aspirantes', 'aspirantes.programa_posgrado_id', '=',
 				'programa_posgrado.id')
-			->select('programa_posgrado.nombre as nombre')
+			->select('programa_posgrado.id as id')
 			->where('aspirantes.id', '=', $aspirante_id)
 			->get();
 		array_push($main_data, $programa_seleccionado);
