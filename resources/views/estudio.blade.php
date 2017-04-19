@@ -101,19 +101,40 @@
                 </div>
             </div>
 
-            <div class="form-group adjunto">
+            <div class="form-group" id="adjunto_acta_container">
                 <div class="col-sm-12 col-md-2 ">
-                    <label for="adjunto" class="control-label">Documento de soporte: </label>
+                    <label for="adjunto_acta" class="control-label">Acta de grado</label>
                 </div>
                 <div class="col-sm-12 col-md-9">
-                    <input id="adjunto" type="file" class="form-control" name="adjunto" required/>
-                    <em>Si usted aún se encuentra cursando un programa de pregrado, debe adjuntar como soporte un certificado de estudios oficial.</em>
+                    <input id="adjunto_acta" type="file" class="form-control" name="adjunto_acta" required/>
+                    <em>Si usted ya finalizó un programa académico, debe adjuntar como soporte una copia del acta de grado.</em>
+                    <br><em>Por favor, tenga en cuenta que el archivo adjunto debe estar en formato PDF y no tener un tamaño superior a 10MB</em>
+                </div>
+            </div>
+			
+			<div class="form-group" id="adjunto_diploma_container">
+                <div class="col-sm-12 col-md-2 ">
+                    <label for="adjunto_diploma" class="control-label">Diploma</label>
+                </div>
+                <div class="col-sm-12 col-md-9">
+                    <input id="adjunto_diploma" type="file" class="form-control" name="adjunto_diploma" required/>
+                    <em>Si usted ya finalizó un programa académico, debe adjuntar como soporte una copia del diploma.</em>
+                    <br><em>Por favor, tenga en cuenta que el archivo adjunto debe estar en formato PDF y no tener un tamaño superior a 10MB</em>
+                </div>
+            </div>
+			
+			<div class="form-group">
+                <div class="col-sm-12 col-md-2 ">
+                    <label for="adjunto_certificado" class="control-label">Certificado de notas</label>
+                </div>
+                <div class="col-sm-12 col-md-9">
+                    <input id="adjunto_certificado" type="file" class="form-control" name="adjunto_certificado" required/>
+                    <em>Si usted se encuentra cursando un programa académico o si ya lo terminó, debe adjuntar como soporte un certificado de notas oficial.</em>
                     <br><em>Por favor, tenga en cuenta que el archivo adjunto debe estar en formato PDF y no tener un tamaño superior a 10MB</em>
                 </div>
             </div>
 
             <div class="form-group additional_attatchments">
-
                 <div class="col-sm-12 col-md-6">
                     <input type="radio" name="additional_attatchments" value="adjunto_entramite_minedu">¿Desea adjuntar documento que manifieste se encuentra en trámite ante el Ministerio de Educación la convalidación de título obtenido en el exterior?<br>
                     <label for="adjunto_entramite_minedu" class="col-sm-12 col-md-12">Documento que manifieste se encuentra en trámite ante el Ministerio de Educación: </label>
@@ -187,13 +208,17 @@
                     @endif
                 </td>
                 <td>
-                    @if(!$estudio->ruta_adjunto==null)
-						<a href="{{env('APP_URL').$estudio->ruta_adjunto}} " target="_blank">Documento de soporte</a><br>
-                    @else
-						No requerido
-                    @endif                 
+                    @if(!$estudio->ruta_certificado==null)
+						<a href="{{env('APP_URL').$estudio->ruta_certificado}} " target="_blank">Certificado de notas</a><br>
+                    @endif
+					@if(!$estudio->ruta_acta==null)
+						<a href="{{env('APP_URL').$estudio->ruta_acta}} " target="_blank">Acta de grado</a><br>
+                    @endif
+					@if(!$estudio->ruta_diploma==null)
+						<a href="{{env('APP_URL').$estudio->ruta_acta}} " target="_blank">Diploma</a><br>
+                    @endif 	 					
                     @if($estudio->ruta_entramite_minedu)
-						<a href="{{env('APP_URL').$estudio->ruta_entramite_minedu}}" target="_blank">Documento de manifiesto: En trámite ante MinEdu</a><br>
+						<a href="{{env('APP_URL').$estudio->ruta_entramite_minedu}}" target="_blank">Documento en trámite ante MinEdu</a><br>
                     @endif
                     @if($estudio->ruta_res_convalidacion)
 						<a href="{{env('APP_URL').$estudio->ruta_res_convalidacion}}" target="_blank">Resolución de convalidación</a><br>
@@ -237,6 +262,13 @@
 				//Mostrar la fecha de finalización y los campos para carga de adjuntos de convalidación
                 $('#fecha_finalizacion_container').show();
 				$(".additional_attatchments").show();
+				//Mostrar los campos para adjuntar diploma y acta de grado
+				$('#adjunto_acta_container').show();
+				$('#adjunto_diploma_container').show();
+				$('#adjunto_acta').attr("required", "required");
+				$('#adjunto_diploma').attr("required", "required");
+				$('#adjunto_acta').removeAttr("disabled");
+				$('#adjunto_diploma').removeAttr("disabled");
 				//Revisar los valores del país y la institución seleccionadas actualmente en el formulario
 				var pais = $("#paises_id").val();
 				var institucion = $('#institucion').val();
@@ -253,6 +285,13 @@
 				//Ocultar la fecha de finalización y los campos para carga de adjuntos
                 $('#fecha_finalizacion_container').hide();
 				$(".additional_attatchments").hide();
+				//Ocultar los campos para adjuntar diploma y acta de grado
+				$('#adjunto_acta_container').hide();
+				$('#adjunto_diploma_container').hide();
+				$('#adjunto_acta').removeAttr("required");
+				$('#adjunto_diploma').removeAttr("required");
+				$('#adjunto_acta').attr("disabled");
+				$('#adjunto_diploma').attr("disabled");
 				//Deshabilitar y quitar atributo requerido a los adjuntos de resolución o convalidación ante MinEdu
 				$("input[name='additional_attatchments']").removeAttr("required");
 				$("#adjunto_entramite_minedu").attr("disabled");
@@ -345,7 +384,6 @@
 					$("#" + $(this).val()).attr('disabled', true);
                 });
             }
-
         });
 		
 		$("input[type='file']").fileinput({

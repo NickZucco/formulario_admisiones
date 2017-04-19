@@ -12,6 +12,7 @@ use App\TipoDocumento as TipoDocumento;
 use App\Pais as Pais;
 use App\EstadoCivil as EstadoCivil;
 use App\ProgramaPosgrado as ProgramaPosgrado;
+use App\Financiacion as Financiacion;
 
 class AspiranteController extends Controller {
 
@@ -181,6 +182,13 @@ class AspiranteController extends Controller {
 		$programa_seleccionado = $main_data[1];
 		$correo_area = $main_data[2];
 		$aspirante = Aspirante::find($aspirante_id);
+		$financiacion = Financiacion::where('aspirantes_id', '=', $aspirante_id)->first();
+		if (!$financiacion) {
+			$financiacion = new Financiacion;
+			$financiacion->tipo_financiacion = '';
+			$financiacion->otra_financiacion = '';
+			$financiacion->entidad_financiacion = '';
+		}
 		$programas_posgrado = ProgramaPosgrado::orderBy('id')->get();
 
 		$msg=null;
@@ -189,15 +197,50 @@ class AspiranteController extends Controller {
             'programas_posgrado' => $programas_posgrado,
 			'programa_seleccionado' => $programa_seleccionado,
 			'correo_area' => $correo_area,
+			'financiacion' => $financiacion,
             'msg' => $msg,
 			'count' => $count
         );
+		//dd($data);
         return view('especificos', $data);	
 	}
 	
+	//Función que ingresa a la DB la información sobre la financiación del aspirante y carga los documentos específicos
+	//que son solicitados dependiendo del programa de posgrado elegido
 	public function insertDocument() {
+		//Insertamos la información de financiación
 		$input = Input::all();
 		$id = Auth::user()->id;
+		$financiacion = Financiacion::where('aspirantes_id', '=', $id)->first();
+		
+		if ($financiacion) {
+			//Actualizamos la información existente
+			$tipo_financiacion = $input['tipo_financiacion'];
+			$financiacion->tipo_financiacion = $tipo_financiacion;
+			if ($tipo_financiacion == 'Recursos propios') {
+				$financiacion->otra_financiacion = null;
+				$financiacion->entidad_financiacion = null;
+			}
+			else if ($tipo_financiacion == 'Otro') {
+				$financiacion->otra_financiacion = $input['otra_financiacion'];
+				$financiacion->entidad_financiacion = $input['entidad_financiacion'];
+			}
+			else {
+				$financiacion->otra_financiacion = null;
+				$financiacion->entidad_financiacion = $input['entidad_financiacion'];
+			}
+			$financiacion->save();
+		}
+		else {
+			$financiacion = new Financiacion;
+			$financiacion->tipo_financiacion = $input['tipo_financiacion'];
+			$financiacion->otra_financiacion = $input['otra_financiacion'];
+			$financiacion->entidad_financiacion = $input['entidad_financiacion'];
+			$financiacion->aspirantes_id = $id;
+			$financiacion->save();
+		}
+		
+		//Guardamos los archivos adjuntos que haya subido el aspirante.
 		$aspirante = Aspirante::find($id);
 		if (isset($input['carta_motivacion'])) {
 			$file = Input::file('carta_motivacion');

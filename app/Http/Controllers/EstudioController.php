@@ -29,7 +29,9 @@ class EstudioController extends Controller {
 				'estudios.otro_nivel_estudio as otro_nivel',
 				'estudios.fecha_inicio as fecha_inicio',
 				'estudios.fecha_finalizacion as fecha_finalizacion',
-				'estudios.ruta_adjunto as ruta_adjunto',
+				'estudios.ruta_certificado as ruta_certificado',
+				'estudios.ruta_acta as ruta_acta',
+				'estudios.ruta_diploma as ruta_diploma',
 				'estudios.ruta_entramite_minedu as ruta_entramite_minedu',
 				'estudios.ruta_res_convalidacion as ruta_res_convalidacion'
 			)->where('estudios.aspirantes_id', '=', $aspirante_id)->get();
@@ -63,6 +65,8 @@ class EstudioController extends Controller {
 		//También se remueven posibles adjuntos que hayan quedado cargados en el formulario
 		if ($input['en_curso']==1) {
 			unset($input['fecha_finalizacion']);
+			unset($input['adjunto_acta']);
+			unset($input['adjunto_diploma']);
 			unset($input['adjunto_entramite_minedu']);
 			unset($input['adjunto_res_convalidacion']);
 		}
@@ -93,14 +97,34 @@ class EstudioController extends Controller {
 		$titulo = substr($input['titulo'], 0, 12);
 		$titulo = $titulo . $aleatorio;
 		$titulo = str_replace(' ', '_', $titulo);
-		//Guardamos el adjunto de soporte si existe
-		if (isset($input['adjunto'])) {
-			$file = Input::file('adjunto');
+		//Guardamos el certificado de notas si existe
+		if (isset($input['adjunto_certificado'])) {
+			$file = Input::file('adjunto_certificado');
 			//$titulo = str_replace(' ', '_', $input['titulo']) . '_' . str_replace(' ', '_', $input['institucion']);
-			$file->move(public_path() . '/file/' . $id . '/estudios/' , $titulo . '_soporte.pdf');
+			$file->move(public_path() . '/file/' . $id . '/estudios/' , $titulo . '_certificado_notas.pdf');
 			
-			$input['ruta_adjunto'] = 'file/' . $id . '/estudios/' . $titulo . '_soporte.pdf';
-			unset($input['adjunto']);
+			$input['ruta_certificado'] = 'file/' . $id . '/estudios/' . $titulo . '_certificado_notas.pdf';
+			unset($input['adjunto_certificado']);
+		}
+		
+		//Guardamos el acta de grado si existe
+		if (isset($input['adjunto_acta'])) {
+			$file = Input::file('adjunto_acta');
+			//$titulo = str_replace(' ', '_', $input['titulo']) . '_' . str_replace(' ', '_', $input['institucion']);
+			$file->move(public_path() . '/file/' . $id . '/estudios/' , $titulo . '_acta_grado.pdf');
+			
+			$input['ruta_acta'] = 'file/' . $id . '/estudios/' . $titulo . '_acta_grado.pdf';
+			unset($input['adjunto_acta']);
+		}
+		
+		//Guardamos el diploma si existe
+		if (isset($input['adjunto_diploma'])) {
+			$file = Input::file('adjunto_diploma');
+			//$titulo = str_replace(' ', '_', $input['titulo']) . '_' . str_replace(' ', '_', $input['institucion']);
+			$file->move(public_path() . '/file/' . $id . '/estudios/' , $titulo . '_diploma.pdf');
+			
+			$input['ruta_diploma'] = 'file/' . $id . '/estudios/' . $titulo . '_diploma.pdf';
+			unset($input['adjunto_diploma']);
 		}
 		
         //Guardamos el soporte de tramite ante el Min Edu si existe

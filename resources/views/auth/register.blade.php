@@ -80,7 +80,10 @@
 					asumirá de forma directa las consecuencias civiles, penales y administrativas que su actuación 
 					genere ante las autoridades públicas.</p>
 					<br>
-                    <center><label align="center" for="name" class="control-label">{{ Form::checkbox('agree', 1, null) }}&nbsp;&nbsp;&nbsp;He leído y acepto los términos y condiciones de la convocatoria.</label></center>
+                    <center><label align="center" for="name" class="control-label">
+						{{ Form::checkbox('agree', 1, null) }}&nbsp;&nbsp;&nbsp;He leído y acepto los términos 
+						del proceso de envío de documentos.
+					</label></center>
                 </div>
 
                 <div class="form-group">
@@ -101,7 +104,7 @@
                  var agreeBox = document.getElementsByName('agree');
                  console.log(agreeBox[0]);
                  if (!agreeBox[0].checked){
-                 alert('Debe aceptar los términos y condiciones de la convocatoria para registrarse.');
+                 alert('Debe aceptar los términos y condiciones del proceso de envío de documentos para registrarse.');
                  event.preventDefault();
                  }else{
                  $("#registro").submit()
