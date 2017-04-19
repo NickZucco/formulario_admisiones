@@ -47,7 +47,8 @@ class Controller extends BaseController {
 		$correo_area = AreaCurricular::join('programa_posgrado', 'programa_posgrado.area_curricular_id',
 				'=', 'area_curricular.id')
 			->join('aspirantes', 'aspirantes.programa_posgrado_id', '=', 'programa_posgrado.id')
-			->select('area_curricular.correo as correo')->get();
+			->select('area_curricular.correo as correo')
+			->where('aspirantes.id', '=', $aspirante_id)->get();
 		if($correo_area->isEmpty()) {
 			array_push($main_data, '');
 		}
