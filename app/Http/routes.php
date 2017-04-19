@@ -84,6 +84,10 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('resumen', 'AspiranteController@summary');
 	Route::get('resumen/hv', 'Admin\AdminController@getReport');
 	Route::get('resumen/adjuntos', 'Admin\AdminController@getAttachments');
+	//Formulario de referencias personales
+    Route::get('referencias_personales', 'ReferenciasPersonalesController@show_info');
+    //Formulario de referencias academicas
+    Route::get('referencias_academicas', 'ReferenciasAcademicasController@show_info');
 });
 
 // Grupo de rutas para administrador
