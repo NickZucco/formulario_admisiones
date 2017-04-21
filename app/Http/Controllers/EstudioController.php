@@ -23,6 +23,7 @@ class EstudioController extends Controller {
 
         $estudios = Estudio::join('nivel_estudio', 'estudios.nivel_estudio_id', '=', 'nivel_estudio.id')
 			->select(
+				'estudios.id as id',
 				'estudios.institucion as institucion',
 				'estudios.titulo as titulo',
 				'nivel_estudio.nombre as nivel',
@@ -158,9 +159,14 @@ class EstudioController extends Controller {
     public function delete() {
         $input = Input::all();
         $estudio = Estudio::find($input["id"]);
-		
-		if ($estudio->ruta_adjunto) {			
-			Storage::delete($estudio->ruta_adjunto);
+		if ($estudio->ruta_certificado) {			
+			Storage::delete($estudio->ruta_certificado);
+		}
+		if ($estudio->ruta_acta) {			
+			Storage::delete($estudio->ruta_acta);
+		}
+		if ($estudio->ruta_diploma) {			
+			Storage::delete($estudio->ruta_diploma);
 		}
 		if ($estudio->ruta_entramite_minedu) {
 			Storage::delete($estudio->ruta_entramite_minedu);

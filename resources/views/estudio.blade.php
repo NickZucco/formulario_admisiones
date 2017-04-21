@@ -139,7 +139,7 @@
                     <input type="radio" name="additional_attatchments" value="adjunto_entramite_minedu">¿Desea adjuntar documento que manifieste se encuentra en trámite ante el Ministerio de Educación la convalidación de título obtenido en el exterior?<br>
                     <label for="adjunto_entramite_minedu" class="col-sm-12 col-md-12">Documento que manifieste se encuentra en trámite ante el Ministerio de Educación: </label>
                     <div class="col-md-12">
-                        <input id="adjunto_entramite_minedu" type="file" class="form-control" name="adjunto_entramite_minedu" disabled/>
+                        <input id="adjunto_entramite_minedu" type="file" class="form-control" name="adjunto_entramite_minedu"/>
                         <br><em>Por favor, tenga en cuenta que el archivo adjunto debe estar en formato PDF y no tener un tamaño superior a 10MB</em>
                     </div>
                 </div>
@@ -147,7 +147,7 @@
                     <input type="radio" name="additional_attatchments" value="adjunto_res_convalidacion"> ¿o desea adjuntar resolución de convalidación?<br>
                     <label for="adjunto_res_convalidacion" class="col-sm-12 col-md-12">Resolución de convalidación: </label>
                     <div class="col-sm-12 col-md-12">
-                        <input id="adjunto_res_convalidacion" type="file" class="form-control" name="adjunto_res_convalidacion" disabled/>
+                        <input id="adjunto_res_convalidacion" type="file" class="form-control" name="adjunto_res_convalidacion"/>
                         <br><em>Por favor, tenga en cuenta que el archivo adjunto debe estar en formato PDF y no tener un tamaño superior a 10MB</em>
                     </div>
                 </div>
@@ -245,7 +245,6 @@
 
 <script>
 	$( document ).ready(function() {
- 		$("input[name='additional_attatchments']").attr("required", "required");
 		//Al cargar la página se ocultan los campos fecha de inicio y fecha de finalización
 		$('#fecha_inicio_container').hide();
 		$('#fecha_finalizacion_container').hide();
@@ -274,11 +273,15 @@
 				var institucion = $('#institucion').val();
 				//Si el país no es Colombia, entonces los adjuntos de resolución o convalidación ante MinEdu
 				//son requeridos.
-				if (pais != 57) {
+				//NOTA: Dado que los documentos de resolucion de convalidación ante MinEdu y Trámite en curso ante MinEdu 
+				//son opcionales en este momento, se comenta el siguiente fragmento de código. Si en el futuro se requiere
+				//nuevamente que dichos documentos sean obligatorios para estudios realizados en el exterior, simplemente 
+				//debe descomentarse este código.
+				/*if (pais != 57) {
 					$("input[name='additional_attatchments']").attr("required", "required");
 					$("#adjunto_entramite_minedu").removeAttr("disabled");
 					$("#adjunto_res_convalidacion").removeAttr("disabled");
-				}
+				}*/
             } 
 			//Si el valor es Sí
 			else {
@@ -368,8 +371,13 @@
         $('#institucion').bind('typeahead:select', function (ev, suggestion) {
             unal_selected = true;
         });
-
-        $('#paises_id').on("change", function () {
+		
+		//Función que se ejecuta cuando cambia el valor del select box Pais
+		//Dado que los documentos de resolucion de convalidación ante MinEdu y Trámite en curso ante MinEdu son
+		//opcionales en este momento, se comenta la siguiente función. Si en el futuro se requiere nuevamente
+		//que dichos documentos sean obligatorios para estudios realizados en el exterior, simplemente debe descomentarse
+		//esta función.
+        /*$('#paises_id').on("change", function () {
             var $selected=$(this).find("option:selected");
             
             if ($.trim($selected.text().toLowerCase()) != 'colombia') {
@@ -384,7 +392,7 @@
 					$("#" + $(this).val()).attr('disabled', true);
                 });
             }
-        });
+        });*/
 		
 		$("input[type='file']").fileinput({
             language: 'es',

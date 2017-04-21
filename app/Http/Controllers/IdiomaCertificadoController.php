@@ -49,30 +49,79 @@ class IdiomaCertificadoController extends Controller
 		
 		$idioma = Idioma::find($input['idiomas_id']);
 		
-		//Verificamos si es idioma nativo del candidato
-		if ($input['nativo']==1) {
-			unset($input['nombre_certificado']);
-			unset($input['puntaje']);
-			unset($input['marco_referencia']);
-		}
-        
-		$aleatorio = rand(111111, 999999);
-		$titulo = $idioma->nombre . $aleatorio;
-        //Guardamos el archivo de soporte de experiencia laboral si existe
-		if (isset($input['adjunto'])){
-			$file = Input::file('adjunto');
-			//$titulo = str_replace(' ', '_', $input['nombre_certificado']) . '_' . str_replace(' ', '_', $input['puntaje']);
-			$file->move(public_path() . '/file/' . $id . '/idiomas/' , $titulo . '.pdf');
-			
-			$input['ruta_adjunto'] = 'file/' . $id . '/idiomas/' . $titulo . '.pdf';
-			unset($input['adjunto']);			
-		}
+		//Verificamos si el idioma es inglés
+		if ($idioma->id == 2) {
+			//Verificamos si se aceptó tomar la prueba de acreditación en la Universidad
+			$acreditar_ingles = $input['acreditar_ingles'];
+			//Sí toma la prueba
+			if ($acreditar_ingles == 1) {
+				$input['nativo'] = 0;
+				unset($input['nombre_certificado']);
+				unset($input['puntaje']);
+				unset($input['marco_referencia']);
+				unset($input['adjunto']);
+				$input['aspirantes_id'] = $id;
+				$idiomas_certificado = IdiomaCertificado::create($input);
+				if ($idiomas_certificado->save()) {
+					return $this->show_info("Se ingresó la información de idioma.");
+				}
+			}
+			//No toma la prueba
+			else {
+				//Verificamos si es idioma nativo del candidato
+				if ($input['nativo']==1) {
+					unset($input['nombre_certificado']);
+					unset($input['puntaje']);
+					unset($input['marco_referencia']);
+				}
+				
+				$aleatorio = rand(111111, 999999);
+				$titulo = $idioma->nombre . $aleatorio;
+				//Guardamos el archivo de soporte de certificación de idioma si existe
+				if (isset($input['adjunto'])){
+					$file = Input::file('adjunto');
+					//$titulo = str_replace(' ', '_', $input['nombre_certificado']) . '_' . str_replace(' ', '_', $input['puntaje']);
+					$file->move(public_path() . '/file/' . $id . '/idiomas/' , $titulo . '.pdf');
+					
+					$input['ruta_adjunto'] = 'file/' . $id . '/idiomas/' . $titulo . '.pdf';
+					unset($input['adjunto']);			
+				}
 
-		$input['aspirantes_id'] = $id;
-        $idiomas_certificado = IdiomaCertificado::create($input);
-        if ($idiomas_certificado->save()) {
-            return $this->show_info("Se ingresó la información de idioma.");
-        }
+				$input['aspirantes_id'] = $id;
+				$idiomas_certificado = IdiomaCertificado::create($input);
+				if ($idiomas_certificado->save()) {
+					return $this->show_info("Se ingresó la información de idioma.");
+				}
+			}
+		}
+		//El idioma no es inglés
+		else {
+			//Verificamos si es idioma nativo del candidato
+			if ($input['nativo']==1) {
+				unset($input['nombre_certificado']);
+				unset($input['puntaje']);
+				unset($input['marco_referencia']);
+			}
+			
+			$aleatorio = rand(111111, 999999);
+			$titulo = $idioma->nombre . $aleatorio;
+			//Guardamos el archivo de soporte de certificación de idioma si existe
+			if (isset($input['adjunto'])){
+				$file = Input::file('adjunto');
+				//$titulo = str_replace(' ', '_', $input['nombre_certificado']) . '_' . str_replace(' ', '_', $input['puntaje']);
+				$file->move(public_path() . '/file/' . $id . '/idiomas/' , $titulo . '.pdf');
+				
+				$input['ruta_adjunto'] = 'file/' . $id . '/idiomas/' . $titulo . '.pdf';
+				unset($input['adjunto']);			
+			}
+
+			$input['aspirantes_id'] = $id;
+			$input['acreditar_ingles'] = 0;
+			$idiomas_certificado = IdiomaCertificado::create($input);
+			if ($idiomas_certificado->save()) {
+				return $this->show_info("Se ingresó la información de idioma.");
+			}
+		}
     }
     
     public function delete(){

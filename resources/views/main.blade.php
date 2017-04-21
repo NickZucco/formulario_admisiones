@@ -35,6 +35,7 @@
                 @if(App\Aspirante::where('correo', '=', Auth::user()->email)->first())
 					<li style="border:1px solid black"><a href="{{ env('APP_URL') }}programas" data-path="programas"><i class="fa fa-user" aria-hidden="true"></i>&nbsp;Programas</a></li>
 					@forelse($programa_seleccionado as $programa)
+						<li id="especifico_p" style="border:1px solid black"><a href="{{ env('APP_URL') }}especificos" data-path="especificos"><i class="fa fa-pie-chart" aria-hidden="true"></i>&nbsp;Adicionales</a></li>
 						<li id="estudios_p" style="border:1px solid black"><a href="{{ env('APP_URL') }}estudios" data-path="estudios"><i class="fa fa-graduation-cap" aria-hidden="true"></i>&nbsp;Estudios universitarios [{{$count['estudio']}}]</a></li>
 						<li id="distincion_p" style="border:1px solid black"><a href="{{ env('APP_URL') }}distinciones" data-path="distinciones"><i class="fa fa-trophy" aria-hidden="true"></i>&nbsp;Distinciones académicas [{{$count['distincion']}}]</a></li>
 						<li id="laboral_p" style="border:1px solid black"><a href="{{ env('APP_URL') }}experiencia_laboral" data-path="experiencia_laboral"><i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp;Experiencia laboral [{{$count['laboral']}}]</a></li>
@@ -43,7 +44,6 @@
 						<li id="produccion_p" style="border:1px solid black"><a href="{{ env('APP_URL') }}produccion_intelectual" data-path="produccion_intelectual"><i class="fa fa-lightbulb-o" aria-hidden="true"></i>&nbsp;Producción intelectual [{{$count['produccion']}}]</a></li>
 						<li id="idioma_p" style="border:1px solid black"><a href="{{ env('APP_URL') }}idiomas" data-path="idiomas"><i class="fa fa-language" aria-hidden="true"></i>&nbsp;Idiomas [{{$count['idioma']}}]</a></li>
 						<li id="referencias_p" style="border:1px solid black"><a href="#" data-path="referencias"><i class="fa fa-puzzle-piece" aria-hidden="true"></i>&nbsp;Referencias</a></li>
-						<li id="especifico_p" style="border:1px solid black"><a href="{{ env('APP_URL') }}especificos" data-path="especificos"><i class="fa fa-pie-chart" aria-hidden="true"></i>&nbsp;Adicionales</a></li>
 						<li id="resumen_p" style="border:1px solid black"><a href="{{ env('APP_URL') }}resumen" data-path="resumen"><i class="fa fa-map" aria-hidden="true"></i>&nbsp;Resumen</a></li>
 					@empty
 						<li style="border:1px solid black"><a href="#" disabled>

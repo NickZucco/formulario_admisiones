@@ -8,6 +8,7 @@
         {{$msg}}
     </div>
     @endif
+
     <div class="panel-heading" style="font-size:20px">
         <strong>Requerimientos específicos según el programa de posgrado escogido</strong>
     </div>

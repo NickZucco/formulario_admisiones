@@ -67,7 +67,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="clasificacion_revista" class="col-sm-12 col-md-2 control-label">Clasificación de la revista (según Colciencias)</label>
+						<label for="clasificacion_revista" class="col-sm-12 col-md-2 control-label">Clasificación de la revista</label>
 						<div class="col-sm-12 col-md-5">
 							<input type="text" class="form-control" id="clasificacion_revista" name="clasificacion_revista">
 						</div>

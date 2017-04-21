@@ -211,6 +211,7 @@ class AspiranteController extends Controller {
 		//Insertamos la información de financiación
 		$input = Input::all();
 		$id = Auth::user()->id;
+		$msg = "";
 		$financiacion = Financiacion::where('aspirantes_id', '=', $id)->first();
 		
 		if ($financiacion) {
@@ -230,14 +231,27 @@ class AspiranteController extends Controller {
 				$financiacion->entidad_financiacion = $input['entidad_financiacion'];
 			}
 			$financiacion->save();
+			$msg = $msg . "Se actualizó correctamente la información de financiación. ";
 		}
 		else {
 			$financiacion = new Financiacion;
-			$financiacion->tipo_financiacion = $input['tipo_financiacion'];
-			$financiacion->otra_financiacion = $input['otra_financiacion'];
-			$financiacion->entidad_financiacion = $input['entidad_financiacion'];
+			$tipo_financiacion = $input['tipo_financiacion'];
+			$financiacion->tipo_financiacion = $tipo_financiacion;
+			if ($tipo_financiacion == 'Recursos propios') {
+				$financiacion->otra_financiacion = null;
+				$financiacion->entidad_financiacion = null;
+			}
+			else if ($tipo_financiacion == 'Otro') {
+				$financiacion->otra_financiacion = $input['otra_financiacion'];
+				$financiacion->entidad_financiacion = $input['entidad_financiacion'];
+			}
+			else {
+				$financiacion->otra_financiacion = null;
+				$financiacion->entidad_financiacion = $input['entidad_financiacion'];
+			}
 			$financiacion->aspirantes_id = $id;
 			$financiacion->save();
+			$msg = $msg . "Se creó correctamente la información de financiación. ";
 		}
 		
 		//Guardamos los archivos adjuntos que haya subido el aspirante.
@@ -274,7 +288,8 @@ class AspiranteController extends Controller {
 			$aspirante->ruta_carta_profesor = $ruta_carta_profesor;
 			$aspirante->save();
 		}
-		return $this->showDocuments("Se adjuntaron correctamente los documentos cargados");
+		$msg = $msg . "Se adjuntaron correctamente los documentos cargados";
+		return $this->showDocuments();
 	}
 	
 	public function summary(){

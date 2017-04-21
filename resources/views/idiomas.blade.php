@@ -18,6 +18,18 @@
     </div>
     <form method="post" action="{{ env('APP_URL') }}idiomas" class="form-horizontal" style="margin:20px 0" enctype="multipart/form-data">     
         {!! csrf_field() !!}
+		
+		<div class="form-group" id="acreditar_ingles_container">
+			<label for="acreditar_ingles" class="col-sm-12 col-md-10 control-label">¿Acreditará el nivel de suficiencia 
+			exigido en idioma inglés por la Universidad mediante la prueba que aplica la Dirección Nacional de 
+			Admisiones?</label>
+			<label class="col-sm-12 col-md-1 control-label">
+				<input type="radio" name="acreditar_ingles" value="1">Si
+			</label>
+			<label class="col-sm-12 col-md-1 control-label">
+				<input type="radio" name="acreditar_ingles" value="0">No
+			</label>
+        </div>	
 
         <div class="form-group">
             <label for="idiomas_id" class="col-sm-12 col-md-2 control-label">Idioma </label>
@@ -29,13 +41,15 @@
                 </select>
             </div>
 			
-			<label for="nativo" class="col-sm-12 col-md-2 control-label">¿Es su idioma nativo?</label>
-                <label class="col-sm-12 col-md-1 control-label">
-                    <input type="radio" name="nativo" value="1" required>Si
-                </label>
-                <label class="col-sm-12 col-md-1 control-label">
-                    <input type="radio" name="nativo" value="0">No
-                </label>
+			<div id="nativo_container">
+				<label for="nativo" class="col-sm-12 col-md-2 control-label">¿Es su idioma nativo?</label>
+					<label class="col-sm-12 col-md-1 control-label">
+						<input type="radio" name="nativo" value="1" required>Si
+					</label>
+					<label class="col-sm-12 col-md-1 control-label">
+						<input type="radio" name="nativo" value="0">No
+					</label>
+			</div>
         </div>		
 		
         <div class="form-group">
@@ -115,7 +129,8 @@
 					@endif
                 </td>
                 <td>
-					@if($idioma_certificado->nativo == 1)
+					@if($idioma_certificado->nativo == 1 || 
+					($idioma_certificado->nativo == 0 && $idioma_certificado->acreditar_ingles == 1))
 						No requerido
 					@else
 						{{$idioma_certificado->nombre_certificado}}
@@ -148,6 +163,11 @@
 </div>
 
 <script>
+	$( document ).ready(function() {
+		//Al cargar la página se oculta el campo de pregunta sobre acreditación de inglés
+		$('#acreditar_ingles_container').hide();
+ 	});
+	
     (function ($) {
         $("input[name='nativo']").on("change", function () {			
             if ($(this).val() == 0) {				
@@ -168,6 +188,35 @@
                 width: '100%'
             }
         });
+		
+		//Función que se activa cuando cambia la selección de idioma en el formulario. Select box idiomas_id
+		$('#idiomas_id').on("change", function () {
+            var $selected=$(this).find("option:selected");
+            
+            if ($.trim($selected.text().toLowerCase()) == 'inglés') {
+				$('#acreditar_ingles_container').show();
+				$('#acreditar_ingles').attr("required, required");
+            }
+			else {
+                $('#acreditar_ingles_container').hide();
+				$('#acreditar_ingles').removeAttr("required");
+            }
+        });
+		
+		//Función que se ejecuta cada vez que cambia el valor del radio button de acreditación
+        $("input[name='acreditar_ingles']").on("change", function () {
+			var $this = $(this);
+			//Si el valor es No
+            if ($this.val() == 0) {
+				$("#nombre_certificado, #puntaje, #adjunto, #nativo_container").show();
+				$("#nombre_certificado_input, #adjunto_input, #marco_referencia, #idiomas_id, #nativo").attr("required", "required");
+			}
+			//Si el valor es Sí
+			else {
+				$("#nombre_certificado, #puntaje, #adjunto, #nativo_container").hide();
+				$("#nombre_certificado_input, #adjunto_input, #idiomas_id, #nativo").removeAttr("required");
+			}
+		});
     })(jQuery);
 </script>
 @stop
