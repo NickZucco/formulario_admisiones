@@ -44,10 +44,10 @@
 			<div id="nativo_container">
 				<label for="nativo" class="col-sm-12 col-md-2 control-label">¿Es su idioma nativo?</label>
 					<label class="col-sm-12 col-md-1 control-label">
-						<input type="radio" name="nativo" value="1" required>Si
+						<input type="radio" id="nativo" name="nativo" value="1" required>Si
 					</label>
 					<label class="col-sm-12 col-md-1 control-label">
-						<input type="radio" name="nativo" value="0">No
+						<input type="radio" id="nativo" name="nativo" value="0">No
 					</label>
 			</div>
         </div>		
@@ -129,15 +129,14 @@
 					@endif
                 </td>
                 <td>
-					@if($idioma_certificado->nativo == 1 || 
-					($idioma_certificado->nativo == 0 && $idioma_certificado->acreditar_ingles == 1))
+					@if($idioma_certificado->nativo == 1 || $idioma_certificado->acreditar_ingles == 1)
 						No requerido
 					@else
 						{{$idioma_certificado->nombre_certificado}}
 					@endif                    
                 </td>
                 <td>
-					@if($idioma_certificado->nativo == 1)
+					@if($idioma_certificado->nativo == 1 || $idioma_certificado->acreditar_ingles == 1)
 						No requerido
 					@else
 						<a href="{{env('APP_URL').$idioma_certificado->ruta_adjunto}}" target="_blank">Documento adjunto</a>

@@ -29,7 +29,6 @@ class IdiomaCertificadoController extends Controller
 		
         $idiomas = Idioma::all()->keyBy('id');
         $idiomas_certificados=IdiomaCertificado::where('aspirantes_id','=',$aspirante_id)->get()->keyBy('id');
-       
         $data = array(
             'aspirante_id' => $aspirante_id,
             'idiomas'=>$idiomas,
@@ -46,7 +45,6 @@ class IdiomaCertificadoController extends Controller
     public function insert() {
         $input = Input::all();
         $id = Auth::user()->id;
-		
 		$idioma = Idioma::find($input['idiomas_id']);
 		
 		//Verificamos si el idioma es inglés
