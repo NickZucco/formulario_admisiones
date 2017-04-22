@@ -92,25 +92,25 @@
                     <div class="col-md-2">
                         <div class="radio">
                             <label>
-                                <input type="radio" name="recomienda" id="recomienda1" value="recomienda1"> No
+                                <input type="radio" name="recomienda" id="recomienda1" value="0"> No
                                 recomienda
                             </label>
                         </div>
                         <div class="radio">
                             <label>
-                                <input type="radio" name="recomienda" id="recomienda2" value="recomienda2">
+                                <input type="radio" name="recomienda" id="recomienda2" value="1">
                                 Recomienda débilmente
                             </label>
                         </div>
                         <div class="radio">
                             <label>
-                                <input type="radio" name="recomienda" id="recomienda3" value="recomienda3">
+                                <input type="radio" name="recomienda" id="recomienda3" value="2">
                                 Recomienda
                             </label>
                         </div>
                         <div class="radio">
                             <label>
-                                <input type="radio" name="recomienda" id="recomienda4" value="recomienda4">
+                                <input type="radio" name="recomienda" id="recomienda4" value="3">
                                 Recomienda fuertemente
                             </label>
                         </div>

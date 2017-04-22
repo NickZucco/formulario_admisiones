@@ -46,7 +46,7 @@
                         <div class="radio">
                             <label for="personal1">
                                 <input type="radio" name="tipo1" id="personal1" value="personal">
-                                Personal
+                                Profesional
                             </label>
                         </div>
                     </div>
@@ -78,7 +78,7 @@
                         <div class="radio">
                             <label for="personal2">
                                 <input type="radio" name="tipo2" id="personal2" value="personal">
-                                Personal
+                                Profesional
                             </label>
                         </div>
                     </div>

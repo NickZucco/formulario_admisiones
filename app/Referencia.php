@@ -16,5 +16,4 @@ class Referencia extends Model
     protected $table = 'referencias';
     protected $filltable = array('*');
     protected $guarded = array('_token');
-	public $timestamps = false;
 }

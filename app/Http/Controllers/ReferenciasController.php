@@ -65,7 +65,7 @@ class ReferenciasController extends Controller
 //            'nombreApellido1' => $referencia1->nombre_de_referencia,
 //            'correo1' => $referencia1->correo_de_referencia,
 //            'nombreApellido2' => $referencia2->nombre_de_referencia,
-//            'correo2' => $referencia2->correo_de_referencia
+//            'correo2' => $referencia2->correo_de_referencia..
 //        );
 //        return view('formulario_referencias', $data);
     }
