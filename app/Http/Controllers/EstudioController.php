@@ -51,13 +51,15 @@ class EstudioController extends Controller {
         );
         return view('estudio', $data);
     }
-
+	
+	//Función para insertar un nuevo estudio universitario
     public function insert() {
         $input = Input::all();
         $msg = null;
+		//dd($input);
 		$id = Auth::user()->id;
 		
-		//Verificamos si el nivel de estudio no sea Otro
+		//Verificamos que el nivel de estudio no sea Otro
 		if ($input['nivel_estudio_id']!=6) {
 			unset($input['otro_nivel_estudio']);
 		}
@@ -80,14 +82,14 @@ class EstudioController extends Controller {
 				unset($input['adjunto_res_convalidacion']);
 			}
 			//Si el país seleccionado es otro distinto a Colombia
-			else {
+			/*else {
 				//Eliminamos el adjunto que no fue seleccionado entre las dos opciones de documentos
 				//ante el MinEdu
 				if ($input['additional_attatchments'] == 'adjunto_res_convalidacion') {
 					unset($input['adjunto_entramite_minedu']);
 				}
 				else unset($input['adjunto_res_convalidacion']);
-			}
+			}*/
 		}
 		
         //Quitamos el radiobutton (al tener nombre se envia con el formulario)
@@ -147,7 +149,7 @@ class EstudioController extends Controller {
 			$input['ruta_res_convalidacion'] = 'file/' . $id . '/estudios/' . $titulo . '_convalidacion.pdf';
 			unset($input['adjunto_res_convalidacion']);
         }
-
+		
         //Guardamos los datos
         $input['aspirantes_id'] = $id;
         $estudio = Estudio::create($input);
