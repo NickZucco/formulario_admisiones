@@ -76,10 +76,16 @@
                     </div>
                     @if(isset($referencias[0]['dato']->referencia_completa) && !$referencias[0]['dato']->referencia_completa)
                         <div class="form-group">
-                            <div class="col-sm-4 col-sm-offset-4">
-                                <button type="submit" class="btn btn-block btn-danger" id="delete1" name="delete1" value="{{$referencias[0]['dato']->id}}">
+                            <div class="col-sm-3 col-sm-offset-3">
+                                <button type="submit" class="btn btn-block btn-danger" id="delete2" name="delete2" value="{{$referencias[0]['dato']->id}}">
                                     <i class="fa fa-user-times"></i>
                                     Eliminar esta referencia
+                                </button>
+                            </div>
+                            <div class="col-sm-3">
+                                <button type="submit" class="btn btn-block btn-warning" id="remind2" name="remind2" value="{{$referencias[0]['dato']->id}}">
+                                    <i class="fa fa-paper-plane-o "></i>
+                                    Enviar recordatorio nuevamente
                                 </button>
                             </div>
                         </div>
@@ -142,10 +148,16 @@
                     </div>
                     @if(isset($referencias[1]['dato']->referencia_completa) && !$referencias[1]['dato']->referencia_completa)
                         <div class="form-group">
-                            <div class="col-sm-4 col-sm-offset-4">
+                            <div class="col-sm-3 col-sm-offset-3">
                                 <button type="submit" class="btn btn-block btn-danger" id="delete2" name="delete2" value="{{$referencias[1]['dato']->id}}">
                                     <i class="fa fa-user-times"></i>
                                     Eliminar esta referencia
+                                </button>
+                            </div>
+                            <div class="col-sm-3">
+                                <button type="submit" class="btn btn-block btn-warning" id="remind2" name="remind2" value="{{$referencias[1]['dato']->id}}">
+                                    <i class="fa fa-paper-plane-o "></i>
+                                    Enviar recordatorio nuevamente
                                 </button>
                             </div>
                         </div>

@@ -117,7 +117,7 @@ class ReferenciasController extends Controller
         }
 
         $referencia1 = null;
-        if ($input['correo1'] != '' && $input['nombreApellido1'] != '') {
+        if (array_key_exists('correo1', $input) && $input['correo1'] != '' && $input['nombreApellido1'] != '') {
             $referencia1 = array_key_exists('currentCorreo1', $input) ? Referencia::where('correo_de_referencia', '=', $input['currentCorreo1'])->first() : new Referencia;
             $referencia1->nombre_de_referencia = $input['nombreApellido1'];
             $referencia1->correo_de_referencia = $input['correo1'];
@@ -129,7 +129,7 @@ class ReferenciasController extends Controller
         }
 
         $referencia2 = null;
-        if ($input['correo2'] != '' && $input['nombreApellido2'] != '') {
+        if (array_key_exists('correo2', $input) && $input['correo2'] != '' && $input['nombreApellido2'] != '') {
             $referencia2 = array_key_exists('currentCorreo2', $input) ? Referencia::where('correo_de_referencia', '=', $input['currentCorreo2'])->first() : new Referencia;
             $referencia2->nombre_de_referencia = $input['nombreApellido2'];
             $referencia2->correo_de_referencia = $input['correo2'];
