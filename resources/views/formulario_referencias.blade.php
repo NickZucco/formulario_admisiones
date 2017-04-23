@@ -166,6 +166,8 @@
 
                 <input type="hidden" class="form-control" id="id" name="id">
 
+                <hr>
+
                 <div class="form-group">
                     <div class="col-md-4 col-md-offset-4">
                         <button type="submit" class="btn btn-success form-control">
