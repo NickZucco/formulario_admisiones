@@ -1,6 +1,10 @@
-@extends('main')
+@extends('unal')
 
-@section('form')
+@section('content')
+    <h2 class="text-center">Formulario de referencia académica para el aspirante <strong>{{$aspirante}}</strong>, quien aplica al programa <strong>{{$programa}}</strong></h2>
+
+    <br>
+
     <div class="alert alert-warning alert-dismissible" role="alert">
         <i class="fa fa-exclamation-circle" aria-hidden="true"></i> <strong>Nota: </strong>Por favor, tenga en cuenta
         que toda la información que digite en el formulario, debe registrarse únicamente en español
@@ -37,8 +41,8 @@
                     </div>
                     <label for="fecha" class="col-md-2 control-label">Fecha</label>
                     <div class="col-md-4">
-                        <input type="text" class="datepicker2 maxToday form-control" id="fecha"
-                               name="fecha" placeholder="####-##-##"
+                        <input type="date" class="datepicker2 maxToday form-control" id="fecha"
+                               name="fecha" placeholder="AAAA-MM-DD"
                                value="" required/>
                     </div>
                 </div>
@@ -57,7 +61,7 @@
                     </div>
                     <label for="telefono_movil" class="col-sm-2 control-label">Teléfono movil</label>
                     <div class="col-md-4">
-                        <input type="number" class="form-control" id="telefono_movil" name="telefono_movil"
+                        <input type="tel" class="form-control" id="telefono_movil" name="telefono_movil"
                                placeholder="#######" value="">
                     </div>
                 </div>
@@ -391,6 +395,15 @@
 
             <input type="hidden" class="form-control" id="correo" name="correo">
             <input type="hidden" class="form-control" id="id" name="id">
+
+            <div class="form-group">
+                <div class="col-md-4 col-md-offset-4">
+                    <button type="submit" class="btn btn-success form-control">
+                        <i class="fa fa-send" aria-hidden="true"></i>
+                        Enviar referencia
+                    </button>
+                </div>
+            </div>
         </form>
 
     </div>

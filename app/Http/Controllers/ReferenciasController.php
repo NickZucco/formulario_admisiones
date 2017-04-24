@@ -163,6 +163,7 @@ class ReferenciasController extends Controller
                 $aspirante_referencia_1 = array_shift($current_references);
             } else {
                 $aspirante_referencia_1 = new AspiranteReferencia;
+                $aspirante_referencia_1->token = $this->getToken();
                 $send1 = true;
             }
             $aspirante_referencia_1->aspirantes_id = Auth::user()->id;
@@ -180,6 +181,7 @@ class ReferenciasController extends Controller
                 $aspirante_referencia_2 = array_shift($current_references);
             } else {
                 $aspirante_referencia_2 = new AspiranteReferencia;
+                $aspirante_referencia_2->token = $this->getToken();
                 $send2 = true;
             }
             $aspirante_referencia_2->aspirantes_id = Auth::user()->id;
@@ -194,24 +196,38 @@ class ReferenciasController extends Controller
         $main_data = $this->getData(Auth::user()->id);
         $programa_seleccionado = $main_data[1][0];
 
-        if (isset($input['remind1'])){
+        $enlace1 = null;
+        if (!is_null($aspirante_referencia_1)) {
+            $path1 = $aspirante_referencia_1->tipo_referencia ? 'referencia_profesional' : 'referencia_academica';
+            $token1 = $aspirante_referencia_1->token;
+            $enlace1 = env('APP_URL') . "$path1/$token1";
+        }
+
+        $enlace2 = null;
+        if (!is_null($aspirante_referencia_2)) {
+            $path2 = $aspirante_referencia_2->tipo_referencia ? 'referencia_profesional' : 'referencia_academica';
+            $token2 = $aspirante_referencia_2->token;
+            $enlace2 = env('APP_URL') . "$path2/$token2";
+        }
+
+        if (isset($input['remind1'])) {
             $this->sendEmailToReferer(
                 $referencia1,
                 $aspirante_referencia_1->tipo_referencia ? 'profesionales' : 'académicas',
                 $aspirante->nombre . ' ' . $aspirante->apellido,
                 $programa_seleccionado->nombre,
-                env('APP_URL')
+                $enlace1
             );
             return redirect('formulario_referencias');
         }
 
-        if (isset($input['remind2'])){
+        if (isset($input['remind2'])) {
             $this->sendEmailToReferer(
                 $referencia2,
                 $aspirante_referencia_2->tipo_referencia ? 'profesionales' : 'académicas',
                 $aspirante->nombre . ' ' . $aspirante->apellido,
                 $programa_seleccionado->nombre,
-                env('APP_URL')
+                $enlace2
             );
             return redirect('formulario_referencias');
         }
@@ -222,7 +238,7 @@ class ReferenciasController extends Controller
                 $aspirante_referencia_1->tipo_referencia ? 'profesionales' : 'académicas',
                 $aspirante->nombre . ' ' . $aspirante->apellido,
                 $programa_seleccionado->nombre,
-                env('APP_URL')
+                $enlace1
             );
         if ($send2)
             $this->sendEmailToReferer(
@@ -230,9 +246,26 @@ class ReferenciasController extends Controller
                 $aspirante_referencia_2->tipo_referencia ? 'profesionales' : 'académicas',
                 $aspirante->nombre . ' ' . $aspirante->apellido,
                 $programa_seleccionado->nombre,
-                env('APP_URL')
+                $enlace2
             );
         return redirect('formulario_referencias');
+    }
+
+    public function show_referencia_academica($token)
+    {
+        $aspirante_referencia = AspiranteReferencia::where('token', '=', $token)->first();
+        $aspirante = Aspirante::find($aspirante_referencia->aspirantes_id);
+        $paises = Pais::orderBy('nombre')->get();
+        $programa = ProgramaPosgrado::join('aspirantes', 'aspirantes.programa_posgrado_id', '=', 'programa_posgrado.id')
+            ->select('programa_posgrado.nombre as nombre')
+            ->where('aspirantes.id', '=', $aspirante_referencia->aspirantes_id)
+            ->first()->nombre;
+        $data = array(
+            'aspirante' => $aspirante->nombre . ' ' . $aspirante->apellido,
+            'programa' => $programa,
+            'paises' => $paises
+        );
+        return view('referencias_academicas', $data);
     }
 
     private function sendEmailToReferer($referer, $tipo_referencia, $aspirante, $programa, $enlace)
@@ -251,5 +284,10 @@ class ReferenciasController extends Controller
             $message->from(env("MAIL_USERNAME"), 'Facultad de Ingeniería Unviersidad Nacional de Colombia Sede Bogotá');
             $message->to($referer->correo_de_referencia);
         });
+    }
+
+    private function getToken()
+    {
+        return hash_hmac('sha256', str_random(40), config('app.key'));
     }
 }

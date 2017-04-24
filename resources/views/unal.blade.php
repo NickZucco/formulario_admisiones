@@ -10,7 +10,7 @@
     <head>
 
         <meta charset="utf-8">
-        <!-- 
+        <!--
         =============================================================================
         === PLANTILLA DESARROLLADA POR LA OFICINA DE MEDIOS DIGITALES - UNIMEDIOS ===
         =============================================================================
@@ -34,14 +34,14 @@
         <link rel="stylesheet" type="text/css" href="{{ env('APP_URL') }}css/small.css" media="all">
         <link rel="stylesheet" type="text/css" href="{{ env('APP_URL') }}css/printer.css" media="print">
         <link rel="stylesheet" type="text/css" href="{{ env('APP_URL') }}css/form.css" media="print">
-        
+
         <link href="{{ env('APP_URL') }}css/datepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
         <link href="{{ env('APP_URL') }}css/fontawesome/font-awesome.min.css" rel="stylesheet" type="text/css"/>
         <link href="{{ env('APP_URL') }}css/formulario.css" rel="stylesheet" type="text/css">
         <link href="{{ env('APP_URL') }}css/fileinput/fileinput.min.css" rel="stylesheet" type="text/css"/>
         <link href="{{ env('APP_URL') }}css/bootstrap-multiselect/bootstrap-multiselect.css" rel="stylesheet" type="text/css"/>
         <link href="{{ env('APP_URL') }}css/bootstrap-typeahead/style.css" rel="stylesheet" type="text/css"/>
-        
+
         <script src="{{ env('APP_URL') }}js/jquery.js" type="text/javascript"></script>
         <script src="{{ env('APP_URL') }}js/unal.js" type="text/javascript"></script>
         <script src="{{ env('APP_URL') }}js/datetimepicker/moment.js"  type="text/javascript"></script>
@@ -49,10 +49,10 @@
         <script src="{{ env('APP_URL') }}js/datetimepicker/datetimepicker.min.js"></script>
         <script src="{{ env('APP_URL') }}js/fileupload/fileinput.min.js" type="text/javascript"></script>
         <script src="{{ env('APP_URL') }}js/fileupload/fileinput_locale_es.js" type="text/javascript"></script>
-        
+
         <script src="{{ env('APP_URL') }}js/bootstrap-typeahead/typeahead.bundle.min.js" type="text/javascript"></script>
         <script src="{{ env('APP_URL') }}js/bootstrap-multiselect/bootstrap-multiselect.js" type="text/javascript"></script>
-        
+
         <!--[if lt IE 9]><script src="{{env('APP_URL')}}js/html5shiv.js" type="text/javascript"></script><![endif]-->
         <!--[if lt IE 9]><script src="{{env('APP_URL')}}js/respond.js" type="text/javascript"></script><![endif]-->
 
@@ -91,7 +91,7 @@
 
                     <!--<![endif]-->
                     <!--[if lt IE 9]>
-              <img src="{{env('APP_URL')}}images/escudoUnal.png" width="93%" height="auto" class="hidden-print"/> 
+              <img src="{{env('APP_URL')}}images/escudoUnal.png" width="93%" height="auto" class="hidden-print"/>
           <![endif]-->
                     <img src="{{env('APP_URL')}}images/escudoUnal_black.png" class="visible-print" />
                 </a>

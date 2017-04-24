@@ -40,6 +40,8 @@ Route::post('password/email', 'Auth\PasswordController@postEmail');
 Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
 Route::post('password/reset', 'Auth\PasswordController@postReset');
 Route::get('user/activation/{token}', 'Auth\AuthController@activateUser');
+//Formulario de referencias academicas
+Route::get('referencia_academica/{token}', 'ReferenciasController@show_referencia_academica');
 
 // Grupo de rutas para aspirante
 Route::group(['middleware' => 'auth'], function(){
@@ -89,8 +91,6 @@ Route::group(['middleware' => 'auth'], function(){
     Route::post('formulario_referencias', 'ReferenciasController@save_references');
     //Formulario de referencias personales
     Route::get('referencias_personales', 'ReferenciasPersonalesController@show_info');
-    //Formulario de referencias academicas
-    Route::get('referencias_academicas', 'ReferenciasAcademicasController@show_info');
 });
 
 // Grupo de rutas para administrador
