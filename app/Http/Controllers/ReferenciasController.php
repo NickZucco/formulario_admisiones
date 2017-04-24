@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Mail as Mail;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Input;
 use Auth;
@@ -17,6 +18,7 @@ use App\Aspirante as Aspirante;
 use App\Referencia as Referencia;
 use App\AspiranteReferencia as AspiranteReferencia;
 use App\ProgramaPosgrado as ProgramaPosgrado;
+
 
 class ReferenciasController extends Controller
 {
@@ -106,12 +108,12 @@ class ReferenciasController extends Controller
     {
         $input = Input::all();
 
-        if(isset($input['delete1'])) {
+        if (isset($input['delete1'])) {
             AspiranteReferencia::destroy($input['delete1']);
             return redirect('formulario_referencias');
         }
 
-        if(isset($input['delete2'])) {
+        if (isset($input['delete2'])) {
             AspiranteReferencia::destroy($input['delete2']);
             return redirect('formulario_referencias');
         }
@@ -144,8 +146,8 @@ class ReferenciasController extends Controller
             return redirect('formulario_referencias');
 
         $refs = array();
-        if (!is_null($referencia1)) array_push($refs, $referencia1);
-        if (!is_null($referencia2)) array_push($refs, $referencia2);
+        if (!is_null($referencia1)) array_push($refs, $referencia1->id);
+        if (!is_null($referencia2)) array_push($refs, $referencia2->id);
 
         $current_references = array();
         foreach (AspiranteReferencia::where('aspirantes_id', '=', Auth::user()->id)
@@ -154,8 +156,15 @@ class ReferenciasController extends Controller
             array_push($current_references, $ar);
         }
 
+        $aspirante_referencia_1 = null;
+        $send1 = false;
         if (!is_null($referencia1)) {
-            $aspirante_referencia_1 = count($current_references) ? array_shift($current_references) : new AspiranteReferencia;
+            if (count($current_references) > 0) {
+                $aspirante_referencia_1 = array_shift($current_references);
+            } else {
+                $aspirante_referencia_1 = new AspiranteReferencia;
+                $send1 = true;
+            }
             $aspirante_referencia_1->aspirantes_id = Auth::user()->id;
             $aspirante_referencia_1->referencias_id = $referencia1->id;
             if (array_key_exists('tipo1', $input)) {
@@ -164,8 +173,15 @@ class ReferenciasController extends Controller
             $aspirante_referencia_1->save();
         }
 
+        $aspirante_referencia_2 = null;
+        $send2 = false;
         if (!is_null($referencia2)) {
-            $aspirante_referencia_2 = count($current_references) ? array_shift($current_references) : new AspiranteReferencia;
+            if (count($current_references) > 0) {
+                $aspirante_referencia_2 = array_shift($current_references);
+            } else {
+                $aspirante_referencia_2 = new AspiranteReferencia;
+                $send2 = true;
+            }
             $aspirante_referencia_2->aspirantes_id = Auth::user()->id;
             $aspirante_referencia_2->referencias_id = $referencia2->id;
             if (array_key_exists('tipo2', $input)) {
@@ -173,6 +189,67 @@ class ReferenciasController extends Controller
             }
             $aspirante_referencia_2->save();
         }
+
+        $aspirante = Aspirante::find(Auth::user()->id);
+        $main_data = $this->getData(Auth::user()->id);
+        $programa_seleccionado = $main_data[1][0];
+
+        if (isset($input['remind1'])){
+            $this->sendEmailToReferer(
+                $referencia1,
+                $aspirante_referencia_1->tipo_referencia ? 'profesionales' : 'académicas',
+                $aspirante->nombre . ' ' . $aspirante->apellido,
+                $programa_seleccionado->nombre,
+                env('APP_URL')
+            );
+            return redirect('formulario_referencias');
+        }
+
+        if (isset($input['remind2'])){
+            $this->sendEmailToReferer(
+                $referencia2,
+                $aspirante_referencia_2->tipo_referencia ? 'profesionales' : 'académicas',
+                $aspirante->nombre . ' ' . $aspirante->apellido,
+                $programa_seleccionado->nombre,
+                env('APP_URL')
+            );
+            return redirect('formulario_referencias');
+        }
+
+        if ($send1)
+            $this->sendEmailToReferer(
+                $referencia1,
+                $aspirante_referencia_1->tipo_referencia ? 'profesionales' : 'académicas',
+                $aspirante->nombre . ' ' . $aspirante->apellido,
+                $programa_seleccionado->nombre,
+                env('APP_URL')
+            );
+        if ($send2)
+            $this->sendEmailToReferer(
+                $referencia2,
+                $aspirante_referencia_2->tipo_referencia ? 'profesionales' : 'académicas',
+                $aspirante->nombre . ' ' . $aspirante->apellido,
+                $programa_seleccionado->nombre,
+                env('APP_URL')
+            );
         return redirect('formulario_referencias');
+    }
+
+    private function sendEmailToReferer($referer, $tipo_referencia, $aspirante, $programa, $enlace)
+    {
+        $subject = 'Solicitud de referencia proceso de admisión posgrados';
+        Mail::send('emails.mail_to_referers', [
+            'html' => 'view',
+            'title' => $subject,
+            'name' => $referer->nombre_de_referencia,
+            'tipo_referencia' => $tipo_referencia,
+            'aspirante' => $aspirante,
+            'programa' => $programa,
+            'enlace' => $enlace
+        ], function ($message) use ($referer, $subject) {
+            $message->subject($subject);
+            $message->from(env("MAIL_USERNAME"), 'Facultad de Ingeniería Unviersidad Nacional de Colombia Sede Bogotá');
+            $message->to($referer->correo_de_referencia);
+        });
     }
 }
