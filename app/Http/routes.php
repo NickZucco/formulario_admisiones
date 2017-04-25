@@ -40,6 +40,16 @@ Route::post('password/email', 'Auth\PasswordController@postEmail');
 Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
 Route::post('password/reset', 'Auth\PasswordController@postReset');
 Route::get('user/activation/{token}', 'Auth\AuthController@activateUser');
+//Formulario de referencias academicas
+Route::get('referencia_academica/{token}', 'ReferenciasController@show_referencia_academica');
+Route::post('referencia_academica', 'ReferenciasController@save_referencia_academica');
+
+//Formulario de referencias academicas
+Route::get('referencia_profesional/{token}', 'ReferenciasController@show_referencia_profesional');
+Route::post('referencia_profesional', 'ReferenciasController@save_referencia_profesional');
+
+Route::get('formulario_completado', 'ReferenciasController@que_gracias');
+Route::get('formulario_no_disponible', 'ReferenciasController@no_disponible');
 
 // Grupo de rutas para aspirante
 Route::group(['middleware' => 'auth'], function(){
@@ -84,10 +94,11 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('resumen', 'AspiranteController@summary');
 	Route::get('resumen/hv', 'Admin\AdminController@getReport');
 	Route::get('resumen/adjuntos', 'Admin\AdminController@getAttachments');
-	//Formulario de referencias personales
+	//Formulario de referencias para aspirante
+    Route::get('formulario_referencias', 'ReferenciasController@show_candidate_form');
+    Route::post('formulario_referencias', 'ReferenciasController@save_references');
+    //Formulario de referencias personales
     Route::get('referencias_personales', 'ReferenciasPersonalesController@show_info');
-    //Formulario de referencias academicas
-    Route::get('referencias_academicas', 'ReferenciasAcademicasController@show_info');
 });
 
 // Grupo de rutas para administrador

@@ -45,6 +45,7 @@
 						<li id="referencias_p" style="border:1px solid black"><a href="#" data-path="referencias"><i class="fa fa-puzzle-piece" aria-hidden="true"></i>&nbsp;Referencias</a></li>
 						<li id="especifico_p" style="border:1px solid black"><a href="{{ env('APP_URL') }}especificos" data-path="especificos"><i class="fa fa-pie-chart" aria-hidden="true"></i>&nbsp;Adicionales</a></li>
 						<li id="resumen_p" style="border:1px solid black"><a href="{{ env('APP_URL') }}resumen" data-path="resumen"><i class="fa fa-map" aria-hidden="true"></i>&nbsp;Resumen</a></li>
+						<li id="formulario_referencias" style="border:1px solid black"><a href="{{ env('APP_URL') }}formulario_referencias" data-path="formulario_referencias"><i class="fa fa-check-square-o" aria-hidden="true"></i>&nbsp;Formulario Referencias</a></li>
 					@empty
 						<li style="border:1px solid black"><a href="#" disabled>
 						<i class="hidden-xs hidden-sm fa fa-arrow-left" aria-hidden="true"></i>
@@ -75,7 +76,7 @@
 </div>
 
 <script>
-    
+
 	$(document).ready(function(){
       var count = {!!$count['estudio']!!};
 	  if (count > 0) {
@@ -112,114 +113,9 @@
 		  $('#idioma_p').css('background-color', '#A1F58B');
 	  }
 	  else $('#idioma_p').css('background-color', '#FFAAAA');
-	  
+
     });
-	
-    (function ($) {
-        /**/
-        var today=new Date();
-        var limit_date = new Date('{{App\Configuracion::where('llave', '=', 'limit_date')->first()["valor"]}}');
-        var time_remaining = (limit_date.getTime()-today.getTime())/1000;              //En segundos
-        var $display = $('#countdown');
-        
-        function startTimer(display) {
-            var days,minutes, seconds;
-            setInterval(function () {
-                days=parseInt(time_remaining/(3600*24),10);
-                hours=parseInt((time_remaining-(days*3600*24))/3600,10);
-                minutes=parseInt((time_remaining-(days*3600*24)-(hours*3600))/60,10);
-                seconds=parseInt(time_remaining%60,10);
 
-                display.text(" "+days+" dias ,"+hours+" horas, "+minutes + " minutos y " + seconds+" segundos");
-
-                time_remaining-=1;
-                
-            }, 1000);
-        }
-        startTimer($display);
-        /**/
-        $('.datepicker').each(function () {
-            var str = $(this).val();
-            if (!str || str === "0000-00-00" || 0 === str.length || /^\s*$/.test(str)) {
-                $(this).val('<?php echo date("Y-m-d"); ?>');
-            }
-        });
-
-        $('a[data-path="{{Request::path()}}"]').parent().addClass('active');
-
-        var now = new Date();
-        var default_end = now;
-        default_end.setHours(23);
-        default_end.setMinutes(59);
-		
-		$('.datepicker2').datetimepicker({
-            defaultDate: now,
-            format: 'YYYY-MM-DD',
-            locale: 'es',
-            maxDate: now
-        });
-        $('.datepicker').datetimepicker({
-            defaultDate: now,
-            format: 'YYYY-MM-DD',
-            locale: 'es',
-			minDate: '2006-01-01',
-            maxDate: now
-        });
-        $('.start').datetimepicker({
-            defaultDate: new Date(),
-            format: 'YYYY-MM-DD',
-            locale: 'es',
-            maxDate: now
-        });
-        $('.end').datetimepicker({
-            defaultDate: default_end,
-            format: 'YYYY-MM-DD',
-            locale: 'es',
-            maxDate: now
-        });
-        $(".maxToday").datetimepicker({
-            defaultDate: default_end,
-            format: 'YYYY-MM-DD',
-            locale: 'es',
-            maxDate: now
-        });
-        $(".start").on("dp.change", function (e) {
-            $('.end').data("DateTimePicker").minDate(e.date);
-        });
-        $(".end").on("dp.change", function (e) {
-            $('.start').data("DateTimePicker").maxDate(e.date);
-        });
-        
-        /**/
-        $("input[required],select[required],textaarea[required]").css("border-left","4px solid red");
-        var list = document.querySelectorAll('input,select,textarea');
-               var config = { attributes: true, childList: true, characterData: true }
-               //console.log(list);
-                
-                var observer = new MutationObserver(function(mutations) {
-                    mutations.forEach(function(mutation) {
-                        $target=$(mutation.target);
-                        //console.log($target.attr("required"));
-                        if(mutation.attributeName=='required'){
-                            if($target.attr("required")=='required'){
-                                $(mutation.target).css("border-left","4px solid red");
-                            }else{
-                                $(mutation.target).css("border-left","");
-                            }   
-                        }
-                    });
-                });
-                
-                for(var cur_key in list){
-                    if(list[cur_key] instanceof Node){
-                        observer.observe(list[cur_key], config);
-                    }else{
-                        //console.log("No se escucha a "+list[cur_key]);
-                    }
-                }
-        /**/
-       
-    })(jQuery);
 
 </script>
 @stop

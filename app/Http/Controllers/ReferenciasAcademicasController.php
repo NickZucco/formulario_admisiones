@@ -14,7 +14,6 @@ class ReferenciasAcademicasController extends Controller
 {
     public function show_info($msg = null)
     {
-        $data = array();
         try {
             $aspirante_id = Auth::user()->id;
             $main_data = $this->getData($aspirante_id);
