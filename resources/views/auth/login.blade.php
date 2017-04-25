@@ -11,7 +11,7 @@
             </div>
             <h3 align="center" class="Estilo12">{{env("APP_NAME")}}</h3>
             @if (count($errors) > 0)
-            <div class="alert alert-danger">
+            <div class="alert alert-danger" style="font-size:18px">
                 <ul>
                     @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -21,12 +21,12 @@
             @endif
 
             @if (Session::has('status'))
-            <div class="alert alert-success">
+            <div class="alert alert-success" style="font-size:18px">
                 {{ Session::get('status') }}
             </div>
             @endif
             @if (Session::has('warning'))
-            <div class="alert alert-warning">
+            <div class="alert alert-warning" style="font-size:18px">
                 {{ Session::get('warning') }}
             </div>
             @endif

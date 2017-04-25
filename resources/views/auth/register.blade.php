@@ -11,7 +11,7 @@
             <h4 align="center" class="Estilo12">Registro al formulario de aspirantes - {{env("APP_NAME")}}</h4>
 
             @if (count($errors) > 0)
-            <div class="alert alert-danger">
+            <div class="alert alert-danger" style="font-size:18px">
                 <ul>
                     @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -19,13 +19,25 @@
                 </ul>
             </div>
             @endif
+			@if (Session::has('warning'))
+            <div class="alert alert-warning" style="font-size:18px">
+                {{ Session::get('warning') }}
+            </div>
+            @endif
 
             <form name="registro" id="registro" method="post" action="{{ env('APP_URL') }}auth/register" class="form-horizontal" style="margin:20px 0">
                 {!! csrf_field() !!}
                 <div class="form-group"> 
-                    <label for="name" class="control-label col-sm-5">Nombres y apellidos</label>
+                    <label for="pin" class="control-label col-sm-5">PIN de inscripción</label>
                     <div class="col-sm-12 col-md-7">
-                        <input type="text" class="form-control" name="name" id="name" placeholder="nombres apellidos">
+                        <input type="text" class="form-control" name="pin" id="pin" placeholder="##########">
+                    </div>
+                </div>
+				
+				<div class="form-group"> 
+                    <label for="document" class="control-label col-sm-5">Documento</label>
+                    <div class="col-sm-12 col-md-7">
+                        <input type="text" class="form-control" name="document" id="document" placeholder="#######">
                     </div>
                 </div>
 
@@ -42,6 +54,7 @@
                         <input type="password" class="form-control" name="password" id="password" placeholder="********">
                     </div>
                 </div>
+				
                 <div class="form-group"> 
                     <label for="password_confirmation" class="control-label col-sm-5">Confirmar contraseña</label>
                     <div class="col-sm-12 col-md-7">

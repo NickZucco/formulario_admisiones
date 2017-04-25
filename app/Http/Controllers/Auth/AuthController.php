@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use App\Configuracion as Configuracion;
 use Illuminate\Http\Request;
 use App\ActivationService as ActivationService;
+use App\Pin as Pin;
 
 class AuthController extends Controller {
     /*
@@ -53,7 +54,8 @@ use AuthenticatesAndRegistersUsers,
      */
     protected function validator(array $data) {
         return Validator::make($data, [
-                    'name' => 'required|max:255',
+                    'pin' => 'required|max:255',
+					'document' => 'required|max:255',
                     'email' => 'required|email|max:255|unique:users',
                     'password' => 'required|min:6|confirmed',
                     'g-recaptcha-response' => 'required',
@@ -61,10 +63,29 @@ use AuthenticatesAndRegistersUsers,
     }
 	
 	protected function authenticated($request, $user) {
-		if($user->isadmin) {
-			return redirect('admin/candidatos');
+		if (!$user->activated) {
+			$this->activationService->sendActivationMail($user);
+			auth()->logout();
+			return back()->with('warning', 'Necesita confirmar su registro. Hemos enviado un código de activación a 
+			su correo, por favor verifíquelo.');
 		}
-		return redirect('datos');
+		else {
+			if($user->isadmin) {
+				return redirect('admin/candidatos');
+			}
+			else {
+				$configuracion = Configuracion::where('llave', '=', 'limit_date')->first();
+				$data = [];
+				if (strtotime($configuracion['valor']) > time()) {
+					return redirect('datos');
+				} else {
+					$data = array(
+						'limit_date' => $configuracion['valor']
+					);
+					return view('auth/timeout', $data);
+				}
+			}
+		}
 	}
 
     /**
@@ -74,8 +95,13 @@ use AuthenticatesAndRegistersUsers,
      * @return User
      */
     protected function create(array $data) {
+		$pin = Pin::where('pin', '=', $data['pin'])->first();
         return User::create([
-                    'name' => $data['name'],
+                    'name' => $pin->nombre,
+					'lastname' => $pin->apellido,
+					'document' => $pin->documento,
+					'document_type' => $pin->tipos_documento_id,
+					'program' => $pin->programa_posgrado_id,
                     'email' => $data['email'],
                     'password' => bcrypt($data['password']),
         ]);
@@ -102,15 +128,25 @@ use AuthenticatesAndRegistersUsers,
 
     public function register(Request $request) {
         $validator = $this->validator($request->all());
-
         if ($validator->fails()) {
             $this->throwValidationException(
                     $request, $validator
             );
         }
-        $user = $this->create($request->all());
-        $this->activationService->sendActivationMail($user);
-        return redirect('auth/login')->with('status', 'Hemos enviado el enlace de activación a su cuenta de correo. Por favor, verifíque su email.');
+		$pin = Pin::where('pin', '=', $request['pin'])->first();
+		if ($pin) {
+			if ($pin->documento == $request['document']) {
+				$user = $this->create($request->all());
+				$this->activationService->sendActivationMail($user);
+				return redirect('auth/login')->with('status', 'Hemos enviado el enlace de activación a su cuenta de correo. Por favor, verifíque su email.');
+			}
+			else {
+				return redirect('auth/register')->with('warning', 'El documento de identidad ingresado no se encuentra registrado. Intente nuevamente.');
+			}
+		}
+		else {
+			return redirect('auth/register')->with('warning', 'El PIN ingresado no se encuentra registrado. Intente nuevamente.');
+		}
     }
 
     public function activateUser($token) {

@@ -14,88 +14,27 @@
 
 <div class="panel panel-default">
     <div class="panel-heading" style="font-size:20px">
-        Selección del programa de posgrado al cual se postuló el aspirante   
+        Información de la postulación del aspirante   
     </div>
-    <div class="panel-body">
-
-        <div class="form-group">
-            <label for="nombre_area" class="col-md-2 control-label">Áreas curriculares de la Facultad de Ingeniería</label>
-            <div class="col-md-8">
-                <select id="lista_areas_curriculares" class="form-control">
-					<option value="0">--Seleccione un área curricular--</option>
-                    @foreach($areas_curriculares as $area)
-						<option value="{{$area->id}}">{{$area->nombre}}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-
-    </div>
-    <div class="panel-heading" style="font-size:20px">
-        Información de programas de posgrado ofrecidos por cada área curricular
-    </div>
-    <form method="post" action="{{ env('APP_URL') }}programas" class="form-horizontal" style="margin:20px 0">
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-sm-12 col-md-12">
-                    <div class="panel-heading">
-                        <h4>Lista completa de programas de posgrado disponibles por área curricular</h4>
-                    </div>
-                    <div class="panel-body">
-                        <table id="programas" class="table table-striped table-hover"> 
-                            <thead>
-                                <tr>
-                                    <th width="70%">Nombre del programa</th>
-                                    <th width="30%">¿Seleccionar?</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr id="programa_no_seleccionado">
-                                    <td colspan="8"> No se ha seleccionado ningún área curricular. Por favor, seleccione un área para mostrar la lista de programas asociados.</td>
-                                </tr>
-                                @foreach($programas_posgrado as $programa)
-                                <tr data-id="{{$programa->id}}" class="programa_row area_curricular_{{$programa->area_curricular_id}}">
-                                    <td>{{$programa->nombre}}</td>
-                                    <td>
-                                        <input id="programa-{{$programa->id}}" data-id="{{$programa->id}}" class="programa" name="programa" type="checkbox" value="{{$programa->id}}" class="checkbox">
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class='row'>
-                <div class="col-sm-12 col-md-12">
-                    <div>
-                        <div class="panel-heading" style="font-size:20px">
-                            <h4>Programa de posgrado seleccionado previamente</h4>
-                        </div>
-                        <div class="panel-body">
-							@forelse($programa_seleccionado as $programa)
-								<p><strong>{{$programa->nombre}}</strong></p>
-							@empty
-								<div class="alert alert-warning" role="alert">
-									No se encontró un programa de posgrado seleccionado. Por favor, seleccione un programa de la tabla y de click en el botón <i class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></i>&nbsp;Guardar programa seleccionado.
-								</div>
-							@endforelse
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-        </div>
-        <div class="form-group">
-            <div class="col-md-4 col-md-offset-4">
-                <button type="submit" class="btn btn-success form-control">
-                    <i class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></i>&nbsp;Guardar programa seleccionado
-                </button>
-            </div>
-        </div>
-        {!! csrf_field() !!}
-
-    </form>
+    <div class="panel-body" style="font-size:20px">
+		<div class="row">
+			<div class="col-sm-12 col-md-4">
+				<p><strong>Área curricular</strong></p>
+			</div>
+			<div class="col-sm-12 col-md-8">
+				<p><strong>{{$programa_completo->area_curricular}}</strong></p>
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-sm-12 col-md-4">
+				<p><strong>Programa de posgrado</strong></p>
+			</div>
+			<div class="col-sm-12 col-md-8">
+				<p><strong>{{$programa_completo->programa}}</strong></p>
+			</div>
+		</div>
+	</div>
 </div>
 
 

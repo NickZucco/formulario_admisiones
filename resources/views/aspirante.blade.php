@@ -22,24 +22,24 @@
         
         <div class="panel-body">
             <div class="form-group">
-                <label for="apellido" class="col-sm-2 control-label">Apellidos completos</label>
+                <label for="_apellido" class="col-sm-2 control-label">Apellidos completos</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="apellido" name="apellido" placeholder="" value="{{$candidate_info->apellido}}" required/>
+                    <input type="text" class="form-control" id="_apellido" name="_apellido" placeholder="" value="{{$user->lastname}}" readonly disabled>
                 </div>
             </div>
             <div class="form-group">
-                <label for="nombre" class="col-sm-2 control-label">Nombres completos</label>
+                <label for="_nombre" class="col-sm-2 control-label">Nombres completos</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="" value="{{$candidate_info->nombre}}" required/>
+                    <input type="text" class="form-control" id="_nombre" name="_nombre" placeholder="" value="{{$user->name}}" readonly disabled>
                 </div>
             </div>
             <div class="form-group">
                 <label for="tipo_documento" class="col-md-2 col-sm-12 control-label">Tipo de documento de identidad</label>
                 <div class="col-md-2">
-                    <select id="tipo_documento" name="tipo_documento_id" class="form-control" required>
+                    <select id="tipo_documento" name="tipo_documento_id" class="form-control" readonly disabled>
                         @foreach($tipos_documento as $tipo_documento)
                         <option value="{{$tipo_documento->id}}"
-                                @if($tipo_documento->id == $candidate_info->tipo_documento_id)
+                                @if($tipo_documento->id == $user->document_type)
 									selected
                                 @endif
                                 >{{$tipo_documento->nombre}}
@@ -47,9 +47,9 @@
                         @endforeach
                     </select>
                 </div>
-                <label for="documento" class="col-md-2 col-sm-12 control-label">Número de documento</label>
+                <label for="_documento" class="col-md-2 col-sm-12 control-label">Número de documento</label>
                 <div class="col-md-2">
-                    <input type="text" class="form-control" id="documento" name="documento" placeholder="##########" value="{{$candidate_info->documento}}" required/>
+                    <input type="text" class="form-control" id="_documento" name="_documento" placeholder="##########" value="{{$user->document}}" readonly disabled>
                 </div>
                 <label for="ciudad_expedicion_documento" class="col-md-2 col-sm-12 control-label">Ciudad de expedición</label>
                 <div class="col-md-2">
@@ -121,9 +121,9 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="correo" class="col-sm-2 control-label">Correo electrónico</label>
+                <label for="_correo" class="col-sm-2 control-label">Correo electrónico</label>
                 <div class="col-sm-10">
-                    <input type="email" class="form-control" id="_correo" name="_correo" placeholder="" value="{{$correo}}" readonly disabled>
+                    <input type="email" class="form-control" id="_correo" name="_correo" placeholder="" value="{{$user->email}}" readonly disabled>
                 </div>
             </div>
             <div class="form-group">
@@ -160,9 +160,14 @@
                 </div>
             </div>
         </div>
-
-        <input type="hidden" class="form-control" id="correo" name="correo" value="{{$correo}}">
-        <input type="hidden" class="form-control" id="id" name="id" value="{{$id}}">
+		
+		<input type="hidden" class="form-control" id="apellido" name="apellido" value="{{$user->lastname}}">
+		<input type="hidden" class="form-control" id="nombre" name="nombre" value="{{$user->name}}">
+		<input type="hidden" class="form-control" id="correo" name="correo" value="{{$user->email}}">
+		<input type="hidden" class="form-control" id="documento" name="documento" value="{{$user->document}}">
+		<input type="hidden" class="form-control" id="tipo_documento_id" name="tipo_documento_id" value="{{$user->document_type}}">
+        <input type="hidden" class="form-control" id="programa_posgrado_id" name="programa_posgrado_id" value="{{$user->program}}">
+		<input type="hidden" class="form-control" id="id" name="id" value="{{$id}}">
     </form>
     
 </div>

@@ -25,8 +25,8 @@ class AspiranteController extends Controller {
 		$programa_seleccionado = $main_data[1];
 		$correo_area = $main_data[2];
 		
-		$user_email = Auth::user()->email;
-		$candidate_info = Aspirante::where('correo', '=', $user_email)->first();
+		$user = Auth::user();
+		$candidate_info = Aspirante::where('correo', '=', $user->email)->first();
 		$tipos_documento = TipoDocumento::all();
 		$paises = Pais::orderBy('nombre')->get();
 		$estados_civiles = EstadoCivil::all();
@@ -36,7 +36,7 @@ class AspiranteController extends Controller {
 		
 		$data = array(
 			'id' => $aspirante_id,
-			'correo' => $user_email,
+			'user' => $user,
 			'candidate_info' => $candidate_info,
 			'tipos_documento' => $tipos_documento,
 			'paises' => $paises,
@@ -52,16 +52,15 @@ class AspiranteController extends Controller {
     public function insert() {
         $input = Input::all();
 		$id = Auth::user()->id;
-		
 		//Validar si la cédula ingresada ya se encuentra en la base de datos_personales
-		$aspirante_cedula = Aspirante::where('documento', $input['documento'])->get();
+		/*$aspirante_cedula = Aspirante::where('documento', $input['documento'])->get();
 		$aspirante_cedula = $aspirante_cedula->toArray();
 		//dd($aspirante_cedula);
 		if(!empty($aspirante_cedula)){
 			if ($id != $aspirante_cedula['0']['id']) {
 				return redirect()->back()->with('message', 'El número de documento ingresado ya se encuentra en la base de datos');
 			}
-		}
+		}*/
         
         $input['id'] = $id;
         $record = Aspirante::find($id);
@@ -124,14 +123,17 @@ class AspiranteController extends Controller {
 		$count = $main_data[0];
 		$programa_seleccionado = $main_data[1];
 		$correo_area = $main_data[2];
-		
-		$areas_curriculares = DB::table('area_curricular')->orderBy('id')->get();
-		$programas_posgrado = ProgramaPosgrado::orderBy('id')->get();
+		$programa_completo = ProgramaPosgrado::join('area_curricular', 'area_curricular.id',
+				'=', 'programa_posgrado.area_curricular_id')
+			->join('aspirantes', 'aspirantes.programa_posgrado_id', '=', 'programa_posgrado.id')
+			->select(
+				'programa_posgrado.nombre as programa',
+				'area_curricular.nombre as area_curricular'
+			)->where('aspirantes.id', '=', $aspirante_id)->first();
 		
 		$msg=null;
 		$data = array(
-            'areas_curriculares' => $areas_curriculares,
-            'programas_posgrado' => $programas_posgrado,
+            'programa_completo' => $programa_completo,
 			'programa_seleccionado' => $programa_seleccionado,
 			'correo_area' => $correo_area,
             'msg' => $msg,
@@ -141,7 +143,10 @@ class AspiranteController extends Controller {
 	}
 	
 	//Función que guarda el programa de posgrado seleccionado por el usuario
-	public function saveProgram() {
+	//No se requiere para el proceso de admisión a posgrados, pero puede usarse en el futuro
+	//Para usar correctamente esta función debe también utilizarse el archivo programas.blade.php en la raíz
+	//del proyecto
+	/*public function saveProgram() {
 		$input = Input::all();
 		//Encontramos el registro del aspirante en la DB
         $id = Auth::user()->id;
@@ -173,7 +178,7 @@ class AspiranteController extends Controller {
 		$aspirante->programa_posgrado_id = $programa_seleccionado;
 		$aspirante->save();
 		return redirect('especificos');
-	}
+	}*/
 	
 	public function showDocuments() {
 		$aspirante_id = Auth::user()->id;
