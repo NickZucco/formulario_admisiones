@@ -44,6 +44,10 @@ Route::get('user/activation/{token}', 'Auth\AuthController@activateUser');
 Route::get('referencia_academica/{token}', 'ReferenciasController@show_referencia_academica');
 Route::post('referencia_academica', 'ReferenciasController@save_referencia_academica');
 
+//Formulario de referencias academicas
+Route::get('referencia_profesional/{token}', 'ReferenciasController@show_referencia_profesional');
+Route::post('referencia_profesional', 'ReferenciasController@save_referencia_profesional');
+
 Route::get('formulario_completado', 'ReferenciasController@que_gracias');
 Route::get('formulario_no_disponible', 'ReferenciasController@no_disponible');
 

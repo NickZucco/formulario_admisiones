@@ -267,7 +267,7 @@ class ReferenciasController extends Controller
             ->select('programa_posgrado.nombre as nombre', 'programa_posgrado.area_curricular_id as area')
             ->where('aspirantes.id', '=', $aspirante_referencia->aspirantes_id)
             ->first();
-        if ($aspirante_referencia->referencia_completa){
+        if ($aspirante_referencia->referencia_completa) {
             $area = AreaCurricular::find($programa->area);
             $data = array(
                 'referencia' => $referencia->nombre_de_referencia,
@@ -283,6 +283,37 @@ class ReferenciasController extends Controller
             'token' => $token
         );
         return view('referencias_academicas', $data);
+    }
+
+    public function show_referencia_profesional($token)
+    {
+        $aspirante_referencia = AspiranteReferencia::where('token', '=', $token)->first();
+        if (is_null($aspirante_referencia))
+            return redirect('formulario_no_disponible');
+
+        $aspirante = Aspirante::find($aspirante_referencia->aspirantes_id);
+        $referencia = Referencia::find($aspirante_referencia->referencias_id);
+        $paises = Pais::orderBy('nombre')->get();
+        $programa = ProgramaPosgrado::join('aspirantes', 'aspirantes.programa_posgrado_id', '=', 'programa_posgrado.id')
+            ->select('programa_posgrado.nombre as nombre', 'programa_posgrado.area_curricular_id as area')
+            ->where('aspirantes.id', '=', $aspirante_referencia->aspirantes_id)
+            ->first();
+        if ($aspirante_referencia->referencia_completa) {
+            $area = AreaCurricular::find($programa->area);
+            $data = array(
+                'referencia' => $referencia->nombre_de_referencia,
+                'correo' => $area->correo
+            );
+            return view('formulario_completo', $data);
+        }
+        $data = array(
+            'aspirante' => $aspirante->nombre . ' ' . $aspirante->apellido,
+            'programa' => $programa->nombre,
+            'paises' => $paises,
+            'referencia' => $referencia,
+            'token' => $token
+        );
+        return view('referencias_profesionales', $data);
     }
 
     public function no_disponible()
@@ -359,8 +390,76 @@ class ReferenciasController extends Controller
         );
 
         return view('quegracias', $data);
+    }
 
+    public function save_referencia_profesional()
+    {
+        $input = Input::all();
 
+        $referencia = Referencia::find($input['referencia_id']);
+        $token = $input['token'];
+
+        if (isset($input['acepta'])) {
+            $referencia->advertencia_datos = 1;
+            $referencia->id_verificada = 1;
+            $referencia->save();
+            return redirect("referencia_profesional/$token");
+        }
+
+        $referencia->nombre_de_referencia = $input['nombreApellido'];
+        $referencia->titulo = $input['cargo'];
+        $referencia->date = $input['fecha'];
+        $referencia->institucion = $input['institucion'];
+        $referencia->departamento = $input['departamento'];
+        $referencia->telefono_movil = $input['telefono_movil'];
+        $referencia->paises_id = $input['pais'];
+        $referencia->ciudad = $input['ciudad'];
+        $referencia->save();
+
+        $aspirante_referencia = AspiranteReferencia::where('token', '=', $token)->first();
+        $aspirante_referencia->referencia_completa = 1;
+        $aspirante_referencia->tiempo_relacion = $input['tiempo'];
+        $aspirante_referencia->nivel_recomendacion = $input['recomienda'];
+        $aspirante_referencia->aptitudes_aca_pro = $input['atributosAptitudes'];
+        if (isset($input['atributosAptitudesObservaciones']))
+            $aspirante_referencia->aptitudes_aca_pro_desc = $input['atributosAptitudesObservaciones'];
+        $aspirante_referencia->capacidad_analisis = $input['atributosAnalisis'];
+        if (isset($input['atributosAnalisisObservaciones']))
+            $aspirante_referencia->capacidad_analisis_desc = $input['atributosAnalisisObservaciones'];
+        $aspirante_referencia->originalidad = $input['atributosOriginalidad'];
+        if (isset($input['atributosOriginalidadObservaciones']))
+            $aspirante_referencia->originalidad_desc = $input['atributosOriginalidadObservaciones'];
+        $aspirante_referencia->capacidad_juicio = $input['atributosJuicio'];
+        if (isset($input['atributosJuicioObservaciones']))
+            $aspirante_referencia->capacidad_juicio_desc = $input['atributosJuicioObservaciones'];
+        $aspirante_referencia->habilidades_sociales = $input['atributosSociales'];
+        if (isset($input['atributosSocialesObservaciones']))
+            $aspirante_referencia->habilidades_sociales_desc = $input['atributosSocialesObservaciones'];
+        $aspirante_referencia->potencial_investigacion = $input['atributosEquipo'];
+        if (isset($input['atributosEquipoObservaciones']))
+            $aspirante_referencia->potencial_investigacion_equipo_desc = $input['atributosEquipoObservaciones'];
+        $aspirante_referencia->comunicacion_escrita = $input['atributosEscrita'];
+        if (isset($input['atributosEscritaObservaciones']))
+            $aspirante_referencia->comunicacion_escrita_desc = $input['atributosEscritaObservaciones'];
+        $aspirante_referencia->comunicacion_oral = $input['atributosOral'];
+        if (isset($input['atributosOralObservaciones']))
+            $aspirante_referencia->comunicacion_oral_desc = $input['atributosOralObservaciones'];
+        $aspirante_referencia->responsabilidad_compromiso = $input['atributosCompromiso'];
+        if (isset($input['atributosCompromisoObservaciones']))
+            $aspirante_referencia->responsabilidad_compromiso_desc = $input['atributosCompromisoObservaciones'];
+        $aspirante_referencia->grado_aspirante_comparacion = $input['comparacion'];
+        $aspirante_referencia->grupo_comparado = $input['grupoCompara'];
+        $aspirante_referencia->numero_grupo = $input['numeroProfesionale'];
+        if (isset($input['inconvenientes']))
+            $aspirante_referencia->comentarios_negativos = $input['inconvenientes'];
+        $aspirante_referencia->save();
+
+        $data = array(
+            'referencia' => $referencia,
+            'aspirante' => Aspirante::find($aspirante_referencia->aspirantes_id)
+        );
+
+        return view('quegracias', $data);
     }
 
     private function sendEmailToReferer($referer, $tipo_referencia, $aspirante, $programa, $enlace)

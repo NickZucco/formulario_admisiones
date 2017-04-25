@@ -1,16 +1,17 @@
 @extends('unal')
 
 @section('content')
-    <h2 class="text-center">Formulario de referencia académica para el aspirante <strong>{{$aspirante}}</strong>, quien
+    <h2 class="text-center">Formulario de referencia profesional para el aspirante <strong>{{$aspirante}}</strong>,
+        quien
         aplica al programa <strong>{{$programa}}</strong></h2>
 
     <br>
 
     @if($referencia->advertencia_datos)
         <div class="alert alert-warning alert-dismissible" role="alert">
-            <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-            <strong>Nota: </strong>Por favor, tenga en cuenta que toda la información que digite en el formulario, debe
-            registrarse únicamente en español
+            <i class="fa fa-exclamation-circle" aria-hidden="true"></i> <strong>Nota: </strong>Por favor, tenga en
+            cuenta
+            que toda la información que digite en el formulario, debe registrarse únicamente en español
         </div>
 
         <div class="panel panel-default">
@@ -23,7 +24,7 @@
             <div class="panel-heading">
                 <strong>Datos de quien da la referencia</strong>
             </div>
-            <form method="post" action="{{ env('APP_URL') }}referencia_academica" class="form-horizontal"
+            <form method="post" action="{{ env('APP_URL') }}referencia_profesional" class="form-horizontal"
                   style="margin:20px 0"
                   enctype="multipart/form-data">
 
@@ -47,8 +48,8 @@
                         </div>
                         <label for="fecha" class="col-md-2 control-label">Fecha</label>
                         <div class="col-md-4">
-                            <input type="date" class="datepicker2 maxToday form-control" id="fecha"
-                                   name="fecha" placeholder="AAAA-MM-DD"
+                            <input type="text" class="datepicker2 maxToday form-control" id="fecha"
+                                   name="fecha" placeholder="####-##-##"
                                    value="" required/>
                         </div>
                     </div>
@@ -67,7 +68,7 @@
                         </div>
                         <label for="telefono_movil" class="col-sm-2 control-label">Teléfono movil</label>
                         <div class="col-md-4">
-                            <input type="tel" class="form-control" id="telefono_movil" name="telefono_movil"
+                            <input type="number" class="form-control" id="telefono_movil" name="telefono_movil"
                                    placeholder="#######" value="{{$referencia->telefono_movil}}" required>
                         </div>
                     </div>
@@ -95,56 +96,38 @@
                             y
                             cuál ha sido su relación con él?</label>
                         <div class="col-md-4">
-                            <textarea name="tiempo" id="tiempo" cols="50" rows="5" class="form-control"
-                                      required></textarea>
+                            <textarea name="tiempo" id="tiempo" cols="50" rows="5" class="form-control"></textarea>
                         </div>
                         <label class="control-label col-md-2">¿Recomendaría al aspirante para ser admitido al programa
                             para
                             el cual
                             solicita admisión?</label>
-                        <div class="col-md-2">
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="recomienda" id="recomienda1" value="0" required> No
-                                    recomienda
-                                </label>
-                            </div>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="recomienda" id="recomienda2" value="1" required>
-                                    Recomienda débilmente
-                                </label>
-                            </div>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="recomienda" id="recomienda3" value="2" required>
-                                    Recomienda
-                                </label>
-                            </div>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="recomienda" id="recomienda4" value="3" required>
-                                    Recomienda fuertemente
-                                </label>
-                            </div>
-                        </div>
-                        <label class="control-label col-md-1">¿Las calificaciones reflejan de manera justa las
-                            habilidades
-                            académicas del aspirante?</label>
-                        <div class="col-md-1">
-                            <div class="radio">
-                                <label for="calificaciones1">
-                                    <input type="radio" name="calificaciones" id="calificaciones1"
-                                           value="0" required>
-                                    Sí
-                                </label>
-                            </div>
-                            <div class="radio">
-                                <label for="calificaciones2">
-                                    <input type="radio" name="calificaciones" id="calificaciones2"
-                                           value="1" required>
-                                    No
-                                </label>
+                        <div class="col-md-4">
+                            <div class="col-md-12">
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="recomienda" id="recomienda1" value="0" required> No
+                                        recomienda
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="recomienda" id="recomienda2" value="1" required>
+                                        Recomienda débilmente
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="recomienda" id="recomienda3" value="2" required>
+                                        Recomienda
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="recomienda" id="recomienda4" value="3" required>
+                                        Recomienda fuertemente
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -163,7 +146,7 @@
                                     <th class="text-center">Observaciones</th>
                                 </tr>
                                 <tr>
-                                    <td>Aptitudes académicas</td>
+                                    <td>Aptitudes profesionales</td>
                                     <td class="text-center">
                                         <input type="radio" name="atributosAptitudes" id="atributosAptitudes1" required
                                                value="0">
@@ -279,7 +262,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Potencial en investigación</td>
+                                    <td>Potencial de Trabajo en Equipo</td>
                                     <td class="text-center">
                                         <input type="radio" name="atributosEquipo" id="atributosEquipo1" required
                                                value="0">
@@ -370,9 +353,8 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-md-12">En comparación con un grupo de estudiantes que haya
-                            conocido
-                            al nivel del aspirante, por favor indique dónde ubicaría al aspirante.</label>
+                        <label class="control-label col-md-12">En comparación con un grupo de profesionales que haya
+                            conocido al nivel del aspirante, por favor indique dónde ubicaría al aspirante.</label>
                         <div class="col-md-12">
                             <table class="table table-striped">
                                 <tr>
@@ -414,8 +396,7 @@
                         <label class="control-label col-md-2">El grupo con el que compara al aspirante es:</label>
                         <div class="col-md-4">
                             <input type="text" class="form-control" name="grupoCompara" id="grupoCompara"
-                                   placeholder="Ej, estudiantes de Pregrado en la U. Nacional de Colombia, sede Bogotá"
-                                   required>
+                                   placeholder="Ej. División de soporte y mantenimiento" required>
                         </div>
                         <label class="control-label col-md-2">Número aproximado de profesionales en ese grupo que usted
                             ha
@@ -427,17 +408,18 @@
                     </div>
                     <div class="form-group">
                         <label for="inconvenientes" class="control-label col-md-12">Por favor adicione comentarios que
-                            indiquen si existen factores que puedan evitar que el aspirante se gradúe en el programa de
-                            Posgrado a que aspira, o que refuercen la capacidad y promesa del aspirante para graduarse
-                            en el
-                            programa de Posgrado.</label>
+                            indiquen si
+                            existen factores que puedan evitar que el aspirante se grad'ue en el programa de Posgrado a
+                            que
+                            aspira, o que refuercen la capacidad y promesa del aspirante para graduarse en el programa
+                            de
+                            Posgrado</label>
                         <div class="col-md-12">
                         <textarea name="inconvenientes" id="inconvenientes" cols="50" rows="5"
                                   class="form-control"></textarea>
                         </div>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <div class="col-md-4 col-md-offset-4">
                         <button type="submit" class="btn btn-success form-control">
@@ -450,7 +432,7 @@
 
         </div>
     @else
-        <form method="post" action="{{ env('APP_URL') }}referencia_academica" class="form-horizontal"
+        <form method="post" action="{{ env('APP_URL') }}referencia_profesional" class="form-horizontal"
               style="margin:20px 0"
               enctype="multipart/form-data">
             <div class="row">
