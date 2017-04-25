@@ -24,7 +24,7 @@
 			exigido en idioma inglés por la Universidad mediante la prueba que aplica la Dirección Nacional de 
 			Admisiones?</label>
 			<label class="col-sm-12 col-md-1 control-label">
-				<input type="radio" name="acreditar_ingles" value="1">Si
+				<input type="radio" id="acreditar_ingles" name="acreditar_ingles" value="1">Si
 			</label>
 			<label class="col-sm-12 col-md-1 control-label">
 				<input type="radio" name="acreditar_ingles" value="0">No
@@ -163,8 +163,41 @@
 
 <script>
 	$( document ).ready(function() {
-		//Al cargar la página se oculta el campo de pregunta sobre acreditación de inglés
-		$('#acreditar_ingles_container').hide();
+		//Cargamos en una variable de Javascript el nivel de estudio (4 es para doctorado)
+		var nivel_programa = {!!$nivel_programa!!};
+		var nivel_estudio = nivel_programa.nivel_id;
+		
+		//Cargamos el conjunto de registros de certificados de idiomas en una variable de Javascript
+		var idiomas_certificados = {!!$idiomas_certificados!!};
+		console.log(idiomas_certificados);
+		
+		//Convertimos el objeto en un arreglo
+		var idiomas = $.map(idiomas_certificados, function(value, index) {
+			return [value];
+		});
+		
+		//Verificamos si ya se guardó el idioma inglés anteriormente
+		var ingles_guardado = 0;
+		for (var i = 0; i < idiomas.length; i++) {
+			console.log(idiomas[i]);
+			if (idiomas[i].idiomas_id == 2) ingles_guardado = 1;
+		}
+		console.log(ingles_guardado);
+		
+		if (nivel_estudio == 4 && ingles_guardado == 0) {
+			$("#idiomas_id").val("2");
+			$('#acreditar_ingles_container').show();
+			$('#acreditar_ingles').prop('required', true);
+			$("#nombre_certificado, #puntaje, #adjunto, #nativo_container").hide();
+			$("#nombre_certificado_input, #adjunto_input, #idiomas_id, #nativo").removeAttr("required");
+		}
+		else {
+			//Al cargar la página se oculta el campo de pregunta sobre acreditación de inglés
+			//si el estudio es diferente a un doctorado
+			$('#acreditar_ingles_container').hide();
+		}
+		
+
  	});
 	
     (function ($) {
@@ -191,14 +224,26 @@
 		//Función que se activa cuando cambia la selección de idioma en el formulario. Select box idiomas_id
 		$('#idiomas_id').on("change", function () {
             var $selected=$(this).find("option:selected");
-            
+            var nivel_programa = {!!$nivel_programa!!};
+			var nivel_estudio = nivel_programa.nivel_id;
+			//El idioma seleccionado es inglés
             if ($.trim($selected.text().toLowerCase()) == 'inglés') {
-				$('#acreditar_ingles_container').show();
-				$('#acreditar_ingles').attr("required, required");
+				if (nivel_estudio == 4) {
+					$('#acreditar_ingles_container').show();
+					$('#acreditar_ingles').attr("required, required");
+				}
             }
 			else {
-                $('#acreditar_ingles_container').hide();
-				$('#acreditar_ingles').removeAttr("required");
+				if (nivel_estudio == 4) {
+					$('#acreditar_ingles_container').hide();
+					$('#acreditar_ingles').removeAttr("required");
+					$("#nombre_certificado, #puntaje, #adjunto, #nativo_container").show();
+					$("#nombre_certificado_input, #adjunto_input, #marco_referencia, #idiomas_id, #nativo").attr("required", "required");
+				}
+				else {
+					$("#nombre_certificado, #puntaje, #adjunto, #nativo_container").show();
+					$("#nombre_certificado_input, #adjunto_input, #marco_referencia, #idiomas_id, #nativo").attr("required", "required");
+				}
             }
         });
 		

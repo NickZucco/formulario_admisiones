@@ -46,8 +46,15 @@ class IdiomaCertificadoController extends Controller
         $input = Input::all();
         $id = Auth::user()->id;
 		$idioma = Idioma::find($input['idiomas_id']);
+		$nivel_programa = ProgramaPosgrado::join('aspirantes', 'aspirantes.programa_posgrado_id', '=',
+			'programa_posgrado.id')
+			->select('programa_posgrado.nivel_estudio_id as nivel_id')
+			->where('aspirantes.id', '=', $id)->get();
+		$nivel_programa = $nivel_programa[0]->id;
 		
-		//Verificamos si el idioma es inglés
+		//Verificamos si el nivel de estudio es doctorado
+		if ($nivel_programa == 4) {
+			//Verificamos si el idioma es inglés
 		if ($idioma->id == 2) {
 			//Verificamos si se aceptó tomar la prueba de acreditación en la Universidad
 			$acreditar_ingles = $input['acreditar_ingles'];
@@ -115,6 +122,33 @@ class IdiomaCertificadoController extends Controller
 
 			$input['aspirantes_id'] = $id;
 			$input['acreditar_ingles'] = 0;
+			$idiomas_certificado = IdiomaCertificado::create($input);
+			if ($idiomas_certificado->save()) {
+				return $this->show_info("Se ingresó la información de idioma.");
+			}
+		}
+		}
+		else {
+			//Verificamos si es idioma nativo del candidato
+			if ($input['nativo']==1) {
+				unset($input['nombre_certificado']);
+				unset($input['puntaje']);
+				unset($input['marco_referencia']);
+			}
+			
+			$aleatorio = rand(111111, 999999);
+			$titulo = $idioma->nombre . $aleatorio;
+			//Guardamos el archivo de soporte de certificación de idioma si existe
+			if (isset($input['adjunto'])){
+				$file = Input::file('adjunto');
+				//$titulo = str_replace(' ', '_', $input['nombre_certificado']) . '_' . str_replace(' ', '_', $input['puntaje']);
+				$file->move(public_path() . '/file/' . $id . '/idiomas/' , $titulo . '.pdf');
+				
+				$input['ruta_adjunto'] = 'file/' . $id . '/idiomas/' . $titulo . '.pdf';
+				unset($input['adjunto']);			
+			}
+			
+			$input['aspirantes_id'] = $id;
 			$idiomas_certificado = IdiomaCertificado::create($input);
 			if ($idiomas_certificado->save()) {
 				return $this->show_info("Se ingresó la información de idioma.");
