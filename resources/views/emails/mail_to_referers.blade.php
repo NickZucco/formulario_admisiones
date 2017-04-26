@@ -40,17 +40,15 @@
 </p>
 
 <p>
-    Dentro del proceso de admisión a programas de posgrados se solicita a los aspirantes referencias
-    {{$tipo_referencia}} como parte de los criterios de evaluación. El(la) aspirante <strong>{{$aspirante}}</strong>,
-    participa en el proceso para el programa de <strong>{{$programa}}</strong> y nos ha indicado que usted diligenciará
-    una de las referencias que le han sido solicitadas, lo invitamos a seguir el proceso que encontrará
-    en la siguiente dirección.
+    Dentro del proceso de admisión a programas de posgrado se solicita a los aspirantes referencias académicas.
+    El(la)aspirante <strong>{{$aspirante}}</strong>, participa en el proceso para el programa de
+    <strong>{{$programa}}</strong> y nos ha indicado que usted diligenciará una de las referencias que le han sido
+    solicitadas, lo invitamos a seguir el proceso que encontrará en la siguiente dirección: {{$enlace}}. La información
+    que usted diligencie es confidencial y el(la) aspirante no tendrá acceso a ella.
 </p>
 
-<p>
-    {{$enlace}}
-</p>
 <hr>
+
 <p>
     Agradecemos su participación.
 </p>
