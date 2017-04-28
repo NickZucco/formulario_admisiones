@@ -25,7 +25,7 @@
 				</form>
 			</div>
 			<div class="col-sm-12 col-md-3" style="margin-top:20px">
-				<strong><p>Funcionalidad disponible desde el 29 de abril.</p></strong>
+				<strong><p>Funcionalidad disponible desde el 2 de mayo.</p></strong>
 			</div>
 		</div>
 		
