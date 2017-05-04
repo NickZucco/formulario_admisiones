@@ -330,7 +330,7 @@
             defaultDate: now,
             format: 'YYYY-MM-DD',
             locale: 'es',
-            minDate: '2006-01-01',
+            minDate: '1945-01-01',
             maxDate: now
         });
         $('.start').datetimepicker({
