@@ -56,14 +56,9 @@ class AdminController extends Controller {
 		$id = $input['id'];
 		$aspirante_info = Aspirante::find($id);
 		$pathtofile = public_path() . '/file/' . $id . '/' . $aspirante_info->nombre . ' ' . $aspirante_info->apellido . '_adjuntos.zip';
-		if (File::exists($pathtofile)){
-			return response()->download($pathtofile);
-		}
-		else{
-			$files = public_path() . '/file/' . $id;		
-			Zipper::make($pathtofile)->add($files)->close();
-			return response()->download($pathtofile)->deleteFileAfterSend(true);
-		}
+		$files = public_path() . '/file/' . $id;		
+		Zipper::make($pathtofile)->add($files)->close();
+		return response()->download($pathtofile)->deleteFileAfterSend(true);
 	}
 	
 	public function getReport(){
