@@ -68,8 +68,6 @@
 					{{$aspirante->nombre}}
 				</td>
 			</tr>
-		</table>
-		<table class="tabla_datos">
 			<tr>
 				<td>
 					<strong>Correo electrónico</strong>
@@ -77,21 +75,19 @@
 				<td>
 					{{$aspirante->correo}}
 				</td>
+				<td>
+					<strong>Número de documento</strong>
+				</td>
+				<td>
+					{{$aspirante->documento}}
+				</td>
 			</tr>
-		</table>
-		<table class="tabla_datos">
 			<tr>
 				<td>
 					<strong>Tipo de documento</strong>
 				</td>
 				<td>
 					{{$aspirante->tipo_documento}}
-				</td>
-				<td>
-					<strong>Número de documento</strong>
-				</td>
-				<td>
-					{{$aspirante->documento}}
 				</td>
 				<td>
 					<strong>Ciudad de expedición</strong>
@@ -113,11 +109,19 @@
 				<td>
 					{{$aspirante->pais_nacimiento}}
 				</td>
+			</tr>
+			<tr>
 				<td>
 					<strong>País de residencia</strong>
 				</td>
 				<td>
 					{{$aspirante->pais_residencia}}
+				</td>
+				<td>
+					<strong>Dirección</strong>
+				</td>
+				<td>
+					{{$aspirante->direccion}}
 				</td>
 			</tr>
 			<tr>
@@ -128,20 +132,12 @@
 					{{$aspirante->estado_civil}}
 				</td>
 				<td>
-					<strong>Dirección</strong>
-				</td>
-				<td>
-					{{$aspirante->direccion}}
-				</td>
-				<td>
 					<strong>Ciudad desde la cual aplica</strong>
 				</td>
 				<td>
 					{{$aspirante->ciudad_aplicante}}
 				</td>
 			</tr>
-		</table>
-		<table class="tabla_datos">
 			<tr>
 				<td>
 					<strong>Teléfono fijo</strong>
@@ -181,35 +177,37 @@
 		</table>
 		<br>
 		<!-- Sección de financiación, tomada de la variable $financiacion -->
-		<h3>Financiación</h3>
-		<hr>
-		<table class="tabla_datos">
-			<tr>
-				<td>
-					<strong>Tipo de financiación</strong>
-				</td>
-				@if ($financiacion->tipo != "Otro")
-					<td>
-						{{$financiacion->tipo}}
-					</td>
-				@else
-					<td>
-						{{$financiacion->otra}}
-					</td>
-				@endif
-			</tr>
-			@if ($financiacion->tipo != "Recursos propios")
+		<!-- Se debe verificar si la información de financiación existe en la base de datos -->
+		@if (!$financiacion == null)
+			<h3>Financiación</h3>
+			<hr>
+			<table class="tabla_datos">
 				<tr>
 					<td>
-						<strong>Entidad Financiadora</strong>
+						<strong>Tipo de financiación</strong>
 					</td>
-					<td>
-						{{$financiacion->entidad}}
-					</td>
+					@if ($financiacion->tipo != "Otro")
+						<td>
+							{{$financiacion->tipo}}
+						</td>
+					@else
+						<td>
+							{{$financiacion->otra}}
+						</td>
+					@endif
 				</tr>
-			@endif
-		</table>
-		
+				@if ($financiacion->tipo != "Recursos propios")
+					<tr>
+						<td>
+							<strong>Entidad Financiadora</strong>
+						</td>
+						<td>
+							{{$financiacion->entidad}}
+						</td>
+					</tr>
+				@endif
+			</table>
+		@endif
 		<!-- Inicialización de las variables globales sobrantes y categoria-->
 		<?php
 			$sobrantes = 0;
