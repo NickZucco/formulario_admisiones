@@ -389,6 +389,8 @@ class ReferenciasController extends Controller
             'aspirante' => Aspirante::find($aspirante_referencia->aspirantes_id)
         );
 
+        $this->sendEmailFormSuccessfullyFulfilled($data);
+
         return view('quegracias', $data);
     }
 
@@ -459,6 +461,8 @@ class ReferenciasController extends Controller
             'aspirante' => Aspirante::find($aspirante_referencia->aspirantes_id)
         );
 
+        $this->sendEmailFormSuccessfullyFulfilled($data);
+
         return view('quegracias', $data);
     }
 
@@ -477,6 +481,20 @@ class ReferenciasController extends Controller
             $message->subject($subject);
             $message->from(env("MAIL_USERNAME"), 'Facultad de Ingeniería Unviersidad Nacional de Colombia Sede Bogotá');
             $message->to($referer->correo_de_referencia);
+        });
+    }
+
+    private function sendEmailFormSuccessfullyFulfilled($data)
+    {
+        $subject = 'Formulario diligenciado exitosamente';
+        Mail::send('emails.mail_form_fulfilled',[
+            'html' => 'view',
+            'title' => $subject,
+            'nombre' => $data['referencia']->nombre_de_referencia
+        ], function ($message)use($data, $subject){
+            $message->subject($subject);
+            $message->from(env("MAIL_USERNAME"), 'Facultad de Ingeniería Unviersidad Nacional de Colombia Sede Bogotá');
+            $message->to($data['aspirante']->correo);
         });
     }
 
