@@ -12,6 +12,9 @@ use App\Http\Requests;
 
 use App\User as User;
 use App\Aspirante as Aspirante;
+use App\ProgramaPosgrado as ProgramaPosgrado;
+use App\AreaCurricular as AreaCurricular;
+use App\Financiacion as Financiacion;
 use App\TipoDocumento as TipoDocumento;
 use App\Estudio as Estudio;
 use App\Distincion as Distincion;
@@ -67,7 +70,8 @@ class AdminController extends Controller {
 		$input = Input::all();
 		$id = $input['id'];
 		
-		$aspirante = Aspirante::join('tipos_documento', 'aspirantes.tipo_documento_id', '=', 'tipos_documento.id')
+		$aspirante = Aspirante::join('tipos_documento', 
+			'aspirantes.tipo_documento_id', '=', 'tipos_documento.id')
 			->join('paises as p1', 'aspirantes.pais_nacimiento', '=', 'p1.id')
 			->join('paises as p2', 'aspirantes.pais_residencia', '=', 'p2.id')
 			->join('estados_civil', 'aspirantes.estado_civil_id', '=', 'estados_civil.id')
@@ -92,23 +96,23 @@ class AdminController extends Controller {
 			)->where('aspirantes.id', '=', $id)->get();
 		$aspirante = $aspirante[0];
 		
-		/*$perfiles = Perfil::join('aspirantes_perfiles', 'perfiles_id', '=', 'id')
+		$programa_seleccionado = ProgramaPosgrado::join('area_curricular', 
+			'programa_posgrado.area_curricular_id', '=', 'area_curricular.id')
+			->join('aspirantes', 'aspirantes.programa_posgrado_id', '=', 'programa_posgrado.id')
 			->select(
-				'perfiles.identificador as identificador',
-				'perfiles.area_desempeno as area'
-			)->where('aspirantes_id', '=', $id)->get();*/
+				'programa_posgrado.nombre as programa',
+				'programa_posgrado.nivel_estudio_id as nivel_estudio',
+				'area_curricular.nombre as area_curricular'
+			)->where('aspirantes.id', '=', $id)->first();
+			
+		$financiacion = Financiacion::join('aspirantes', 'financiacion.aspirantes_id', '=', 'aspirantes.id')
+			->select(
+				'financiacion.tipo_financiacion as tipo',
+				'financiacion.otra_financiacion as otra',
+				'financiacion.entidad_financiacion as entidad'
+			)->where('aspirantes.id', '=', $id)->first();
 			
 		$nombre_aspirante = $aspirante->nombre . ' ' . $aspirante->apellido;
-		//Generar un string con los perfiles seleccionados separados con una coma
-		/*$perfiles_string = '';
-		foreach ($perfiles as $perfil) {
-			$perfiles_string = $perfiles_string . $perfil->identificador . ', ';
-		}*/
-			
-		//Remover la última coma y espacio del string
-		/*if (strlen($perfiles_string) > 0) {
-			$perfiles_string = substr($perfiles_string, 0, strlen($perfiles_string) - 2);
-		}*/
 		
 		$pathtofile = public_path() . '/file/' . $id . '/' . $nombre_aspirante . '_HV.pdf';
 		/*if (File::exists($pathtofile)){
@@ -116,12 +120,18 @@ class AdminController extends Controller {
 		}
 		else{*/
 			$estudios = Estudio::join('paises', 'estudios.paises_id', '=', 'paises.id')
+			->join('nivel_estudio', 'estudios.nivel_estudio_id', '=' ,'nivel_estudio.id')
 			->select(
 				'estudios.titulo as titulo',
 				'estudios.institucion as institucion',
 				'estudios.fecha_inicio as fecha_inicio',
 				'estudios.fecha_finalizacion as fecha_finalizacion',
 				'estudios.en_curso as en_curso',
+				'estudios.maximo_escala as maximo',
+				'estudios.minimo_aprobatorio as minimo',
+				'estudios.promedio as promedio',
+				'nivel_estudio.nombre as nivel_estudio',
+				'estudios.otro_nivel_estudio as otro_nivel',
 				'paises.nombre as pais'
 			)->where('aspirantes_id', '=', $id)->get();
 		
@@ -163,37 +173,184 @@ class AdminController extends Controller {
 					'experiencias_investigativa.fecha_inicio as fecha_inicio',
 					'experiencias_investigativa.fecha_finalizacion as fecha_finalizacion',
 					'experiencias_investigativa.en_curso as en_curso',
+					'experiencias_investigativa.entidad_financiadora as entidad_financiadora',
 					'paises.nombre as pais'
 				)->where('aspirantes_id', '=', $id)
 				->orderBy('experiencias_investigativa.fecha_inicio', 'asc')->get();
 				
-			/*$produccion_intelectual = ProduccionIntelectual::join('paises', 
+			$articulos_revista = ProduccionIntelectual::join('paises', 
 				'produccion_intelectual.paises_id', '=', 'paises.id', 'left outer')
 				->join('idiomas', 'produccion_intelectual.idiomas_id', '=', 'idiomas.id')
 				->join('tipos_produccion_intelectual', 'produccion_intelectual.tipos_produccion_intelectual_id',
 					'=', 'tipos_produccion_intelectual.id')
 				->select(
-					'produccion_intelectual.nombre as nombre_produccion',
-					'produccion_intelectual.publicacion_titulo as revista',
-					'produccion_intelectual.publicacion_autor as autor',
-					'produccion_intelectual.paginas as paginas',
+					'produccion_intelectual.nombre as articulo',
+					'produccion_intelectual.tipo_revista as tipo_revista',
+					'produccion_intelectual.titulo_revista as titulo_revista',
+					'produccion_intelectual.autor as autor',
 					'produccion_intelectual.año as año',
-					'produccion_intelectual.ISSN as ISSN',
-					'produccion_intelectual.nombre_editorial as editorial',
-					'produccion_intelectual.nombre_libro as nombre_libro',
-					'produccion_intelectual.tipo as tipo_articulo',
-					'produccion_intelectual.volumen as volumen_revista',
+					'produccion_intelectual.mes as mes',
+					'produccion_intelectual.issn_revista as issn',
+					'produccion_intelectual.pagina_inicial as pagina_inicial',
+					'produccion_intelectual.pagina_final as pagina_final',
+					'produccion_intelectual.serie as serie',
+					'produccion_intelectual.volumen_revista as volumen_revista',
+					'produccion_intelectual.fasciculo_revista as fasciculo_revista',
 					'produccion_intelectual.clasificacion_revista as clasificacion_revista',
-					'produccion_intelectual.ISBN as ISBN',
-					'produccion_intelectual.descripcion as descripcion_patente',
-					'produccion_intelectual.numero_patente as numero_patente',
-					'produccion_intelectual.tipo_patente as tipo_patente',
-					'produccion_intelectual.entidad_patente as entidad_patente',
 					'paises.nombre as pais',
-					'idiomas.nombre as idioma',
-					'tipos_produccion_intelectual.nombre as tipo_produccion'
-				)->where('aspirantes_id', '=', $id)
-				->orderBy('produccion_intelectual.año', 'asc')->get();*/
+					'idiomas.nombre as idioma'
+				)->where([
+					['aspirantes_id', '=', $id],
+					['produccion_intelectual.tipos_produccion_intelectual_id', '=', '1']
+				])
+				->orderBy('produccion_intelectual.año', 'asc')->get();
+			
+			$libros = ProduccionIntelectual::join('paises', 
+				'produccion_intelectual.paises_id', '=', 'paises.id', 'left outer')
+				->join('idiomas', 'produccion_intelectual.idiomas_id', '=', 'idiomas.id')
+				->join('tipos_produccion_intelectual', 'produccion_intelectual.tipos_produccion_intelectual_id',
+					'=', 'tipos_produccion_intelectual.id')
+				->select(
+					'produccion_intelectual.nombre as libro',
+					'produccion_intelectual.autor as autor',
+					'produccion_intelectual.editorial as editorial',
+					'produccion_intelectual.isbn as isbn',
+					'produccion_intelectual.edicion as edicion',
+					'produccion_intelectual.numero_paginas_libro as numero_paginas',
+					'produccion_intelectual.año as año',
+					'produccion_intelectual.mes as mes',
+					'paises.nombre as pais',
+					'idiomas.nombre as idioma'
+				)->where([
+					['aspirantes_id', '=', $id],
+					['produccion_intelectual.tipos_produccion_intelectual_id', '=', '2']
+				])
+				->orderBy('produccion_intelectual.año', 'asc')->get();
+				
+			$capitulos_libro = ProduccionIntelectual::join('paises', 
+				'produccion_intelectual.paises_id', '=', 'paises.id', 'left outer')
+				->join('idiomas', 'produccion_intelectual.idiomas_id', '=', 'idiomas.id')
+				->join('tipos_produccion_intelectual', 'produccion_intelectual.tipos_produccion_intelectual_id',
+					'=', 'tipos_produccion_intelectual.id')
+				->select(
+					'produccion_intelectual.nombre as capitulo',
+					'produccion_intelectual.titulo_libro as libro',
+					'produccion_intelectual.pagina_inicial as pagina_inicial',
+					'produccion_intelectual.pagina_final as pagina_final',
+					'produccion_intelectual.editorial as editorial',
+					'produccion_intelectual.isbn as isbn',
+					'produccion_intelectual.serie as serie',
+					'produccion_intelectual.edicion as edicion',
+					'produccion_intelectual.año as año',
+					'produccion_intelectual.mes as mes',
+					'paises.nombre as pais',
+					'idiomas.nombre as idioma'
+				)->where([
+					['aspirantes_id', '=', $id],
+					['produccion_intelectual.tipos_produccion_intelectual_id', '=', '3']
+				])
+				->orderBy('produccion_intelectual.año', 'asc')->get();
+				
+			$patentes = ProduccionIntelectual::join('paises', 
+				'produccion_intelectual.paises_id', '=', 'paises.id', 'left outer')
+				->join('idiomas', 'produccion_intelectual.idiomas_id', '=', 'idiomas.id')
+				->join('tipos_produccion_intelectual', 'produccion_intelectual.tipos_produccion_intelectual_id',
+					'=', 'tipos_produccion_intelectual.id')
+				->select(
+					'produccion_intelectual.nombre as patente',
+					'produccion_intelectual.tipo_patente as tipo_patente',
+					'produccion_intelectual.descripcion_patente as descripcion_patente',
+					'produccion_intelectual.numero_patente as numero_patente',
+					'produccion_intelectual.entidad_patente as entidad_patente',
+					'produccion_intelectual.año as año',
+					'produccion_intelectual.mes as mes',
+					'paises.nombre as pais',
+					'idiomas.nombre as idioma'
+				)->where([
+					['aspirantes_id', '=', $id],
+					['produccion_intelectual.tipos_produccion_intelectual_id', '=', '4']
+				])
+				->orderBy('produccion_intelectual.año', 'asc')->get();
+				
+			$softwares = ProduccionIntelectual::join('paises', 
+				'produccion_intelectual.paises_id', '=', 'paises.id', 'left outer')
+				->join('tipos_produccion_intelectual', 'produccion_intelectual.tipos_produccion_intelectual_id',
+					'=', 'tipos_produccion_intelectual.id')
+				->select(
+					'produccion_intelectual.nombre as software',
+					'produccion_intelectual.nombre_comercial_software as nombre_comercial',
+					'produccion_intelectual.titulo_registro as titulo_registro',
+					'produccion_intelectual.numero_registro as numero_registro',
+					'produccion_intelectual.fecha_solicitud as fecha_solicitud',
+					'produccion_intelectual.nombre_titular as nombre_titular',
+					'produccion_intelectual.contrato_fabricacion as contrato_fabricacion',
+					'produccion_intelectual.contrato_explotacion as contrato_explotacion',
+					'produccion_intelectual.contrato_comercializacion as contrato_comercializacion',
+					'produccion_intelectual.año as año',
+					'produccion_intelectual.mes as mes',
+					'paises.nombre as pais'
+				)->where([
+					['aspirantes_id', '=', $id],
+					['produccion_intelectual.tipos_produccion_intelectual_id', '=', '5']
+				])
+				->orderBy('produccion_intelectual.año', 'asc')->get();
+				
+			$diseños_industrial = ProduccionIntelectual::join('paises', 
+				'produccion_intelectual.paises_id', '=', 'paises.id', 'left outer')
+				->join('tipos_produccion_intelectual', 'produccion_intelectual.tipos_produccion_intelectual_id',
+					'=', 'tipos_produccion_intelectual.id')
+				->select(
+					'produccion_intelectual.nombre as diseño',
+					'produccion_intelectual.producto_tiene as producto_tiene',
+					'produccion_intelectual.titulo_registro as titulo_registro',
+					'produccion_intelectual.numero_registro as numero_registro',
+					'produccion_intelectual.fecha_solicitud as fecha_solicitud',
+					'produccion_intelectual.nombre_titular as nombre_titular',
+					'produccion_intelectual.contrato_fabricacion as contrato_fabricacion',
+					'produccion_intelectual.contrato_explotacion as contrato_explotacion',
+					'produccion_intelectual.contrato_comercializacion as contrato_comercializacion',
+					'produccion_intelectual.año as año',
+					'produccion_intelectual.mes as mes',
+					'paises.nombre as pais'
+				)->where([
+					['aspirantes_id', '=', $id],
+					['produccion_intelectual.tipos_produccion_intelectual_id', '=', '7']
+				])
+				->orderBy('produccion_intelectual.año', 'asc')->get();
+				
+			$plantas_piloto = ProduccionIntelectual::join('paises', 
+				'produccion_intelectual.paises_id', '=', 'paises.id', 'left outer')
+				->join('tipos_produccion_intelectual', 'produccion_intelectual.tipos_produccion_intelectual_id',
+					'=', 'tipos_produccion_intelectual.id')
+				->select(
+					'produccion_intelectual.nombre as planta',
+					'produccion_intelectual.producto_tiene as producto_tiene',
+					'produccion_intelectual.año as año',
+					'produccion_intelectual.mes as mes',
+					'paises.nombre as pais'
+				)->where([
+					['aspirantes_id', '=', $id],
+					['produccion_intelectual.tipos_produccion_intelectual_id', '=', '6']
+				])
+				->orderBy('produccion_intelectual.año', 'asc')->get();
+				
+			$otras_producciones = ProduccionIntelectual::join('paises', 
+				'produccion_intelectual.paises_id', '=', 'paises.id', 'left outer')
+				->join('idiomas', 'produccion_intelectual.idiomas_id', '=', 'idiomas.id')
+				->join('tipos_produccion_intelectual', 'produccion_intelectual.tipos_produccion_intelectual_id',
+					'=', 'tipos_produccion_intelectual.id')
+				->select(
+					'produccion_intelectual.nombre as produccion',
+					'produccion_intelectual.tipo_produccion as tipo_produccion',
+					'produccion_intelectual.año as año',
+					'produccion_intelectual.mes as mes',
+					'paises.nombre as pais',
+					'idiomas.nombre as idioma'
+				)->where([
+					['aspirantes_id', '=', $id],
+					['produccion_intelectual.tipos_produccion_intelectual_id', '=', '8']
+				])
+				->orderBy('produccion_intelectual.año', 'asc')->get();
 				
 			$idiomas_certificados=IdiomaCertificado::join('idiomas', 'idiomas_certificado.idiomas_id',
 				'=', 'idiomas.id')
@@ -201,17 +358,29 @@ class AdminController extends Controller {
 					'idiomas.nombre as idioma',
 					'idiomas_certificado.nativo as nativo',
 					'idiomas_certificado.nombre_certificado as certificado',
-					'idiomas_certificado.puntaje as puntaje'
+					'idiomas_certificado.puntaje as puntaje',
+					'idiomas_certificado.marco_referencia as marco_referencia',
+					'idiomas_certificado.acreditar_ingles as acreditar_ingles'
 				)
 				->where('aspirantes_id','=',$id)->get();
 			
 			$data = array(
 				'aspirante' => $aspirante,
+				'programa_seleccionado' => $programa_seleccionado,
+				'financiacion' => $financiacion,
 				'estudios' => $estudios,
 				'distinciones' => $distinciones,
 				'experiencia_laboral' => $experiencia_laboral,
 				'experiencia_docente' => $experiencia_docente,
 				'experiencia_investigativa' => $experiencia_investigativa,
+				'articulos_revista' => $articulos_revista,
+				'libros' => $libros,
+				'capitulos_libro' => $capitulos_libro,
+				'patentes' => $patentes,
+				'softwares' => $softwares,
+				'diseños_industrial' => $diseños_industrial,
+				'plantas_piloto' => $plantas_piloto,
+				'otras_producciones' => $otras_producciones,
 				'idiomas_certificados' => $idiomas_certificados
 			);
 			
@@ -220,7 +389,7 @@ class AdminController extends Controller {
 			$pdf->output();
 			$dom_pdf = $pdf->getDomPDF();
 			$canvas = $dom_pdf ->get_canvas();
-			$canvas->page_text(15, 15, 'Página {PAGE_NUM} de {PAGE_COUNT} - ' . $nombre_aspirante, null, 8, array(0, 0, 0));
+			$canvas->page_text(15, 15, 'Página {PAGE_NUM} de {PAGE_COUNT} - ' . $nombre_aspirante . ' - ' . $programa_seleccionado->programa, null, 8, array(0, 0, 0));
 			$pdf->save($pathtofile);
 			return response()->download($pathtofile)->deleteFileAfterSend(true);
 		/*

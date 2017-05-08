@@ -8,40 +8,39 @@
         {{$msg}}
     </div>
     @endif
-
     <div class="panel-heading" style="font-size:20px">
         <strong>Resumen</strong>
     </div>
-	<div class="panel-body">
-		<div class="form-group">
-			<label for="titulo_revista" class="col-sm-12 col-md-offset-3 col-md-2 control-label" style="margin-top:20px">Hoja de vida del aspirante</label>
-			<div class="col-sm-12 col-md-4">
-				<form method="get" action="{{ env('APP_URL') }}resumen/hv" style="margin-top:20px">
-					{!! csrf_field() !!}
-					<input type="hidden" name="id" value="{{$id}}"/>
-					<button type="submit" data-id="{{$id}}" class="btn btn-danger btn-sm" disabled>
-						<i class="fa fa-clone" aria-hidden="true"></i>
-					</button>
-				</form>
+    <form method="post" action="{{ env('APP_URL') }}resumen/hv" class="form-horizontal" style="margin:20px 0">
+        {!! csrf_field() !!}
+
+        <div class="panel-body">
+			<div class="form-group">
+				<div class="col-sm-12 col-md-4 col-md-offset-4">
+					<form method="post" action="{{ env('APP_URL') }}resumen/hv">
+						{!! csrf_field() !!}
+						<button type="submit" class="btn btn-block btn-success" id="descargar_hv" name="id" value="{{$id}}">
+							<i class="fa fa-user-times"></i>
+							Descargar hoja de vida
+						</button>
+					</form>
+				</div>
 			</div>
-			<div class="col-sm-12 col-md-3" style="margin-top:20px">
-				<strong><p>Funcionalidad disponible desde el 2 de mayo.</p></strong>
+			
+			<div class="form-group">
+				<div class="col-sm-12 col-md-4 col-md-offset-4">
+					<form method="post" action="{{ env('APP_URL') }}resumen/adjuntos">
+						{!! csrf_field() !!}
+						<button type="submit" class="btn btn-block btn-success" id="descargar_adjuntos" name="id" value="{{$id}}">
+							<i class="fa fa-user-times"></i>
+							Descargar adjuntos
+						</button>
+					</form>
+				</div>
 			</div>
 		</div>
-		
-		<div class="form-group">
-			<label for="titulo_revista" class="col-sm-12 col-md-offset-3 col-md-2 control-label" style="margin-top:20px">Documentos adjuntos del aspirante</label>
-			<div class="col-sm-12 col-md-4">
-				<form method="get" action="{{ env('APP_URL') }}resumen/adjuntos" style="margin-top:20px">
-					{!! csrf_field() !!}
-					<input type="hidden" name="id" value="{{$id}}"/>
-					<button type="submit" data-id="{{$id}}" class="btn btn-danger btn-sm">
-						<i class="fa fa-folder-open" aria-hidden="true"></i>
-					</button>
-				</form>
-			</div>
-		</div>
-	</div>
+	</form>
+</div>
 <script>
     (function ($) {
 		

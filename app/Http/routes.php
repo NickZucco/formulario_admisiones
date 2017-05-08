@@ -92,8 +92,8 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::post('idiomas/delete', 'IdiomaCertificadoController@delete');
 	//Vista de resumen donde el aspirante puede descargar su hoja de vida y sus adjuntos
 	Route::get('resumen', 'AspiranteController@summary');
-	Route::get('resumen/hv', 'Admin\AdminController@getReport');
-	Route::get('resumen/adjuntos', 'Admin\AdminController@getAttachments');
+	Route::post('resumen/hv', 'Admin\AdminController@getReport');
+	Route::post('resumen/adjuntos', 'Admin\AdminController@getAttachments');
 	//Formulario de referencias para aspirante
     Route::get('formulario_referencias', 'ReferenciasController@show_candidate_form');
     Route::post('formulario_referencias', 'ReferenciasController@save_references');
