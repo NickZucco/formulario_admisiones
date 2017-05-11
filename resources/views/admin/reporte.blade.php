@@ -1254,8 +1254,8 @@
 							<strong>Editorial</strong>
 						</td>
 						<td>
-							@if ($libro->editorial)
-								{{$libro->editorial}}
+							@if ($capitulo->editorial)
+								{{$capitulo->editorial}}
 							@else
 								N/A
 							@endif
@@ -1264,8 +1264,8 @@
 							<strong>Edición</strong>
 						</td>
 						<td>
-							@if ($libro->edicion)
-								{{$libro->edicion}}
+							@if ($capitulo->edicion)
+								{{$capitulo->edicion}}
 							@else
 								N/A
 							@endif
@@ -1286,8 +1286,8 @@
 							<strong>ISBN</strong>
 						</td>
 						<td>
-							@if ($libro->isbn)
-								{{$libro->isbn}}
+							@if ($capitulo->isbn)
+								{{$capitulo->isbn}}
 							@else
 								N/A
 							@endif
@@ -1308,8 +1308,8 @@
 							<strong>Página final</strong>
 						</td>
 						<td>
-							@if ($libro->pagina_final)
-								{{$libro->pagina_final}}
+							@if ($capitulo->pagina_final)
+								{{$capitulo->pagina_final}}
 							@else
 								N/A
 							@endif
@@ -1320,13 +1320,13 @@
 							<strong>País</strong>
 						</td>
 						<td>
-							{{$libro->pais}}
+							{{$capitulo->pais}}
 						</td>
 						<td>
 							<strong>Idioma</strong>
 						</td>
 						<td>
-							{{$libro->idioma}}
+							{{$capitulo->idioma}}
 						</td>
 					</tr>
 				</table>

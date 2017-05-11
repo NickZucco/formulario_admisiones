@@ -1,37 +1,42 @@
 @extends('unal')
 
 @section('content')
+<style>
+.dropdown-menu {
+	max-height: 300px;
+	overflow-y: auto;
+	overflow-x: auto;
+	font-size: 8px;
+}
+
+.dropdown-menu li {
+	font-size: 12px;
+}
+
+</style>
+
 <div class="panel-heading">
     <p>Bienvenido {{Auth::user()->name}}</p>
-    <p>Seleccione uno o varios perfiles para ver los candidatos inscritos.   </p>
+    <p>Seleccione uno o varios programas para ver los candidatos inscritos.   </p>
 </div>
 
 <div class="panel-body">
     <div class="form-group">
-        <div class="col-md-3">
-            <select id="profile_list" multiple="multiple" class="form-control">
-                <option value="0">Todos los perfiles</option>
-                @foreach($perfiles as $perfil)
-                <option value="{{$perfil->id}}">{{$perfil->identificador}}</option>
+        <div class="col-md-4">
+            <select size="5" id="program_list" multiple="multiple" class="form-control">
+                <option value="0">Todos los programas</option>
+                @foreach($programas as $programa)
+					<option value="{{$programa->id}}">{{$programa->nombre}}</option>
                 @endforeach
             </select>
         </div>
-        <div class="col-md-2">
-            <form method="get" action="{{ env('APP_URL') }}admin/candidatos/excel">     
-                {!! csrf_field() !!}
-                <button type="submit" class="btn btn-info">
-                    Exportar a Excel
-                </button>
-                
-            </form>
-        </div>
+
 		<div class="col-md-3">
             <form method="get" action="{{ env('APP_URL') }}auth/logout">     
                 {!! csrf_field() !!}
                 <button type="submit" class="btn btn-danger">
                     Cerrar sesión
                 </button>
-                
             </form>
         </div>
     </div>
@@ -55,8 +60,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr id="not_selected_profile">
-                <td colspan="8"> No se ha seleccionado ningun perfil todavia. Por favor, seleccione al menos un perfil para mostrar la lista de candidatos inscritos.</td>
+            <tr id="not_selected_program">
+                <td colspan="8"> No se ha seleccionado ningun programa todavia. Por favor, seleccione al menos un programa para mostrar la lista de candidatos inscritos.</td>
             </tr>
 			<?php $numero_candidatos = 1; ?>
             @foreach($aspirantes as $aspirante)
@@ -105,37 +110,45 @@
 
 <script type="text/javascript">
     (function ($) {
-		var aspirantes_perfiles = {!!$aspirantes_perfiles!!};
-        var selected_profile_ids = [];
+		var aspirantes = {!!$aspirantes!!};
+        var selected_program_ids = [];
+		
+		//La variable excel_input es utilizada para cambiar dinámicamente el value del elemento input
+		//que tiene el id "excel_input". Como se sabe, el value de un campo input debe tener la forma
+		//value="1" o value="mi_nombre", es decir, estar asignado a un string. Dado que en este campo
+		//input se quiere pasar como parámetro al controlador AdminController el listado de los IDs de
+		//los perfiles seleccionados de la lista desplegable, es necesario modificar el string que se le
+		//asigna a value por medio de JavaScript.
+		var excel_input = document.getElementById("excel_input");
 
         $("#candidates .candidate_row").hide();
 
         function updateCandidates(index, checked) {
-			$("#not_selected_profile").hide();
+			$("#not_selected_program").hide();
             $("#candidates .candidate_row").hide();
 						
 			if (!checked) {
-				var itr = selected_profile_ids.indexOf(index);
+				var itr = selected_program_ids.indexOf(index);
 				if (index > -1) {
-					selected_profile_ids.splice(itr, 1);
+					selected_program_ids.splice(itr, 1);
 				}
 			}
 			else {
-				selected_profile_ids.push(index);
+				selected_program_ids.push(index);
 			}
 			
-			if(selected_profile_ids.length<=0){
-				$("#not_selected_profile").show();
+			if(selected_program_ids.length<=0){
+				$("#not_selected_program").show();
 			}
 			else {
-				if ($.inArray('0', selected_profile_ids) != -1) {
+				if ($.inArray('0', selected_program_ids) != -1) {
 					$("#candidates .candidate_row").show();
 				}
 				else {
-					$.each(selected_profile_ids, function (index, item) {
-						$.each(aspirantes_perfiles, function (spids_index, spids_item) {
-							if (spids_item.perfiles_id == item) {
-								$("#candidates .candidate_row[data-id='" + spids_item.aspirantes_id + "']").show();
+					$.each(selected_program_ids, function (index, item) {
+						$.each(aspirantes, function (spids_index, spids_item) {
+							if (spids_item.programa_posgrado_id == item) {
+								$("#candidates .candidate_row[data-id='" + spids_item.id + "']").show();
 							}
 						});
 					});
@@ -143,10 +156,10 @@
 			}          
         }
 		
-        $('#profile_list').multiselect({			
+        $('#program_list').multiselect({			
             nSelectedText: 'seleccionados',
             nonSelectedText: 'No hay elementos seleccionados',
-            numberDisplayed: 10,
+            numberDisplayed: 0, 
             onChange: function (option, checked, select) {
                 updateCandidates($(option).val(), checked);
             }
