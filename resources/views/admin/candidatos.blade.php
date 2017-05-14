@@ -16,7 +16,7 @@
 </style>
 
 <div class="panel-heading">
-    <p>Bienvenido {{Auth::user()->name}}</p>
+    <p>Bienvenido {{Auth::user()->name}} {{Auth::user()->lastname}} </p>
     <p>Seleccione uno o varios programas para ver los candidatos inscritos.   </p>
 </div>
 
@@ -29,6 +29,16 @@
 					<option value="{{$programa->id}}">{{$programa->nombre}}</option>
                 @endforeach
             </select>
+        </div>
+		
+		<div class="col-md-2">
+            <form method="get" action="{{ env('APP_URL') }}admin/candidatos/excel">     
+                {!! csrf_field() !!}
+				<input id="excel_input" type="hidden" name="selected_programs" value=""/>
+                <button type="submit" class="btn btn-info">
+                    Exportar a Excel
+                </button>
+            </form>
         </div>
 
 		<div class="col-md-3">
@@ -153,7 +163,9 @@
 						});
 					});
 				}
-			}          
+			}
+			//Cambiamos el value del campo input con id "excel_input"
+			excel_input.value = selected_program_ids.toString();			
         }
 		
         $('#program_list').multiselect({			
