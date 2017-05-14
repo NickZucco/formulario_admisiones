@@ -15,7 +15,7 @@
                 <p>Le informamos que se ha vencido el plazo para acceder al formulario. La fecha limite de diligenciamiento del formulario es: {{$limit_date}}</p>
             </div>
             <div class="form-group"> 
-                <center><input class="form-control" type="button" name="envio" onclick="window.history.back();" value="Regresar"></center>
+                <center><input class="form-control" type="button" name="envio" onclick="window.location = '/formulario_admisiones/auth/logout';" value="Regresar"></center>
             </div>
         </div>
     </div>
