@@ -47,7 +47,8 @@ class AdminController extends Controller {
 						'aspirantes.documento as documento',
 						'aspirantes.correo as correo',
 						'aspirantes.created_at as created_at',
-						'aspirantes.updated_at as updated_at'
+						'aspirantes.updated_at as updated_at',
+						'aspirantes.programa_posgrado_id as programa_posgrado_id'
 					)->where('programa_posgrado.area_curricular_id', '=', '1')->get();
 				$programas = ProgramaPosgrado::where('area_curricular_id', '=' ,'1')->get();
 				break;
@@ -61,7 +62,8 @@ class AdminController extends Controller {
 						'aspirantes.documento as documento',
 						'aspirantes.correo as correo',
 						'aspirantes.created_at as created_at',
-						'aspirantes.updated_at as updated_at'
+						'aspirantes.updated_at as updated_at',
+						'aspirantes.programa_posgrado_id as programa_posgrado_id'
 					)->where('programa_posgrado.area_curricular_id', '=', '2')->get();
 				$programas = ProgramaPosgrado::where('area_curricular_id', '=' ,'2')->get();
 				break;
@@ -75,7 +77,8 @@ class AdminController extends Controller {
 						'aspirantes.documento as documento',
 						'aspirantes.correo as correo',
 						'aspirantes.created_at as created_at',
-						'aspirantes.updated_at as updated_at'
+						'aspirantes.updated_at as updated_at',
+						'aspirantes.programa_posgrado_id as programa_posgrado_id'
 					)->where('programa_posgrado.area_curricular_id', '=', '3')->get();
 				$programas = ProgramaPosgrado::where('area_curricular_id', '=' ,'3')->get();
 				break;
@@ -89,7 +92,8 @@ class AdminController extends Controller {
 						'aspirantes.documento as documento',
 						'aspirantes.correo as correo',
 						'aspirantes.created_at as created_at',
-						'aspirantes.updated_at as updated_at'
+						'aspirantes.updated_at as updated_at',
+						'aspirantes.programa_posgrado_id as programa_posgrado_id'
 					)->where('programa_posgrado.area_curricular_id', '=', '4')->get();
 				$programas = ProgramaPosgrado::where('area_curricular_id', '=' ,'4')->get();
 				break;
@@ -103,7 +107,8 @@ class AdminController extends Controller {
 						'aspirantes.documento as documento',
 						'aspirantes.correo as correo',
 						'aspirantes.created_at as created_at',
-						'aspirantes.updated_at as updated_at'
+						'aspirantes.updated_at as updated_at',
+						'aspirantes.programa_posgrado_id as programa_posgrado_id'
 					)->where('programa_posgrado.area_curricular_id', '=', '5')->get();
 				$programas = ProgramaPosgrado::where('area_curricular_id', '=' ,'5')->get();
 				break;
