@@ -114,16 +114,7 @@ use AuthenticatesAndRegistersUsers,
     }
 
     public function getLogin() {
-        $configuracion = Configuracion::where('llave', '=', 'limit_date')->first();
-        $data = [];
-        if (strtotime($configuracion['valor']) > time()) {
-            return view('auth/login');
-        } else {
-            $data = array(
-                'limit_date' => $configuracion['valor']
-            );
-            return view('auth/timeout', $data);
-        }
+        return view('auth/login');
     }
 
     public function register(Request $request) {
